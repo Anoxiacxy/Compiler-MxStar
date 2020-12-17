@@ -2,8 +2,8 @@ grammar MxStar;
 
 program : (functionDefination | classDefination | variableDefination)* EOF;
 
-functionDefination : (TypeName | Void) FunctionIdentifier statement;
-constructDefination : FunctionIdentifier statement;
+functionDefination : (typeName | Void) functionIdentifier LeftParenthesis expression ? RightParenthesis statement;
+constructDefination : functionIdentifier statement;
 classDefination : Class ClassIdentifier LeftBrace
         (
             functionDefination
@@ -75,10 +75,10 @@ identifierExpression
     | identifierExpression LeftBracket expression RightBracket
     | identifierExpression Dot identifierExpression;
 
-TypeName : Bool | Int | String | ClassIdentifier;
-ClassIdentifier : Identifier;
-FunctionIdentifier : Identifier;
-FundamentalType : Bool | Int | Void | String;
+typeName : Bool | Int | String | classIdentifier;
+classIdentifier : Identifier;
+functionIdentifier : Identifier;
+fundamentalType : Bool | Int | Void | String;
 
 literal : BooleanLiteral | IntegerLiteral | StringLiteral | NullLiteral;
 
@@ -87,7 +87,7 @@ IntegerLiteral : '-' ? [0-9]+;
 StringLiteral  : '"' PrintableChar* '"';
 NullLiteral    : Null;
 
-PrintableChar : ~["\\\n\r] | '\\n'| '\\\\' | '\\"';
+fragment PrintableChar : ~["\\\n\r] | '\\n'| '\\\\' | '\\"';
 
 Identifier : [a-zA-Z] IdentifierSymbol*;
 
@@ -117,15 +117,15 @@ Class : 'class';
 This : 'this';
 
 IdentifierSymbol : [a-zA-Z0-9_];
-StandardOperator : Plus | Minus | Mul | Div | Mod;
-RelationOperator : Greater | Less | GreaterEqual | LessEqual | NotEqual | Equal;
-LogicalOperator  : LogicalAnd | LogicalOr | LogicalNeg;
-BitwiseOperator  : RightShift | LeftShift | BitwiseAnd | BitwiseOr | BitwiseXor | BitwiseNeg;
-AssignOperator   : Assign;
-IterateOperator  : PlusPlus | MinusMinus;
-ComponentOperator: Dot;
-PriorityOperator : LeftParenthesis | RightParenthesis;
-SpecialSymbol    : Space | NewLine | Tab | CommentSymbol;
+standardOperator : Plus | Minus | Mul | Div | Mod;
+relationOperator : Greater | Less | GreaterEqual | LessEqual | NotEqual | Equal;
+logicalOperator  : LogicalAnd | LogicalOr | LogicalNeg;
+bitwiseOperator  : RightShift | LeftShift | BitwiseAnd | BitwiseOr | BitwiseXor | BitwiseNeg;
+assignOperator   : Assign;
+iterateOperator  : PlusPlus | MinusMinus;
+componentOperator: Dot;
+priorityOperator : LeftParenthesis | RightParenthesis;
+specialSymbol    : Space | NewLine | Tab | CommentSymbol;
 
 Space : ' ';
 NewLine : '\n';
