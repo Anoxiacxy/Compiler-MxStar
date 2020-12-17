@@ -1,41 +1,58 @@
 grammar MxStar;
 
+program : (functionDefination | classDefination | variableDefination)* EOF;
+
 functionDefination : (TypeName | Void) FunctionIdentifier statement;
+constructDefination : FunctionIdentifier statement;
 classDefination : Class ClassIdentifier LeftBrace
         (
-            // TODO
-        ) *
-    RightBrace;
-VariableDefination : ;
-
+            functionDefination
+            | constructDefination
+            | variableDefination
+        )*
+    RightBrace Semi;
+variableDefination : TypeName(LeftBracket RightBracket)* 
+        (Identifier (Assign expression)?) (Comma Identifier (Assign expression)?)* Semi;
 
 statement
-    : blockStatement
+    : variableDefination
+    | blockStatement
+    | ifStatement
+    | whileStatement
+    | forStatement
     | returnStatement
+    | breakStatement
+    | continueStatement
+    | expressionStatement
     ;
 
 blockStatement : LeftBrace statement* RightBrace;
-returnStatement : Return expression;
-
-
-
-expression : primaryExpression;
-
+ifStatement : If LeftParenthesis expression RightParenthesis statement (Else statement)?;
+whileStatement : While LeftParenthesis expression RightParenthesis statement;
+forStatement : For LeftParenthesis
+        expression ? Semi expression ? Semi expression
+    RightParenthesis statement;
+returnStatement : Return expression ? Semi;
+breakStatement : Break Semi;
+continueStatement : Continue Semi;
+expressionStatement : expression Semi;
 
 succExpression : (primaryExpression (PlusPlus | MinusMinus)) | primaryExpression;
 prefExpression : ((PlusPlus | MinusMinus | LogicalNeg | BitwiseNeg | Plus | Minus) succExpression) | succExpression;
-mulBinaryExpression15 : (PrefExpression17 (Mul | Div | Mod) PrefExpression17) | PrefExpression17;
-BinaryExpression14 : (BinaryExpression15 (Plus | Minus) BinaryExpression15) | BinaryExpression15;
-BinaryExpression13 : (BinaryExpression14 (LeftShift | RightShift) BinaryExpression14) | BinaryExpression14;
-BinaryExpression12 : (BinaryExpression13 (Less | LessEqual | Greater | GreaterEqual) BinaryExpression13) | BinaryExpression13;
-BinaryExpression11 : (BinaryExpression12 (Equal | NotEqual) BinaryExpression12) | BinaryExpression12;
-BinaryExpression10 : (BinaryExpression11 BitwiseAnd BinaryExpression11) | BinaryExpression11;
-BinaryExpression9  : (BinaryExpression10 BitwiseXor BinaryExpression10) | BinaryExpression10;
-BinaryExpression8  : (BinaryExpression9  BitwiseOr  BinaryExpression9)  | BinaryExpression9;
-BinaryExpression7  : (BinaryExpression8  LogicalAnd BinaryExpression8)  | BinaryExpression8;
-BinaryExpression6  : (BinaryExpression7  LogicalOr BinaryExpression7)   | BinaryExpression7;
-BinaryExpression3  : IntegerLiteral;
-binaryExpression0  : <assoc=right>BinaryExpression0  Comma  BinaryExpression3;
+multiExpression : ((prefExpression (Mul | Div | Mod))* prefExpression) | prefExpression;
+addiExpression : ((multiExpression (Plus | Minus))* multiExpression) | multiExpression;
+shiftExpression : ((addiExpression (LeftShift | RightShift))* addiExpression) | addiExpression;
+compareExpression : ((shiftExpression (Less|LessEqual|Greater|GreaterEqual))* shiftExpression) | shiftExpression;
+equalExpression : ((compareExpression (Equal | NotEqual))* compareExpression) | compareExpression;
+bitAndExpression : ((equalExpression BitwiseAnd)* equalExpression) | equalExpression;
+bitXorExpression  : ((bitAndExpression BitwiseXor)* bitAndExpression ) | bitAndExpression;
+bitOrExpression  : ((bitXorExpression  BitwiseOr)*  bitXorExpression)  | bitXorExpression;
+logAndExpression  : ((bitOrExpression  LogicalAnd)* bitOrExpression)  | bitOrExpression;
+logOrExpression  : ((logAndExpression  LogicalOr)* logAndExpression)  | logAndExpression;
+assignExpression  : (logOrExpression (Assign logOrExpression)*) | logOrExpression;
+listExpression  : ((assignExpression Comma)* assignExpression) | assignExpression;
+
+expression : listExpression;
 
 primaryExpression
     : This
@@ -46,8 +63,12 @@ primaryExpression
     | newExpression
     ;
 
-newExpression : New TypeName (LeftBracket expression RightBracket)* (LeftBracket RightBracket)*;
-functionCallExpression : FunctionIdentifier ((LeftParenthesis RightParenthesis) | (LeftParenthesis expression RightParenthesis));
+newExpression : New TypeName (LeftBracket expression RightBracket)* 
+                            (LeftBracket RightBracket)* (LeftParenthesis RightParenthesis)?;
+functionCallExpression : FunctionIdentifier 
+        ( (LeftParenthesis RightParenthesis) 
+        | (LeftParenthesis expression RightParenthesis)
+    );
 
 identifierExpression
     : Identifier
@@ -151,19 +172,3 @@ Minus : '-';
 Mul : '*';
 Div : '/';
 Mod : '%';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
