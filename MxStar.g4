@@ -37,20 +37,20 @@ breakStatement : Break Semi;
 continueStatement : Continue Semi;
 expressionStatement : expression Semi;
 
-succExpression : (primaryExpression (PlusPlus | MinusMinus)) | primaryExpression;
-prefExpression : ((PlusPlus | MinusMinus | LogicalNeg | BitwiseNeg | Plus | Minus) succExpression) | succExpression;
-multiExpression : ((prefExpression (Mul | Div | Mod))* prefExpression) | prefExpression;
-addiExpression : ((multiExpression (Plus | Minus))* multiExpression) | multiExpression;
-shiftExpression : ((addiExpression (LeftShift | RightShift))* addiExpression) | addiExpression;
-compareExpression : ((shiftExpression (Less|LessEqual|Greater|GreaterEqual))* shiftExpression) | shiftExpression;
-equalExpression : ((compareExpression (Equal | NotEqual))* compareExpression) | compareExpression;
-bitAndExpression : ((equalExpression BitwiseAnd)* equalExpression) | equalExpression;
-bitXorExpression  : ((bitAndExpression BitwiseXor)* bitAndExpression ) | bitAndExpression;
-bitOrExpression  : ((bitXorExpression  BitwiseOr)*  bitXorExpression)  | bitXorExpression;
-logAndExpression  : ((bitOrExpression  LogicalAnd)* bitOrExpression)  | bitOrExpression;
-logOrExpression  : ((logAndExpression  LogicalOr)* logAndExpression)  | logAndExpression;
-assignExpression  : (logOrExpression (Assign logOrExpression)*) | logOrExpression;
-listExpression  : ((assignExpression Comma)* assignExpression) | assignExpression;
+succExpression   :  primaryExpression (PlusPlus | MinusMinus) ?;
+prefExpression   : (PlusPlus | MinusMinus | LogicalNeg | BitwiseNeg | Plus | Minus)* succExpression;
+multiExpression  : (prefExpression (Mul | Div | Mod))* prefExpression;
+addiExpression   : (multiExpression (Plus | Minus))* multiExpression;
+shiftExpression  : (addiExpression (LeftShift | RightShift))* addiExpression;
+compareExpression: (shiftExpression (Less|LessEqual|Greater|GreaterEqual))* shiftExpression;
+equalExpression  : (compareExpression (Equal | NotEqual))* compareExpression;
+bitAndExpression : (equalExpression BitwiseAnd)* equalExpression;
+bitXorExpression : (bitAndExpression BitwiseXor)* bitAndExpression;
+bitOrExpression  : (bitXorExpression  BitwiseOr)*  bitXorExpression;
+logAndExpression : (bitOrExpression  LogicalAnd)* bitOrExpression;
+logOrExpression  : (logAndExpression  LogicalOr)* logAndExpression;
+assignExpression :  logOrExpression (Assign logOrExpression)*;
+listExpression   : (assignExpression Comma)* assignExpression;
 
 expression : listExpression;
 
