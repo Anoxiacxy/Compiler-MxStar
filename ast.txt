@@ -1,0 +1,31 @@
+class AST.ProgramNode
+   class AST.Def.FuncDefNode
+   name
+      main
+   return type
+      class AST.TypeNode
+      name
+         int
+      dimension
+         0
+   argument
+   body
+      class AST.BlockNode
+      class AST.Stmt.VarDefStmtNode
+      type
+         class AST.TypeNode
+         name
+            int
+         dimension
+            0
+      name
+         a
+      class AST.Stmt.VarDefStmtNode
+      type
+         class AST.TypeNode
+         name
+            int
+         dimension
+            0
+      name
+         a

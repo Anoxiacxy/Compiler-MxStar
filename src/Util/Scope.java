@@ -6,35 +6,53 @@ import Util.Symbol.FuncSymbol;
 import Util.Symbol.VarSymbol;
 import Util.Type.ArrayType;
 import Util.Type.ClassType;
-import Util.Type.PrimaryType;
 import Util.Type.Type;
 
-import javax.swing.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Scope {
-    private Scope parentScope;
-    private HashMap<String, VarSymbol> varSymbolHashMap = new HashMap<>();
-    private HashMap<String, FuncSymbol> funcSymbolHashMap = new HashMap<>();
-    private HashMap<String, Type> typeMap = new HashMap<>();
+    public enum ScopeType {
+        globalScope, classScope, functionScope, blockScope, loopScope
+    }
+    private final ScopeType scopeType;
+    private final Scope parentScope;
+    private final List<Scope> childrenScope;
+    private final HashMap<String, VarSymbol> varSymbolHashMap = new HashMap<>();
+    private final HashMap<String, FuncSymbol> funcSymbolHashMap = new HashMap<>();
+    private final HashMap<String, Type> typeMap = new HashMap<>();
+
     private FuncSymbol funcSymbol;
     private ClassType classDefType;
     private int loopDepth;
 
+
+    public Scope(ScopeType scopeType, Scope parentScope) {
+        this.scopeType = scopeType;
+        this.childrenScope = new ArrayList<>();
+        this.parentScope = parentScope;
+        if (parentScope != null) {
+            this.funcSymbol = parentScope.funcSymbol;
+            this.classDefType = parentScope.classDefType;
+            this.loopDepth = parentScope.loopDepth;
+        } else {
+            this.funcSymbol = null;
+            this.classDefType = null;
+            this.loopDepth = 0;
+        }
+    }
+
+    public Scope getParentScope() {
+        return parentScope;
+    }
+
+    public List<Scope> getChildrenScope() {
+        return childrenScope;
+    }
+
     public FuncSymbol getFuncSymbol() {
         return funcSymbol;
-    }
-
-    public HashMap<String, VarSymbol> getVarSymbolHashMap() {
-        return varSymbolHashMap;
-    }
-
-    public HashMap<String, FuncSymbol> getFuncSymbolHashMap() {
-        return funcSymbolHashMap;
-    }
-
-    public HashMap<String, Type> getTypeMap() {
-        return typeMap;
     }
 
     public void setFuncSymbol(FuncSymbol funcSymbol) {
@@ -57,18 +75,19 @@ public class Scope {
         return loopDepth;
     }
 
-    public Scope(Scope parentScope) {
-        this.parentScope = parentScope;
-        if (parentScope != null) {
-            this.funcSymbol = parentScope.funcSymbol;
-            this.classDefType = parentScope.classDefType;
-            this.loopDepth = parentScope.loopDepth;
-        } else {
-            this.funcSymbol = null;
-            this.classDefType = null;
-            this.loopDepth = 0;
-        }
+    public HashMap<String, VarSymbol> getVarSymbolHashMap() {
+        return varSymbolHashMap;
     }
+
+    public HashMap<String, FuncSymbol> getFuncSymbolHashMap() {
+        return funcSymbolHashMap;
+    }
+
+    public HashMap<String, Type> getTypeMap() {
+        return typeMap;
+    }
+
+
 
     public void newType(String typeName, Type type, Position position) {
         if (type == null)

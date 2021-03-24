@@ -15,7 +15,7 @@ import Util.Position;
 
 import java.util.ArrayList;
 
-public class Builder extends MxStarBaseVisitor<ASTNode> {
+public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
     @Override
     public ASTNode visitErrorExpression(MxStarParser.ErrorExpressionContext ctx) {
         throw new SemanticError("error new expression", new Position(ctx));

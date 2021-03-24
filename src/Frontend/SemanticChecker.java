@@ -7,9 +7,7 @@ import AST.Def.VarDefNode;
 import AST.Expr.*;
 import AST.Literal.*;
 import AST.Stmt.*;
-import Parser.MxStarParser;
 import Util.Error.SemanticError;
-import Util.Error.SyntaxError;
 import Util.Position;
 import Util.Scope;
 import Util.Symbol.FuncSymbol;
@@ -20,10 +18,11 @@ import Util.Type.PrimaryType;
 import Util.Type.Type;
 
 public class SemanticChecker implements ASTVisitor {
-    private Scope globalScope, scope;
+    private final Scope globalScope;
+    private Scope scope;
 
     public SemanticChecker() {
-        globalScope = new Scope(null);
+        globalScope = new Scope(Scope.ScopeType.globalScope, null);
         globalScope.newType("int", new PrimaryType("int"), new Position());
         globalScope.newType("bool", new PrimaryType("bool"), new Position());
         globalScope.newType("void", new PrimaryType("void"), new Position());
@@ -88,8 +87,10 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(BlockStmtNode node) {
-        Scope curScope = new Scope(scope);
+        node.setBelongScope(scope);
+        Scope curScope = new Scope(Scope.ScopeType.blockScope, scope);
         Scope parentScope = scope;
+        parentScope.getChildrenScope().add(curScope);
         scope = curScope;
         {
             if (node.getBlockNode() != null)
@@ -100,14 +101,17 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(BreakStmtNode node) {
+        node.setBelongScope(scope);
         if (scope.getLoopDepth() == 0)
             throw new SemanticError("break out of any loop", node.getPosition());
     }
 
     @Override
     public void visit(ForStmtNode node) {
-        Scope curScope = new Scope(scope);
+        node.setBelongScope(scope);
+        Scope curScope = new Scope(Scope.ScopeType.loopScope, scope);
         Scope parentScope = scope;
+        parentScope.getChildrenScope().add(curScope);
         scope = curScope;
         {
             scope.setLoopDepth(scope.getLoopDepth() + 1);
@@ -131,35 +135,29 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(IfStmtNode node) {
-        if (node.getCond() != null) {
-            node.getCond().accept(this);
-            if (!node.getCond().getType().isBool())
-                throw new SemanticError("condition is not bool type", node.getPosition());
-        } else
-            throw new SemanticError("condition cannot be empty", node.getPosition());
-
-        if (node.getTrueBody() != null) {
-            Scope curScope = new Scope(scope);
-            Scope parentScope = scope;
-            scope = curScope;
-            {
+        node.setBelongScope(scope);
+        Scope curScope = new Scope(Scope.ScopeType.blockScope, scope);
+        Scope parentScope = scope;
+        parentScope.getChildrenScope().add(curScope);
+        scope = curScope;
+        {
+            if (node.getCond() != null) {
+                node.getCond().accept(this);
+                if (!node.getCond().getType().isBool())
+                    throw new SemanticError("condition is not bool type", node.getPosition());
+            } else
+                throw new SemanticError("condition cannot be empty", node.getPosition());
+            if (node.getTrueBody() != null)
                 node.getTrueBody().accept(this);
-            }
-            scope = parentScope;
-        }
-        if (node.getFalseBody() != null) {
-            Scope curScope = new Scope(scope);
-            Scope parentScope = scope;
-            scope = curScope;
-            {
+            if (node.getFalseBody() != null)
                 node.getFalseBody().accept(this);
-            }
-            scope = parentScope;
         }
+        scope = parentScope;
     }
 
     @Override
     public void visit(ReturnStmtNode node) {
+        node.setBelongScope(scope);
         if (scope.getFuncSymbol() == null)
             throw new SemanticError("return out of any function", node.getPosition());
         if (node.getReturnValue() != null) {
@@ -175,47 +173,54 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(WhileStmtNode node) {
-        if (node.getCond() != null) {
-            node.getCond().accept(this);
-            if (!node.getCond().getType().isBool())
-                throw new SemanticError("condition is not bool type", node.getPosition());
-        } else
-            throw new SemanticError("condition cannot be empty", node.getPosition());
-        if (node.getBody() != null) {
-            Scope curScope = new Scope(scope);
-            Scope parentScope = scope;
-            scope = curScope;
-            {
-                scope.setLoopDepth(scope.getLoopDepth() + 1);
+        node.setBelongScope(scope);
+        Scope curScope = new Scope(Scope.ScopeType.loopScope, scope);
+        Scope parentScope = scope;
+        parentScope.getChildrenScope().add(curScope);
+        scope = curScope;
+        {
+            scope.setLoopDepth(scope.getLoopDepth() + 1);
+            if (node.getCond() != null) {
+                node.getCond().accept(this);
+                if (!node.getCond().getType().isBool())
+                    throw new SemanticError("while condition should be bool type", node.getPosition());
+            } else
+                throw new SemanticError("while condition cannot be empty", node.getPosition());
+            if (node.getBody() != null)
                 node.getBody().accept(this);
-            }
-            scope = parentScope;
+            else
+                throw new SemanticError("while body cannot be empty", node.getPosition());
         }
+        scope = parentScope;
     }
 
     @Override
     public void visit(BlockNode node) {
+        node.setBelongScope(scope);
         node.getStatements().forEach(x->x.accept(this));
     }
 
     @Override
     public void visit(ContinueStmtNode node) {
+        node.setBelongScope(scope);
         if (scope.getLoopDepth() == 0)
             throw new SemanticError("continue out of any loop", node.getPosition());
     }
 
     @Override
     public void visit(ExprStmtNode node) {
+        node.setBelongScope(scope);
         node.getExpression().accept(this);
     }
 
     @Override
     public void visit(EmptyStmtNode node) {
-
+        node.setBelongScope(scope);
     }
 
     @Override
     public void visit(BinaryExprNode node) {
+        node.setBelongScope(scope);
         node.getlExpr().accept(this);
         node.getrExpr().accept(this);
         switch (node.getOp()) {
@@ -281,6 +286,7 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(PrefExprNode node) {
+        node.setBelongScope(scope);
         node.getrExpr().accept(this);
         switch (node.getOp()) {
             case "++":
@@ -311,6 +317,7 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(SuccExprNode node) {
+        node.setBelongScope(scope);
         node.getlExpr().accept(this);
         switch (node.getOp()) {
             case "++":
@@ -328,11 +335,12 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(TypeNode node) {
-
+        node.setBelongScope(scope);
     }
 
     @Override
     public void visit(NewExprNode node) {
+        node.setBelongScope(scope);
         if (node.getExpressions() != null)
             node.getExpressions().forEach(x->{
                 x.accept(this);
@@ -344,18 +352,21 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(VarDefNode node) {
+        node.setBelongScope(scope);
         node.getVarDefStmtNode().accept(this);
     }
 
     @Override
     public void visit(ClassDefNode node) {
-        Scope curScope = new Scope(scope);
+        node.setBelongScope(scope);
+        Scope curScope = new Scope(Scope.ScopeType.classScope, scope);
         Scope parentScope = scope;
+        parentScope.getChildrenScope().add(curScope);
         scope = curScope;
         {
             scope.setClassDefType((ClassType) globalScope.getType(node.getName(), node.getPosition()));
-            scope.getClassDefType().getVarSymbolHashMap().forEach((k, v)->scope.newVarSymbol(k, v, node.getPosition()));
             scope.getClassDefType().getFuncSymbolHashMap().forEach((k, v)->scope.newFunSymbol(k, v, node.getPosition()));
+            scope.getClassDefType().getVarSymbolHashMap().forEach((k, v)->scope.newVarSymbol(k, v, node.getPosition()));
             node.getClassComponenet().forEach(x->{
                 if (x instanceof FuncDefNode)
                     x.accept(this);
@@ -366,6 +377,7 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(FuncExprNode node) {
+        node.setBelongScope(scope);
         if (node.getPointer() instanceof IdentifierExprNode)
             node.getPointer().setType(scope.getFuncSymbol(((IdentifierExprNode) node.getPointer()).getName(), node.getPosition()));
         else
@@ -388,8 +400,10 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(FuncDefNode node) {
-        Scope curScope = new Scope(scope);
+        node.setBelongScope(scope);
+        Scope curScope = new Scope(Scope.ScopeType.functionScope, scope);
         Scope parentScope = scope;
+        parentScope.getChildrenScope().add(curScope);
         scope = curScope;
         {
             scope.getFuncSymbol(node.getName(), node.getPosition()).getParamater().forEach(x->
@@ -409,6 +423,7 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(VarDefStmtNode node) {
+        node.setBelongScope(scope);
         Type type = globalScope.getType(node.getType());
         if (type.isVoid())
             throw new SemanticError("void type cannot define a variable", node.getPosition());
@@ -427,6 +442,7 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(ArrayExprNode node) {
+        node.setBelongScope(scope);
         node.getPointer().accept(this);
         node.getOffset().accept(this);
         if (!(node.getPointer().getType() instanceof ArrayType))
@@ -443,12 +459,14 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(IdentifierExprNode node) {
+        node.setBelongScope(scope);
         node.setType(scope.getVarSymbol(node.getName(), node.getPosition()).getType());
         node.setLvalue(true);
     }
 
     @Override
     public void visit(LiteralExprNode node) {
+        node.setBelongScope(scope);
         System.out.println("should never used");
         node.getLiteral().accept(this);
         node.setType(node.getLiteral().getType());
@@ -456,6 +474,7 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(MemberExprNode node) {
+        node.setBelongScope(scope);
         node.getPointer().accept(this);
         if (node.getPointer().getType() instanceof ArrayType && node.isFunc() && node.getMember().equals("size")) {
             FuncSymbol func = new FuncSymbol(new PrimaryType("int"), "size");
@@ -480,27 +499,32 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(BoolLiteralNode node) {
+        node.setBelongScope(scope);
         node.setType(globalScope.getType("bool", node.getPosition()));
         // node.setType(new PrimaryType("bool"));
     }
 
     @Override
     public void visit(IntLiteralNode node) {
+        node.setBelongScope(scope);
         node.setType(globalScope.getType("int", node.getPosition()));
     }
 
     @Override
     public void visit(NullLiteralNode node) {
+        node.setBelongScope(scope);
         node.setType(globalScope.getType("null", node.getPosition()));
     }
 
     @Override
     public void visit(StringLiteralNode node) {
+        node.setBelongScope(scope);
         node.setType(globalScope.getType("string", node.getPosition()));
     }
 
     @Override
     public void visit(ThisLiteralNode node) {
+        node.setBelongScope(scope);
         if (scope.getClassDefType() == null)
             throw new SemanticError("this is not in a class definition", node.getPosition());
         node.setType(scope.getClassDefType());
@@ -536,9 +560,8 @@ public class SemanticChecker implements ASTVisitor {
                 ((ClassDefNode) x).getClassComponenet().forEach(y->{
                     if (y instanceof FuncDefNode) {
                         FuncSymbol func = new FuncSymbol(globalScope.getType(((FuncDefNode) y).getReturnType()), ((FuncDefNode) y).getName());
-                        ((FuncDefNode) y).getParameterList().forEach(z->{
-                            func.getParamater().add(new VarSymbol(globalScope.getType(z.getType()), z.getName()));
-                        });
+                        ((FuncDefNode) y).getParameterList().forEach(z->
+                                func.getParamater().add(new VarSymbol(globalScope.getType(z.getType()), z.getName())));
                         if (classType.getFuncSymbolHashMap().containsKey(((FuncDefNode) y).getName()))
                             throw new SemanticError(((FuncDefNode) y).getName() + " redefined", y.getPosition());
 
@@ -561,6 +584,7 @@ public class SemanticChecker implements ASTVisitor {
             }
         });
         scope = globalScope;
+        node.setBelongScope(scope);
         scope.getVarSymbolHashMap().clear();
         node.getProgramComponent().forEach(x->x.accept(this));
         FuncSymbol mainFunc = globalScope.getFuncSymbol("main", node.getPosition());
@@ -572,11 +596,13 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(VarDefStmtNodes node) {
+        node.setBelongScope(scope);
         node.getDefNodes().forEach(x-> x.accept(this));
     }
 
     @Override
     public void visit(ListExprNode node) {
+        node.setBelongScope(scope);
         node.getExprNodes().forEach(x-> x.accept(this));
     }
 }
