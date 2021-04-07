@@ -147,10 +147,28 @@ public class SemanticChecker implements ASTVisitor {
                     throw new SemanticError("condition is not bool type", node.getPosition());
             } else
                 throw new SemanticError("condition cannot be empty", node.getPosition());
-            if (node.getTrueBody() != null)
-                node.getTrueBody().accept(this);
-            if (node.getFalseBody() != null)
-                node.getFalseBody().accept(this);
+
+            Scope curScope2 = new Scope(Scope.ScopeType.blockScope, scope);
+            Scope parentScope2 = scope;
+            parentScope2.getChildrenScope().add(curScope2);
+            scope = curScope2;
+            {
+                if (node.getTrueBody() != null)
+                    node.getTrueBody().accept(this);
+            }
+            scope = parentScope2;
+
+            Scope curScope3 = new Scope(Scope.ScopeType.blockScope, scope);
+            Scope parentScope3 = scope;
+            parentScope2.getChildrenScope().add(curScope3);
+            scope = curScope3;
+            {
+                if (node.getFalseBody() != null)
+                    node.getFalseBody().accept(this);
+            }
+            scope = parentScope3;
+
+
         }
         scope = parentScope;
     }
