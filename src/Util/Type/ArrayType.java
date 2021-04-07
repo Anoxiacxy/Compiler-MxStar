@@ -30,4 +30,17 @@ public class ArrayType extends Type {
                     && dimension == ((ArrayType) type).getDimension()
                     && baseType.equals(((ArrayType) type).getBaseType()));
     }
+
+    @Override
+    public boolean isArray() {
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "ArrayType{" +
+                "dimension=" + dimension +
+                ", baseType=" + baseType +
+                '}';
+    }
 }

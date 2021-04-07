@@ -10,7 +10,10 @@ public class ConstBool extends Constant {
         this.value = value;
     }
 
-
+    @Override
+    public String toString() {
+        return Boolean.toString(value);
+    }
 
     public boolean getValue() {
         return value;

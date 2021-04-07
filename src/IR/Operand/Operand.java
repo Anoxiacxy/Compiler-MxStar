@@ -20,12 +20,8 @@ abstract public class Operand extends IRObject {
         this.type = type;
     }
 
-    abstract boolean isConstant();
+    abstract public boolean isConstant();
 
     @Override
-    public String toString() {
-        return "Operand{" +
-                "type=" + type +
-                '}';
-    }
+    abstract public String toString();
 }

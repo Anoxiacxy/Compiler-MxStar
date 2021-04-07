@@ -39,4 +39,11 @@ public class PrimaryType extends Type {
     public boolean isVoid() {
         return typeName.equals("void");
     }
+
+    @Override
+    public String toString() {
+        return "PrimaryType{" +
+                "typeName='" + typeName + '\'' +
+                '}';
+    }
 }

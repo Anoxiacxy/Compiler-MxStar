@@ -6,7 +6,7 @@ import IR.TypeSystem.IntegerIRT;
 public class ConstInt extends Constant {
     private long value;
 
-    public ConstInt(IntegerIRT type, long value) {
+    public ConstInt(IRType type, long value) {
         super(type);
         this.value = value;
     }
@@ -19,5 +19,8 @@ public class ConstInt extends Constant {
         this.value = value;
     }
 
-
+    @Override
+    public String toString() {
+        return Long.toString(value);
+    }
 }

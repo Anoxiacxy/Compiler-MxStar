@@ -29,4 +29,12 @@ public abstract class Type {
         return false;
     }
 
+    public boolean isArray() { return false; }
+
+    public boolean isClass() { return false; }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

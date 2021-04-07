@@ -1,6 +1,8 @@
 package IR.Instruction;
 
 import IR.BasicBlock;
+import IR.IRVisitor;
+import IR.Operand.Constant;
 import IR.Operand.Operand;
 import IR.Operand.Register;
 
@@ -55,6 +57,26 @@ public class BinaryInst extends IRInst {
 
     @Override
     public String toString() {
-        return result + " = " + opType.name() + result.getType() + " " + lhs + ", " + rhs;
+        return result + " = " + opType.name() + " " + result.getType() + " " + lhs + ", " + rhs;
+    }
+
+    public void accept(IRVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    // add, sub, mul, sdiv, srem, shl, ashr, and, or, xor
+    public boolean canSwap() {
+        switch (opType) {
+            case add, mul, and, or, xor -> { return true; }
+            default -> { return false; }
+        }
+    }
+
+    public void trySwapOperand() {
+        if (!canSwap()) return;
+        if (! (lhs instanceof Constant)) return;
+        Operand tmp = lhs;
+        lhs = rhs;
+        rhs = tmp;
     }
 }

@@ -1,8 +1,10 @@
 package IR.Instruction;
 
 import IR.BasicBlock;
+import IR.IRVisitor;
 import IR.Operand.Register;
 import IR.TypeSystem.IRType;
+import IR.TypeSystem.PointerIRT;
 
 public class AllocaInst extends IRInst {
     private IRType type;
@@ -12,6 +14,7 @@ public class AllocaInst extends IRInst {
         super(basicBlock);
         this.result = result;
         this.type = type;
+        assert result.getType() instanceof PointerIRT;
     }
 
     public IRType getType() {
@@ -25,12 +28,21 @@ public class AllocaInst extends IRInst {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        if (this.result != null) {
-            stringBuilder.append(this.result.toString()).append(" = ");
-        } else {
-            //TODO
-        }
-        stringBuilder.append("alloca ").append(type.toString());
+        assert this.result != null;
+        stringBuilder.append(this.result).append(" = ");
+        stringBuilder.append("alloca ").append(type);
         return stringBuilder.toString();
+    }
+
+    public Register getResult() {
+        return result;
+    }
+
+    public void setResult(Register result) {
+        this.result = result;
+    }
+
+    public void accept(IRVisitor visitor) {
+        visitor.visit(this);
     }
 }

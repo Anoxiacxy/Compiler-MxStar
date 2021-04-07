@@ -1,5 +1,9 @@
 package IR.TypeSystem;
 
+import IR.Operand.Operand;
+import Util.Error.ComplicationError;
+import Util.Position;
+
 import java.util.ArrayList;
 
 public class ClassIRT extends IRType {
@@ -41,5 +45,22 @@ public class ClassIRT extends IRType {
     @Override
     public String toString() {
         return "%class." + this.name;
+    }
+
+    @Override
+    public int getByte() {
+        return irTypeArrayList.stream().mapToInt(IRType::getByte).sum();
+    }
+
+    @Override
+    public Operand getDefaultValue() {
+        throw new ComplicationError("", new Position());
+    }
+
+    public int getElementOffset(int index) {
+        int offset = 0;
+        for (int i = 0; i < index; i++)
+            offset += irTypeArrayList.get(i).getByte();
+        return offset;
     }
 }

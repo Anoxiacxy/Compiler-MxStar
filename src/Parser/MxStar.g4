@@ -1,12 +1,24 @@
 grammar MxStar;
 
-program : programComponent* EOF;
-programComponent : (functionDefinition | classDefinition | variableDefinition);
+program
+    : programComponent* EOF
+    ;
+programComponent
+    : functionDefinition
+    | classDefinition
+    | variableDefinition
+    ;
 
-functionDefinition : returnType ? Identifier
-                        LeftParenthesis parameterList ? RightParenthesis block;
-parameterList : parameter (Comma parameter)*;
-parameter : type Identifier;
+functionDefinition
+    : returnType ? Identifier LeftParenthesis parameterList ? RightParenthesis block
+    ;
+
+parameterList
+    : parameter (Comma parameter)*
+    ;
+
+parameter
+    : type Identifier;
 
 classDefinition : Class Identifier LeftBrace classComponent* RightBrace Semi;
 classComponent : functionDefinition | variableDefinition | classDefinition;

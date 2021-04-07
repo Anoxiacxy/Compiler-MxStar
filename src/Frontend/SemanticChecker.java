@@ -10,8 +10,8 @@ import AST.Stmt.*;
 import Util.Error.SemanticError;
 import Util.Position;
 import Util.Scope;
-import Util.Symbol.FuncSymbol;
-import Util.Symbol.VarSymbol;
+import Util.Type.FuncSymbol;
+import Util.Type.VarSymbol;
 import Util.Type.ArrayType;
 import Util.Type.ClassType;
 import Util.Type.PrimaryType;
@@ -31,43 +31,43 @@ public class SemanticChecker implements ASTVisitor {
             ClassType stringType = new ClassType("string");
             {
                 FuncSymbol func = new FuncSymbol(globalScope.getType("int", new Position()), "length");
-                stringType.getFuncSymbolHashMap().put("length", func);
+                stringType.putFuncSymbol("length", func);
             }
             {
                 FuncSymbol func = new FuncSymbol(stringType, "substring");
-                func.getParamater().add(new VarSymbol(globalScope.getType("int", new Position()), "left"));
-                func.getParamater().add(new VarSymbol(globalScope.getType("int", new Position()), "right"));
-                stringType.getFuncSymbolHashMap().put("substring", func);
+                func.getParameter().add(new VarSymbol(globalScope.getType("int", new Position()), "left"));
+                func.getParameter().add(new VarSymbol(globalScope.getType("int", new Position()), "right"));
+                stringType.putFuncSymbol("substring", func);
             }
             {
                 FuncSymbol func = new FuncSymbol(globalScope.getType("int", new Position()), "parseInt");
-                stringType.getFuncSymbolHashMap().put("parseInt", func);
+                stringType.putFuncSymbol("parseInt", func);
             }
             {
                 FuncSymbol func = new FuncSymbol(globalScope.getType("int", new Position()), "ord");
-                func.getParamater().add(new VarSymbol(globalScope.getType("int", new Position()), "pos"));
-                stringType.getFuncSymbolHashMap().put("ord", func);
+                func.getParameter().add(new VarSymbol(globalScope.getType("int", new Position()), "pos"));
+                stringType.putFuncSymbol("ord", func);
             }
             globalScope.newType("string", stringType, new Position());
         }
         {
             FuncSymbol func = new FuncSymbol(globalScope.getType("void", new Position()), "print");
-            func.getParamater().add(new VarSymbol(globalScope.getType("string", new Position()), "str"));
+            func.getParameter().add(new VarSymbol(globalScope.getType("string", new Position()), "str"));
             globalScope.newFunSymbol("print", func, new Position());
         }
         {
             FuncSymbol func = new FuncSymbol(globalScope.getType("void", new Position()), "println");
-            func.getParamater().add(new VarSymbol(globalScope.getType("string", new Position()), "str"));
+            func.getParameter().add(new VarSymbol(globalScope.getType("string", new Position()), "str"));
             globalScope.newFunSymbol("println", func, new Position());
         }
         {
             FuncSymbol func = new FuncSymbol(globalScope.getType("void", new Position()), "printInt");
-            func.getParamater().add(new VarSymbol(globalScope.getType("int", new Position()), "n"));
+            func.getParameter().add(new VarSymbol(globalScope.getType("int", new Position()), "n"));
             globalScope.newFunSymbol("printInt", func, new Position());
         }
         {
             FuncSymbol func = new FuncSymbol(globalScope.getType("void", new Position()), "printlnInt");
-            func.getParamater().add(new VarSymbol(globalScope.getType("int", new Position()), "n"));
+            func.getParameter().add(new VarSymbol(globalScope.getType("int", new Position()), "n"));
             globalScope.newFunSymbol("printlnInt", func, new Position());
         }
         {
@@ -80,7 +80,7 @@ public class SemanticChecker implements ASTVisitor {
         }
         {
             FuncSymbol func = new FuncSymbol(globalScope.getType("string", new Position()), "toString");
-            func.getParamater().add(new VarSymbol(globalScope.getType("int", new Position()), "i"));
+            func.getParameter().add(new VarSymbol(globalScope.getType("int", new Position()), "i"));
             globalScope.newFunSymbol("toString", func, new Position());
         }
     }
@@ -237,7 +237,7 @@ public class SemanticChecker implements ASTVisitor {
                     throw new SemanticError("not int", node.getlExpr().getPosition());
                 if (!node.getrExpr().getType().isInt())
                     throw new SemanticError("not int", node.getrExpr().getPosition());
-                node.setType(new PrimaryType("int"));
+                node.setType(globalScope.getType("int", node.getPosition()));
                 break;
             case "+":
                 if (!node.getlExpr().getType().equals(node.getrExpr().getType()))
@@ -254,7 +254,7 @@ public class SemanticChecker implements ASTVisitor {
                     throw new SemanticError("type not match", node.getPosition());
                 if (!node.getlExpr().getType().isInt() && !node.getlExpr().getType().isString())
                     throw new SemanticError("not int or string", node.getPosition());
-                node.setType(new PrimaryType("bool"));
+                node.setType(globalScope.getType("bool", node.getPosition()));
                 break;
             case "&&":
             case "||":
@@ -262,14 +262,14 @@ public class SemanticChecker implements ASTVisitor {
                     throw new SemanticError("not bool", node.getlExpr().getPosition());
                 if (!node.getrExpr().getType().isBool())
                     throw new SemanticError("not bool", node.getrExpr().getPosition());
-                node.setType(new PrimaryType("bool"));
+                node.setType(globalScope.getType("bool", node.getPosition()));
                 break;
             case "==":
             case "!=":
                 if (!node.getlExpr().getType().equals(node.getrExpr().getType())
                     && !node.getrExpr().getType().equals(node.getlExpr().getType()))
                     throw new SemanticError("type not match", node.getPosition());
-                node.setType(new PrimaryType("bool"));
+                node.setType(globalScope.getType("bool", node.getPosition()));
                 break;
             case "=":
                 if (!node.getrExpr().getType().equals(node.getlExpr().getType()))
@@ -296,19 +296,19 @@ public class SemanticChecker implements ASTVisitor {
                 if (!node.getrExpr().getType().isInt())
                     throw new SemanticError("not int", node.getrExpr().getPosition());
                 node.setLvalue(true);
-                node.setType(new PrimaryType("int"));
+                node.setType(globalScope.getType("int", node.getPosition()));
                 break;
             case "+":
             case "-":
             case "~":
                 if (!node.getrExpr().getType().isInt())
                     throw new SemanticError("not int", node.getrExpr().getPosition());
-                node.setType(new PrimaryType("int"));
+                node.setType(globalScope.getType("int", node.getPosition()));
                 break;
             case "!":
                 if (!node.getrExpr().getType().isBool())
                     throw new SemanticError("not bool", node.getrExpr().getPosition());
-                node.setType(new PrimaryType("bool"));
+                node.setType(globalScope.getType("bool", node.getPosition()));
                 break;
             default:
                 break;
@@ -326,7 +326,7 @@ public class SemanticChecker implements ASTVisitor {
                     throw new SemanticError("not lvalue", node.getPosition());
                 if (!node.getlExpr().getType().isInt())
                     throw new SemanticError("not int", node.getlExpr().getPosition());
-                node.setType(new PrimaryType("int"));
+                node.setType(globalScope.getType("int", node.getPosition()));
                 break;
             default:
                 break;
@@ -388,10 +388,10 @@ public class SemanticChecker implements ASTVisitor {
 
         FuncSymbol func = (FuncSymbol) node.getPointer().getType();
         node.getArgumentList().forEach(x->x.accept(this));
-        if (func.getParamater().size() != node.getArgumentList().size())
+        if (func.getParameter().size() != node.getArgumentList().size())
             throw new SemanticError(node.getPointer().getType().getTypeName() + " parameter's number not match", node.getPosition());
-        for (int i = 0; i < func.getParamater().size(); i++) {
-            if (!node.getArgumentList().get(i).getType().equals(func.getParamater().get(i).getType()))
+        for (int i = 0; i < func.getParameter().size(); i++) {
+            if (!node.getArgumentList().get(i).getType().equals(func.getParameter().get(i).getType()))
                 throw new SemanticError(node.getArgumentList().get(i).getType().getTypeName() + " parameter's number not match",
                         node.getArgumentList().get(i).getPosition());
         }
@@ -406,7 +406,7 @@ public class SemanticChecker implements ASTVisitor {
         parentScope.getChildrenScope().add(curScope);
         scope = curScope;
         {
-            scope.getFuncSymbol(node.getName(), node.getPosition()).getParamater().forEach(x->
+            scope.getFuncSymbol(node.getName(), node.getPosition()).getParameter().forEach(x->
                     scope.newVarSymbol(x.getName(), x, node.getPosition()));
             scope.setFuncSymbol(scope.getFuncSymbol(node.getName(), node.getPosition()));
             node.getBody().accept(this);
@@ -477,7 +477,7 @@ public class SemanticChecker implements ASTVisitor {
         node.setBelongScope(scope);
         node.getPointer().accept(this);
         if (node.getPointer().getType() instanceof ArrayType && node.isFunc() && node.getMember().equals("size")) {
-            FuncSymbol func = new FuncSymbol(new PrimaryType("int"), "size");
+            FuncSymbol func = new FuncSymbol(new PrimaryType("int"), "size"); // unused
             node.setType(func);
             return;
         }
@@ -490,7 +490,7 @@ public class SemanticChecker implements ASTVisitor {
             return;
         }
         if (!node.isFunc() && classType.getVarSymbolHashMap().containsKey(node.getMember())) {
-            node.setType(classType.getVarSymbolHashMap().get(node.getMember()).getType());
+            node.setType(classType.getVarSymbol(node.getMember(), node.getPosition()).getType());
             node.setLvalue(true);
             return;
         }
@@ -501,7 +501,6 @@ public class SemanticChecker implements ASTVisitor {
     public void visit(BoolLiteralNode node) {
         node.setBelongScope(scope);
         node.setType(globalScope.getType("bool", node.getPosition()));
-        // node.setType(new PrimaryType("bool"));
     }
 
     @Override
@@ -540,7 +539,7 @@ public class SemanticChecker implements ASTVisitor {
             if (x instanceof FuncDefNode) {
                 FuncSymbol func = new FuncSymbol(globalScope.getType(((FuncDefNode) x).getReturnType()), ((FuncDefNode) x).getName());
                 for (VarDefStmtNode obj : ((FuncDefNode) x).getParameterList())
-                    func.getParamater().add(new VarSymbol(globalScope.getType(obj.getType()), obj.getName()));
+                    func.getParameter().add(new VarSymbol(globalScope.getType(obj.getType()), obj.getName()));
                 globalScope.newFunSymbol(((FuncDefNode) x).getName(), func, x.getPosition());
                 if (globalScope.getType(((FuncDefNode) x).getReturnType()).isNull())
                     throw new SemanticError("no return type", x.getPosition());
@@ -560,8 +559,9 @@ public class SemanticChecker implements ASTVisitor {
                 ((ClassDefNode) x).getClassComponenet().forEach(y->{
                     if (y instanceof FuncDefNode) {
                         FuncSymbol func = new FuncSymbol(globalScope.getType(((FuncDefNode) y).getReturnType()), ((FuncDefNode) y).getName());
+                        func.setMethod(true);
                         ((FuncDefNode) y).getParameterList().forEach(z->
-                                func.getParamater().add(new VarSymbol(globalScope.getType(z.getType()), z.getName())));
+                                func.getParameter().add(new VarSymbol(globalScope.getType(z.getType()), z.getName())));
                         if (classType.getFuncSymbolHashMap().containsKey(((FuncDefNode) y).getName()))
                             throw new SemanticError(((FuncDefNode) y).getName() + " redefined", y.getPosition());
 
@@ -571,12 +571,12 @@ public class SemanticChecker implements ASTVisitor {
                         if (((FuncDefNode) y).getName().equals(((ClassDefNode) x).getName()))
                             func.setConstructor(true);
 
-                        classType.getFuncSymbolHashMap().put(((FuncDefNode) y).getName(), func);
+                        classType.putFuncSymbol(((FuncDefNode) y).getName(), func);
                     }
                     if (y instanceof VarDefNode) {
                         if (classType.getVarSymbolHashMap().containsKey(((VarDefNode) y).getVarDefStmtNode().getName()))
                             throw new SemanticError(((VarDefNode) y).getVarDefStmtNode().getName() + " redefined", y.getPosition());
-                        classType.getVarSymbolHashMap().put(((VarDefNode) y).getVarDefStmtNode().getName(),
+                        classType.putVarSymbol(((VarDefNode) y).getVarDefStmtNode().getName(),
                                 new VarSymbol(globalScope.getType(((VarDefNode) y).getVarDefStmtNode().getType()),
                                         ((VarDefNode) y).getVarDefStmtNode().getName()));
                     }
@@ -590,7 +590,7 @@ public class SemanticChecker implements ASTVisitor {
         FuncSymbol mainFunc = globalScope.getFuncSymbol("main", node.getPosition());
         if (!mainFunc.getType().isInt())
             throw new SemanticError("return type int required in function main", node.getPosition());
-        if (mainFunc.getParamater().size() != 0)
+        if (mainFunc.getParameter().size() != 0)
             throw new SemanticError("no parameter needed in function main", node.getPosition());
     }
 

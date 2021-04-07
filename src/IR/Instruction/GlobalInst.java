@@ -1,10 +1,29 @@
 package IR.Instruction;
 
 import IR.BasicBlock;
+import IR.IRVisitor;
+import IR.Operand.GlobalRegister;
+import IR.Operand.Operand;
+import IR.TypeSystem.IRType;
 
 public class GlobalInst extends IRInst {
-    // TODO: 2021/3/25  
-    public GlobalInst(BasicBlock basicBlock) {
+    private GlobalRegister result;
+    private IRType type;
+    private Operand init;
+
+    public GlobalInst(BasicBlock basicBlock, GlobalRegister result, IRType type, Operand init) {
         super(basicBlock);
+        this.result = result;
+        this.type = type;
+        this.init = init;
+    }
+
+    @Override
+    public String toString() {
+        return result + " = global " + type + " " + init;
+    }
+
+    public void accept(IRVisitor visitor) {
+        visitor.visit(this);
     }
 }

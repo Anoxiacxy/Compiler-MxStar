@@ -3,13 +3,56 @@ package IR.Operand;
 import IR.Instruction.IRInst;
 import IR.TypeSystem.IRType;
 
-public class Register extends Operand {
+abstract public class Register extends Operand {
     private String name;
     private IRInst definition;
+    private static int count = 0;
+    private int thisCount;
+    private boolean temporary;
+
+    public void setTemporary(boolean temporary) {
+        this.temporary = temporary;
+    }
+
+    public static void resetCount() {
+        setCount(0);
+    }
+
+    public static int getCount() {
+        return count;
+    }
+
+    public int getThisCount() {
+        return thisCount;
+    }
+
+    public void setThisCount(int thisCount) {
+        this.thisCount = thisCount;
+    }
+
+    public boolean isTemporary() {
+        return temporary;
+    }
+
+    public static void setCount(int count) {
+        Register.count = count;
+    }
 
     public Register(IRType type, String name) {
         super(type);
         this.name = name;
+        this.definition = null;
+        this.temporary = true;
+        this.thisCount = ++count;
+    }
+
+    public Register(IRType type, String name, boolean temporary) {
+        super(type);
+        this.name = name;
+        this.definition = null;
+        this.temporary = true;
+        this.thisCount = ++count;
+        this.temporary = temporary;
     }
 
     @Override
@@ -30,17 +73,16 @@ public class Register extends Operand {
     }
 
     public String getFullName() {
-        //TODO
-        return null;
+        return getDefinition().getBasicBlock().getFunction() + "." + getName();
     }
 
     @Override
     public String toString() {
-        return "%" + name;
+        return null;
     }
 
     @Override
-    boolean isConstant() {
+    public boolean isConstant() {
         return false;
     }
 }

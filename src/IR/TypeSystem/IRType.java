@@ -1,5 +1,8 @@
 package IR.TypeSystem;
 
+import IR.IRVisitor;
+import IR.Operand.Operand;
+
 abstract public class IRType {
     public IRType() { }
 
@@ -14,4 +17,9 @@ abstract public class IRType {
         else
             return false;
     }
+
+    abstract public Operand getDefaultValue();
+
+    abstract public int getByte();
+
 }

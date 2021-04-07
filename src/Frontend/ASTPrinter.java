@@ -288,9 +288,9 @@ public class ASTPrinter implements ASTVisitor {
         outputLine("pointer");
         ++indentNum;
         node.getPointer().accept(this);
-        ++indentNum;
-        outputLine("offset");
         --indentNum;
+        outputLine("offset");
+        ++indentNum;
         node.getOffset().accept(this);
         --indentNum;
     }

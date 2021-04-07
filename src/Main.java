@@ -1,9 +1,15 @@
 import AST.ProgramNode;
+import Backend.CodeEmitter;
+import Backend.IRBuilder;
+import Backend.IRPrinter;
+import Backend.InstructionSelector;
 import Frontend.ASTPrinter;
 import Frontend.ASTBuilder;
 import Frontend.SemanticChecker;
+import IR.Module;
 import Parser.MxStarLexer;
 import Parser.MxStarParser;
+import RISCV.ASMModule;
 import Util.Error.Error;
 import Util.Error.SemanticError;
 import Util.MxStarErrorListener;
@@ -47,9 +53,19 @@ public class Main {
             SemanticChecker semanticChecker = new SemanticChecker();
             semanticChecker.visit(ASTRoot);
             if (emitAST)
-                new ASTPrinter("ast.txt").visit(ASTRoot);
+                new ASTPrinter("output.ast").visit(ASTRoot);
             if (doCodeGen) {
-                
+                IRBuilder irBuilder = new IRBuilder();
+                irBuilder.visit(ASTRoot);
+                Module irModule = irBuilder.getModule();
+                if (emitLLVM) {
+                    new IRPrinter("output.ll").run(irModule);
+                }
+                InstructionSelector instructionSelector = new InstructionSelector();
+                instructionSelector.visit(irModule);
+                ASMModule asmModule = instructionSelector.getAsmModule();
+                new CodeEmitter("output.s").run(asmModule);
+
             }
         } catch (Error error) {
             System.err.println(error.toString());

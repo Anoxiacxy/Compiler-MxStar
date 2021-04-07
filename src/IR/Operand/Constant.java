@@ -8,7 +8,7 @@ abstract public class Constant extends Operand {
     }
 
     @Override
-    boolean isConstant() {
+    public boolean isConstant() {
         return true;
     }
 }

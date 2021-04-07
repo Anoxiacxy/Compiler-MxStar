@@ -1,5 +1,10 @@
 package IR.TypeSystem;
 
+import IR.Operand.ConstNull;
+import IR.Operand.Operand;
+import Util.Error.ComplicationError;
+import Util.Position;
+
 public class PointerIRT extends IRType {
     private IRType base;
 
@@ -18,5 +23,15 @@ public class PointerIRT extends IRType {
     @Override
     public String toString() {
         return this.base.toString() + "*";
+    }
+
+    @Override
+    public int getByte() {
+        return 4; // 8
+    }
+
+    @Override
+    public Operand getDefaultValue() {
+        return new ConstNull();
     }
 }

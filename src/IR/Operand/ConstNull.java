@@ -1,10 +1,12 @@
 package IR.Operand;
 
 import IR.TypeSystem.IRType;
+import IR.TypeSystem.PointerIRT;
+import IR.TypeSystem.VoidIRT;
 
 public class ConstNull extends Constant {
-    public ConstNull(IRType type) {
-        super(type);
+    public ConstNull() {
+        super(new PointerIRT(new VoidIRT()));
     }
 
     @Override

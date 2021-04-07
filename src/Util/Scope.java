@@ -2,8 +2,8 @@ package Util;
 
 import AST.TypeNode;
 import Util.Error.SemanticError;
-import Util.Symbol.FuncSymbol;
-import Util.Symbol.VarSymbol;
+import Util.Type.FuncSymbol;
+import Util.Type.VarSymbol;
 import Util.Type.ArrayType;
 import Util.Type.ClassType;
 import Util.Type.Type;

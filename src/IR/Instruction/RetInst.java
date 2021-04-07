@@ -1,6 +1,7 @@
 package IR.Instruction;
 
 import IR.BasicBlock;
+import IR.IRVisitor;
 import IR.Operand.Operand;
 import IR.TypeSystem.IRType;
 import IR.TypeSystem.VoidIRT;
@@ -37,5 +38,9 @@ public class RetInst extends IRInst {
             return "ret void";
         else
             return "ret " + value.getType() + " " + value;
+    }
+
+    public void accept(IRVisitor visitor) {
+        visitor.visit(this);
     }
 }

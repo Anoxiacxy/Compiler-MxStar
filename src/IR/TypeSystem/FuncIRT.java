@@ -1,5 +1,9 @@
 package IR.TypeSystem;
 
+import IR.Operand.Operand;
+import Util.Error.ComplicationError;
+import Util.Position;
+
 import java.util.ArrayList;
 
 public class FuncIRT extends IRType {
@@ -27,7 +31,15 @@ public class FuncIRT extends IRType {
         this.parameterType = parameterType;
     }
 
+    @Override
+    public int getByte() {
+        return 0;
+    }
 
+    @Override
+    public Operand getDefaultValue() {
+        throw new ComplicationError("", new Position());
+    }
 
     @Override
     public String toString() {

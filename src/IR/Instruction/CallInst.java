@@ -2,6 +2,7 @@ package IR.Instruction;
 
 import IR.BasicBlock;
 import IR.Function;
+import IR.IRVisitor;
 import IR.Operand.Operand;
 import IR.Operand.Register;
 
@@ -12,10 +13,18 @@ public class CallInst extends IRInst {
     private ArrayList<Operand> parameters;
     private Register result;
 
-    public CallInst(BasicBlock basicBlock, Register result, Function function, ArrayList<Operand> parameters) {
+    public CallInst(BasicBlock basicBlock, Function function, ArrayList<Operand> parameters, Register result) {
         super(basicBlock);
         this.function = function;
         this.parameters = parameters;
+        this.result = result;
+    }
+
+    public CallInst(BasicBlock basicBlock, Function function, Operand parameter, Register result) {
+        super(basicBlock);
+        this.function = function;
+        this.parameters = new ArrayList<>();
+        this.parameters.add(parameter);
         this.result = result;
     }
 
@@ -56,12 +65,18 @@ public class CallInst extends IRInst {
         stringBuilder.append("(");
         for (int i = 0; i < parameters.size(); i++) {
             //assert
-            stringBuilder.append(function.getFuncType().getParameterType().get(i).toString());
-
+            stringBuilder.append(function.getFuncType().getParameterType().get(i).toString())
+                    .append(" ").append(parameters.get(i));
+            if (i != parameters.size() - 1)
+                stringBuilder.append(", ");
 
         }
         stringBuilder.append(")");
 
         return stringBuilder.toString();
+    }
+
+    public void accept(IRVisitor visitor) {
+        visitor.visit(this);
     }
 }
