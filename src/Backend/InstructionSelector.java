@@ -178,15 +178,15 @@ public class InstructionSelector implements IRVisitor {
                     curAsmBlock.appendASMInstBack(new Sub(curAsmBlock, result, lhs, (VirtualRegister) rhs));
             }
             case mul -> {
-                rhs = getVirtualRegisterOfOperand(inst.getResult());
+                rhs = getVirtualRegisterOfOperand(inst.getRhs());
                 curAsmBlock.appendASMInstBack(new Mul(curAsmBlock, result, lhs, (VirtualRegister) rhs));
             }
             case sdiv -> {
-                rhs = getVirtualRegisterOfOperand(inst.getResult());
+                rhs = getVirtualRegisterOfOperand(inst.getRhs());
                 curAsmBlock.appendASMInstBack(new Div(curAsmBlock, result, lhs, (VirtualRegister) rhs));
             }
             case srem -> {
-                rhs = getVirtualRegisterOfOperand(inst.getResult());
+                rhs = getVirtualRegisterOfOperand(inst.getRhs());
                 curAsmBlock.appendASMInstBack(new Rem(curAsmBlock, result, lhs, (VirtualRegister) rhs));
             }
             case shl -> {
