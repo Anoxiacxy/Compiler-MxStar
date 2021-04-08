@@ -353,7 +353,7 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitStringLiteral(MxStarParser.StringLiteralContext ctx) {
-        return new StringLiteralNode(new Position(ctx), ctx.StringLiteral().getText());
+        return new StringLiteralNode(new Position(ctx), ctx.StringLiteral().getText().substring(1, ctx.StringLiteral().getText().length() - 1));
     }
 
     @Override

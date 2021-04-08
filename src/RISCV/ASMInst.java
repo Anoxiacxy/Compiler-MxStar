@@ -4,14 +4,31 @@ import IR.Instruction.IRInst;
 import IR.TypeSystem.IntegerIRT;
 import RISCV.Operand.Register.VirtualRegister;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 abstract public class ASMInst extends ASMObject {
-    private LinkedHashMap<VirtualRegister, Integer> def;
-    private LinkedHashMap<VirtualRegister, Integer> use;
+    private Map<VirtualRegister, Integer> def;
+    private Map<VirtualRegister, Integer> use;
     private ASMBlock asmBlock;
     private ASMInst nextInst, prevInst;
 
+    public Map<VirtualRegister, Integer> getDef() {
+        return def;
+    }
+
+    public void setDef(Map<VirtualRegister, Integer> def) {
+        this.def = def;
+    }
+
+    public Map<VirtualRegister, Integer> getUse() {
+        return use;
+    }
+
+    public void setUse(Map<VirtualRegister, Integer> use) {
+        this.use = use;
+    }
 
     public ASMBlock getAsmBlock() {
         return asmBlock;
@@ -64,8 +81,8 @@ abstract public class ASMInst extends ASMObject {
     }
 
     public void replaceDef(VirtualRegister oldRegister, VirtualRegister newRegister) {
-        int cntOld = def.containsKey(oldRegister) ? 0 : def.get(oldRegister);
-        int cntNew = def.containsKey(newRegister) ? 0 : def.get(newRegister);
+        int cntOld = def.getOrDefault(oldRegister, 0);
+        int cntNew = def.getOrDefault(newRegister, 0);
         assert cntNew == 0;
         def.put(newRegister, cntOld);
         def.remove(oldRegister);
@@ -86,10 +103,14 @@ abstract public class ASMInst extends ASMObject {
     }
 
     public void replaceUse(VirtualRegister oldRegister, VirtualRegister newRegister) {
-        int cntOld = use.containsKey(oldRegister) ? 0 : use.get(oldRegister);
-        int cntNew = use.containsKey(newRegister) ? 0 : use.get(newRegister);
+        int cntOld = use.getOrDefault(oldRegister, 0);
+        int cntNew = use.getOrDefault(newRegister, 0);
         assert cntNew == 0;
         use.put(newRegister, cntOld);
         use.remove(oldRegister);
+    }
+
+    public ArrayList<VirtualRegister> getVirtualRegister() {
+        return new ArrayList<>();
     }
 }

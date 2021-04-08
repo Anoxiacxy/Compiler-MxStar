@@ -478,7 +478,8 @@ public class SemanticChecker implements ASTVisitor {
     @Override
     public void visit(IdentifierExprNode node) {
         node.setBelongScope(scope);
-        node.setType(scope.getVarSymbol(node.getName(), node.getPosition()).getType());
+        node.setVarSymbol(scope.getVarSymbol(node.getName(), node.getPosition()));
+        node.setType(node.getVarSymbol().getType());
         node.setLvalue(true);
     }
 

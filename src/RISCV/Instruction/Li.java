@@ -27,6 +27,6 @@ public class Li extends ASMInst {
 
     @Override
     public String emitCode() {
-        return "li\t" + rd.emitCode() + "," + imm.emitCode();
+        return "li\t" + rd.emitCode() + ", " + imm.emitCode();
     }
 }

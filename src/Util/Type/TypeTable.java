@@ -13,8 +13,8 @@ import java.util.Map;
 import static IR.Module.*;
 
 public class TypeTable {
-    Map<String, Type> stringTypeMap;
-    Map<Type, IRType> typeIRTypeMap = new HashMap<>();
+    private Map<String, Type> stringTypeMap;
+    private Map<Type, IRType> typeIRTypeMap = new HashMap<>();
 
     public TypeTable(Map<String, Type> stringTypeMap) {
         this.stringTypeMap = stringTypeMap;
@@ -32,7 +32,7 @@ public class TypeTable {
                 if (type.isString())
                     typeIRTypeMap.put(type, string_t);
                 else
-                    typeIRTypeMap.put(type, new ClassIRT("class." + type.getTypeName()));
+                    typeIRTypeMap.put(type, new ClassIRT(type.getTypeName()));
             } else if (type instanceof ArrayType) {
                 // Nothing to do
             }
@@ -62,8 +62,20 @@ public class TypeTable {
             throw new SemanticError("cannot find '" + name + "' in typeTable", position);
     }
 
+    public Map<String, ClassIRT> getClassIRTMap() {
+        Map<String, ClassIRT> classIRTMap = new HashMap<>();
+        for (IRType irType : typeIRTypeMap.values()) {
+            if (irType instanceof ClassIRT)
+                classIRTMap.put(((ClassIRT) irType).getName(), (ClassIRT) irType);
+        }
+        return classIRTMap;
+    }
+
     public IRType getIRType(Type type) {
-        if (type instanceof ArrayType) {
+        if (type.isNull()) {
+            return void_t;
+        }
+        else if (type instanceof ArrayType) {
             IRType irType = getIRType(((ArrayType) type).getBaseType());
             for (int i = 0; i < ((ArrayType) type).getDimension(); i++)
                 irType = new PointerIRT(irType);
@@ -76,6 +88,6 @@ public class TypeTable {
                 return irType;
         }
         else
-            throw new ComplicationError("Type : " + type.toString(), new Position());
+            throw new RuntimeException("Type : " + type.toString());
     }
 }

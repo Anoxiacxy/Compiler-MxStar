@@ -5,6 +5,8 @@ import RISCV.ASMInst;
 import RISCV.Operand.Immediate.Immediate;
 import RISCV.Operand.Register.VirtualRegister;
 
+import java.util.ArrayList;
+
 public class BinaryInst extends ASMInst {
     public enum OpType {
         add, sub, mul, div, rem, sll, sra, and, or, xor, slt,
@@ -57,7 +59,8 @@ public class BinaryInst extends ASMInst {
 
     @Override
     public String emitCode() {
-        return opType.name() + "\t" + rd.emitCode() + "," + rs1.emitCode() + "," +
+        return opType.name() + "\t" + rd.emitCode() + ", " + rs1.emitCode() + ", " +
                 ((rs2 == null) ? imm.emitCode() : rs2.emitCode());
     }
+
 }

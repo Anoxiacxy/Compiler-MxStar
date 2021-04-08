@@ -15,13 +15,16 @@ public class Call extends ASMInst {
         for (int i = 0; i < PhysicalRegister.phyRegName.size(); i++) {
             if (PhysicalRegister.saveStatus.get(i) == PhysicalRegister.RegType.caller) {
                 PhysicalRegister.getv(i).addDef(this);
-                this.addDef(PhysicalRegister.getVirtualRegister(i));
+                this.addDef(PhysicalRegister.getv(i));
             }
         }
     }
 
     @Override
     public String emitCode() {
+        // TODO: 2021/4/8
+        if (asmFunction.emitCode().equals("mx__malloc"))
+            return "call\tmalloc";
         return "call\t" + asmFunction.emitCode();
     }
 

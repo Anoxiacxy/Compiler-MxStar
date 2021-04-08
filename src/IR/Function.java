@@ -195,4 +195,22 @@ public class Function extends IRObject {
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
     }
+
+    public String declareToString() {
+        StringBuilder header = new StringBuilder("declare ");
+        header.append(getFuncType().getReturnType().toString());
+        header.append(" @").append(getName());
+
+        header.append("(");
+        for (int i = 0; i < getParameters().size(); i++) {
+            Parameter parameter = getParameters().get(i);
+            header.append(parameter.getType().toString()).append(" ");
+            header.append(parameter.toString());
+            if (i != getParameters().size() - 1)
+                header.append(", ");
+        }
+        header.append(")");
+
+        return header.toString();
+    }
 }

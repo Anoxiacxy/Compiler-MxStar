@@ -2,15 +2,13 @@ package Backend;
 
 import IR.BasicBlock;
 import IR.Function;
-import IR.IRVisitor;
 import IR.Instruction.BrInst;
 import IR.Instruction.IRInst;
 import IR.Instruction.MoveInst;
 import IR.Instruction.PhiInst;
 import IR.Module;
 import IR.Operand.Operand;
-import IR.Operand.Register;
-import Optimism.Pass;
+import Util.Pass;
 import org.antlr.v4.runtime.misc.Pair;
 
 import java.util.ArrayList;
@@ -53,7 +51,16 @@ public class PhiResolve extends Pass {
                 continue;
             }
 
-            for (BasicBlock pre : block.getPredecessors()) {
+            //System.out.println(function.toString() + " " + block.toString() + " " + block.getPredecessors().size());
+
+            //System.out.println(block.getPredecessors().get(0));
+            //System.out.println(block.getPredecessors().get(1));
+
+            ArrayList<BasicBlock> predecessors = new ArrayList<>(block.getPredecessors());
+
+            for (BasicBlock pre : predecessors) {
+            //for (int i = 0; i < block.getPredecessors().size(); i++) {
+                //BasicBlock pre = block.getPredecessors().get(i);
                 if (pre.getSuccessors().size() > 1) {
                     BasicBlock preNext = new BasicBlock(pre.getFunction(), "extra");
                     preNext.appendInstBack(new BrInst(preNext, null, block, null));

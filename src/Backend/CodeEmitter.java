@@ -19,30 +19,6 @@ public class CodeEmitter implements ASMVisitor {
         this.fileName = fileName;
     }
 
-    public void run(ASMModule module) {
-        try {
-            File file = new File(fileName);
-            assert file.exists() || file.createNewFile();
-            outputStream = new FileOutputStream(fileName, false);
-            printWriter = new PrintWriter(outputStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e.getMessage());
-        }
-
-        indent = "";
-
-        module.accept(this);
-
-        try {
-            printWriter.close();
-            outputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e.getMessage());
-        }
-    }
-
     private void println(String string) {
         printWriter.println(indent + string);
     }
@@ -53,6 +29,16 @@ public class CodeEmitter implements ASMVisitor {
 
     @Override
     public void visit(ASMModule module) {
+        try {
+            File file = new File(fileName);
+            assert file.exists() || file.createNewFile();
+            outputStream = new FileOutputStream(fileName, false);
+            printWriter = new PrintWriter(outputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
+        }
+
         indent = "\t";
         println(".text");
         indent = "";
@@ -74,6 +60,15 @@ public class CodeEmitter implements ASMVisitor {
             println(gv.emitCode());
         }
         indent = "";
+
+
+        try {
+            printWriter.close();
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     @Override

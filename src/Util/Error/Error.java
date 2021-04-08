@@ -13,7 +13,7 @@ public abstract class Error extends RuntimeException {
 
     @Override
     public String toString() {
-        return "BaseError{" +
+        return super.toString() + "BaseError{" +
                 "position=" + position +
                 ", msg='" + msg + '\'' +
                 '}';

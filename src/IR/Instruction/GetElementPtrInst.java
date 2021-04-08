@@ -17,7 +17,7 @@ public class GetElementPtrInst extends IRInst {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(result).append(" = getelementptr ");
-        stringBuilder.append(((PointerIRT)address.getType()).getBase()).append(". ");
+        stringBuilder.append(((PointerIRT)address.getType()).getBase()).append(", ");
         stringBuilder.append(address.getType()).append(" ").append(address);
         for (Operand aIndex : index)
             stringBuilder.append(", ").append(aIndex.getType()).append(" ").append(aIndex);

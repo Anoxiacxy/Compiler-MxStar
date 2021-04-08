@@ -282,7 +282,7 @@ public class IRBuilder extends IRObject implements ASTVisitor {
                     break;
                 case "+":
                     if (lType.isString() && rType.isString()) {
-                        Function function = module.getSystemFunctionMap().get("string_add");
+                        Function function = module.getSystemFunctionMap().get("mx__string_add");
                         ArrayList<Operand> parameters = new ArrayList<>();
                         parameters.add(lhs);
                         parameters.add(rhs);
@@ -297,7 +297,7 @@ public class IRBuilder extends IRObject implements ASTVisitor {
                     break;
                 case ">":
                     if (lType.isString() && rType.isString()) {
-                        Function function = module.getSystemFunctionMap().get("string_gt");
+                        Function function = module.getSystemFunctionMap().get("mx__string_gt");
                         ArrayList<Operand> parameters = new ArrayList<>();
                         parameters.add(lhs);
                         parameters.add(rhs);
@@ -312,7 +312,7 @@ public class IRBuilder extends IRObject implements ASTVisitor {
                     break;
                 case "<":
                     if (lType.isString() && rType.isString()) {
-                        Function function = module.getSystemFunctionMap().get("string_lt");
+                        Function function = module.getSystemFunctionMap().get("mx__string_lt");
                         ArrayList<Operand> parameters = new ArrayList<>();
                         parameters.add(lhs);
                         parameters.add(rhs);
@@ -327,7 +327,7 @@ public class IRBuilder extends IRObject implements ASTVisitor {
                     break;
                 case ">=":
                     if (lType.isString() && rType.isString()) {
-                        Function function = module.getSystemFunctionMap().get("string_ge");
+                        Function function = module.getSystemFunctionMap().get("mx__string_ge");
                         ArrayList<Operand> parameters = new ArrayList<>();
                         parameters.add(lhs);
                         parameters.add(rhs);
@@ -342,7 +342,7 @@ public class IRBuilder extends IRObject implements ASTVisitor {
                     break;
                 case "<=":
                     if (lType.isString() && rType.isString()) {
-                        Function function = module.getSystemFunctionMap().get("string_le");
+                        Function function = module.getSystemFunctionMap().get("mx__string_le");
                         ArrayList<Operand> parameters = new ArrayList<>();
                         parameters.add(lhs);
                         parameters.add(rhs);
@@ -357,7 +357,7 @@ public class IRBuilder extends IRObject implements ASTVisitor {
                     break;
                 case "==":
                     if (lType.isString() && rType.isString()) {
-                        Function function = module.getSystemFunctionMap().get("string_eq");
+                        Function function = module.getSystemFunctionMap().get("mx__string_eq");
                         ArrayList<Operand> parameters = new ArrayList<>();
                         parameters.add(lhs);
                         parameters.add(rhs);
@@ -392,7 +392,7 @@ public class IRBuilder extends IRObject implements ASTVisitor {
                     break;
                 case "!=":
                     if (lType.isString() && rType.isString()) {
-                        Function function = module.getSystemFunctionMap().get("string_ne");
+                        Function function = module.getSystemFunctionMap().get("mx__string_ne");
                         ArrayList<Operand> parameters = new ArrayList<>();
                         parameters.add(lhs);
                         parameters.add(rhs);
@@ -627,7 +627,7 @@ public class IRBuilder extends IRObject implements ASTVisitor {
         assert pointerType instanceof PointerIRT;
 
         Register mallocPointer = new LocalRegister(pointer_t, "mallocPointer");
-        Function function = module.getSystemFunctionMap().get("malloc");
+        Function function = module.getSystemFunctionMap().get("mx__malloc");
         ArrayList<Operand> operands = new ArrayList<>();
         int baseSize;
         //if (((PointerIRT) pointerType).getBase() instanceof IntegerIRT)
@@ -730,10 +730,12 @@ public class IRBuilder extends IRObject implements ASTVisitor {
             Type classType = node.getType();
             assert classType instanceof ClassType;
             IRType irType = typeTable.getIRType(classType);
-            assert irType instanceof ClassIRT;
-            int size = irType.getByte();
+            assert irType instanceof PointerIRT;
+            IRType csType = ((PointerIRT) irType).getBase();
+            assert csType instanceof ClassIRT;
+            int size = csType.getByte();
 
-            Function function = module.getSystemFunctionMap().get("malloc");
+            Function function = module.getSystemFunctionMap().get("mx__malloc");
             ArrayList<Operand> operands = new ArrayList<>();
             operands.add(new ConstInt(int_t, size));
 
@@ -743,7 +745,7 @@ public class IRBuilder extends IRObject implements ASTVisitor {
             curBasicBlock.appendInstBack(new CallInst(curBasicBlock, function, operands, register));
             curBasicBlock.appendInstBack(new BitCastToInst(curBasicBlock, register, irType, result));
 
-            String constructorName = ((ClassIRT) irType).getName() + "." + ((ClassIRT) irType).getName();
+            String constructorName = ((ClassIRT) csType).getName() + "." + ((ClassIRT) csType).getName();
             if (module.getFunctionMap().containsKey(constructorName)) {
                 Function constructor = module.getFunctionMap().get(constructorName);
                 operands = new ArrayList<>();
@@ -775,11 +777,14 @@ public class IRBuilder extends IRObject implements ASTVisitor {
         if (node.getPointer() instanceof IdentifierExprNode) {
             String name = ((IdentifierExprNode) node.getPointer()).getName();
             FuncSymbol funcSymbol = (FuncSymbol) node.getPointer().getType();
+            //System.out.println(funcSymbol);
             Function function;
             ArrayList<Operand> parameters = new ArrayList<>();
             if (funcSymbol.isMethod()) {
                 ClassType classType = node.getBelongScope().getClassDefType();
-                function = module.getFunctionMap().get(classType.getTypeName() + "." + funcSymbol.getTypeName());
+                //System.out.println(classType);
+                function = module.getFunctionMap().get(classType.getTypeName() + "." + funcSymbol.getName());
+                //System.out.println(classType.getTypeName() + "." + funcSymbol.getName());
                 Register address = (Register) curFunction.get("this$addr");
                 assert address.getType() instanceof PointerIRT;
                 IRType irType = ((PointerIRT) address.getType()).getBase();
@@ -896,7 +901,10 @@ public class IRBuilder extends IRObject implements ASTVisitor {
                 curBasicBlock.appendInstBack(new StoreInst(curBasicBlock, value, address));
             }
             VarSymbol varSymbol = node.getBelongScope().getVarSymbol(node.getName(), node.getPosition());
-            varSymbol.setAllocAddr(address);;
+            //System.out.println("Def: " + varSymbol);
+            assert varSymbol.getAllocAddr() == null;
+            varSymbol.setAllocAddr(address);
+            //System.out.println("Def: " + varSymbol);
         } else if (node.getBelongScope().getClassDefType() != null) {
             // TODO: 2021/4/2
         } else {
@@ -906,8 +914,8 @@ public class IRBuilder extends IRObject implements ASTVisitor {
                 node.getExpression().accept(this);
                 value = nodeOperandResult.get(node.getExpression());
                 if (! (value instanceof Constant)) {
-                    curBasicBlock.appendInstBack(new StoreInst(curBasicBlock,
-                            value, address));
+                    curBasicBlock.appendInstBack(new StoreInst(curBasicBlock, value, address));
+                    value = irType.getDefaultValue();
                 }
             }
             address.setInit(value);
@@ -939,7 +947,7 @@ public class IRBuilder extends IRObject implements ASTVisitor {
 
     @Override
     public void visit(IdentifierExprNode node) {
-        VarSymbol varSymbol = node.getBelongScope().getVarSymbol(node.getName(), node.getPosition());
+        VarSymbol varSymbol = node.getVarSymbol();
         IRType irType = typeTable.getIRType(varSymbol.getType());
         Register variable = new LocalRegister(irType, "variable");
         if (varSymbol.getAllocAddr() != null) {
@@ -949,6 +957,7 @@ public class IRBuilder extends IRObject implements ASTVisitor {
             nodeOperandLValue.put(node, varSymbol.getAllocAddr());
         } else {
             Register this$addr = curFunction.getThisPointer();
+            // System.out.println(varSymbol);
             assert this$addr.getType() instanceof PointerIRT;
             IRType type = ((PointerIRT) this$addr.getType()).getBase();
             Register thisPtr = new LocalRegister(type, "this");
@@ -1029,7 +1038,7 @@ public class IRBuilder extends IRObject implements ASTVisitor {
         Register result = new LocalRegister(string_t, "string");
         curBasicBlock.appendInstBack(new GetElementPtrInst(curBasicBlock, result, index, str));
 
-        nodeOperandResult.put(node, str);
+        nodeOperandResult.put(node, result);
         nodeOperandLValue.put(node, null);
     }
 
@@ -1064,17 +1073,19 @@ public class IRBuilder extends IRObject implements ASTVisitor {
                         String funcName = ((ClassDefNode) classNode).getName() + "." + ((FuncDefNode) funcNode).getName();
                         ArrayList<Parameter> parameters = new ArrayList<>();
 
-                        parameters.add(new Parameter(new PointerIRT(typeTable.getIRType(classType)), "this"));
+                        parameters.add(new Parameter(typeTable.getIRType(classType), "this"));
 
                         for (VarSymbol varSymbol : funcSymbol.getParameter())
                             parameters.add(new Parameter(typeTable.getIRType(varSymbol.getType()), varSymbol.getName()));
+                        //System.out.println(funcSymbol);
                         Function function = new Function(this.module, funcName,
                                 typeTable.getIRType(funcSymbol.getType()), parameters, false);
                         BasicBlock block = function.getEntryBlock();
 
                         for (int i = 0; i < parameters.size(); i++) {
                             Parameter parameter = parameters.get(i);
-                            Register address = new LocalRegister(new PointerIRT(parameter.getType()), parameter.getName() + "$addr");
+                            Register address = new LocalRegister(
+                                    new PointerIRT(parameter.getType()), parameter.getName() + "$addr");
                             block.appendInstBack(new AllocaInst(block, address, parameter.getType()));
                             block.appendInstBack(new StoreInst(block, parameter, address));
                             function.put(address.getName(), address);
@@ -1132,6 +1143,8 @@ public class IRBuilder extends IRObject implements ASTVisitor {
             if (funcNode instanceof FuncDefNode)
                 funcNode.accept(this);
         });
+
+        module.setClassIRTMap(typeTable.getClassIRTMap());
     }
 
     @Override

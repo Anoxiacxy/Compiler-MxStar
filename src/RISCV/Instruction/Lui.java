@@ -27,6 +27,6 @@ public class Lui extends ASMInst {
 
     @Override
     public String emitCode() {
-        return "lui\t" + rd.emitCode() + "," + imm.emitCode();
+        return "lui\t" + rd.emitCode() + ", " + imm.emitCode();
     }
 }

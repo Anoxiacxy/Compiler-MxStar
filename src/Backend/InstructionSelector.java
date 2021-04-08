@@ -21,7 +21,6 @@ import RISCV.Operand.Register.VirtualRegister;
 import RISCV.StackFrame;
 import Util.Error.ComplicationError;
 import Util.Position;
-import Util.Type.ClassType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,21 +63,27 @@ public class InstructionSelector implements IRVisitor {
             assert globalRegister.getType() instanceof PointerIRT;
             IRType irType = ((PointerIRT) globalRegister.getType()).getBase();
 
+            //System.out.println(globalRegister.getType());
+
             if (irType instanceof ArrayIRT) { // const.string
                 assert globalRegister.getInit() instanceof ConstStr;
                 globalVariable.setString(((ConstStr) globalRegister.getInit()).getValue());
             }
             if (irType instanceof IntegerIRT) {
-                if (((IntegerIRT) irType).getSize() == 1) {
-                    assert globalRegister.getInit() instanceof ConstBool;
+                if (globalRegister.getInit() instanceof ConstBool) {
+                    assert ((IntegerIRT) irType).getSize() == 1;
                     globalVariable.setBool(((ConstBool) globalRegister.getInit()).getValue());
                 }
-                else {
-                    assert globalRegister.getInit() instanceof ConstInt;
+                else if (globalRegister.getInit() instanceof ConstInt) {
+                    // System.out.println(irType.getByte());
+                    assert ((IntegerIRT) irType).getByte() == 4;
                     globalVariable.setInt((int) ((ConstInt) globalRegister.getInit()).getValue());
+                } else {
+                    assert globalRegister.getInit() instanceof ConstNull;
+                    globalVariable.setInt(0);
                 }
             }
-            if (irType instanceof VoidIRT) {
+            if (irType instanceof PointerIRT) {
                 globalVariable.setInt(0);
             }
         }
@@ -102,30 +107,32 @@ public class InstructionSelector implements IRVisitor {
         {
             VirtualRegister raCopy = new VirtualRegister(PhysicalRegister.getv("ra").getName() + ".copy");
             virtualRegisterTable.put(raCopy.getName(), raCopy);
-            curAsmBlock.appendASMInst(new Mv(curAsmBlock, raCopy, PhysicalRegister.getv("ra")));
+            curAsmBlock.appendASMInstBack(new Mv(curAsmBlock, raCopy, PhysicalRegister.getv("ra")));
         }
 
+        /*
         // callee
         for (VirtualRegister vr : PhysicalRegister.virtualRegisters.values()) {
             if (vr.getPhysicalRegister().getRegType() == PhysicalRegister.RegType.callee) {
                 VirtualRegister copy = new VirtualRegister(vr.getName() + ".copy");
                 virtualRegisterTable.put(copy.getName(), copy);
-                curAsmBlock.appendASMInst(new Mv(curAsmBlock, copy, vr));
+                curAsmBlock.appendASMInstBack(new Mv(curAsmBlock, copy, vr));
             }
         }
+        */
 
         ArrayList<Parameter> parameters = function.getParameters();
 
         for (int i = 0; i < Integer.min(8, parameters.size()); i++) {
             VirtualRegister vr = getVirtualRegisterOfOperand(parameters.get(i));
-            curAsmBlock.appendASMInst(new Mv(curAsmBlock, vr, PhysicalRegister.getv("a" + i)));
+            curAsmBlock.appendASMInstBack(new Mv(curAsmBlock, vr, PhysicalRegister.getv("a" + i)));
         }
 
         for (int i = 8; i < parameters.size(); i++) {
             VirtualRegister vr = getVirtualRegisterOfOperand(parameters.get(i));
             Address address = new Address(PhysicalRegister.getv("sp"), new IntImm(0));
             curAsmFunction.getStackFrame().getParameterLocation().add(address);
-            curAsmBlock.appendASMInst(new Lw(curAsmBlock, vr, address));
+            curAsmBlock.appendASMInstBack(new Lw(curAsmBlock, vr, address));
         }
 
         // TODO: 2021/4/5
@@ -159,70 +166,70 @@ public class InstructionSelector implements IRVisitor {
             case add -> {
                 rhs = getOperand(inst.getRhs());
                 if (rhs instanceof Immediate)
-                    curAsmBlock.appendASMInst(new Addi(curAsmBlock, result, lhs, (Immediate) rhs));
+                    curAsmBlock.appendASMInstBack(new Addi(curAsmBlock, result, lhs, (Immediate) rhs));
                 else
-                    curAsmBlock.appendASMInst(new Add(curAsmBlock, result, lhs, (VirtualRegister) rhs));
+                    curAsmBlock.appendASMInstBack(new Add(curAsmBlock, result, lhs, (VirtualRegister) rhs));
             }
             case sub -> {
                 rhs = getOperand(inst.getRhs());
                 if (rhs instanceof Immediate)
-                    curAsmBlock.appendASMInst(new Addi(curAsmBlock, result, lhs, ((IntImm) rhs).getNegative()));
+                    curAsmBlock.appendASMInstBack(new Addi(curAsmBlock, result, lhs, ((IntImm) rhs).getNegative()));
                 else
-                    curAsmBlock.appendASMInst(new Sub(curAsmBlock, result, lhs, (VirtualRegister) rhs));
+                    curAsmBlock.appendASMInstBack(new Sub(curAsmBlock, result, lhs, (VirtualRegister) rhs));
             }
             case mul -> {
                 rhs = getVirtualRegisterOfOperand(inst.getResult());
-                curAsmBlock.appendASMInst(new Mul(curAsmBlock, result, lhs, (VirtualRegister) rhs));
+                curAsmBlock.appendASMInstBack(new Mul(curAsmBlock, result, lhs, (VirtualRegister) rhs));
             }
             case sdiv -> {
                 rhs = getVirtualRegisterOfOperand(inst.getResult());
-                curAsmBlock.appendASMInst(new Div(curAsmBlock, result, lhs, (VirtualRegister) rhs));
+                curAsmBlock.appendASMInstBack(new Div(curAsmBlock, result, lhs, (VirtualRegister) rhs));
             }
             case srem -> {
                 rhs = getVirtualRegisterOfOperand(inst.getResult());
-                curAsmBlock.appendASMInst(new Rem(curAsmBlock, result, lhs, (VirtualRegister) rhs));
+                curAsmBlock.appendASMInstBack(new Rem(curAsmBlock, result, lhs, (VirtualRegister) rhs));
             }
             case shl -> {
                 rhs = getOperand(inst.getRhs());
                 if (rhs instanceof Immediate)
-                    curAsmBlock.appendASMInst(new Slli(curAsmBlock, result, lhs, (Immediate) rhs));
+                    curAsmBlock.appendASMInstBack(new Slli(curAsmBlock, result, lhs, (Immediate) rhs));
                 else
-                    curAsmBlock.appendASMInst(new Sll(curAsmBlock, result, lhs, (VirtualRegister) rhs));
+                    curAsmBlock.appendASMInstBack(new Sll(curAsmBlock, result, lhs, (VirtualRegister) rhs));
             }
             case ashr -> {
                 rhs = getOperand(inst.getRhs());
                 if (rhs instanceof Immediate)
-                    curAsmBlock.appendASMInst(new Srai(curAsmBlock, result, lhs, (Immediate) rhs));
+                    curAsmBlock.appendASMInstBack(new Srai(curAsmBlock, result, lhs, (Immediate) rhs));
                 else
-                    curAsmBlock.appendASMInst(new Sra(curAsmBlock, result, lhs, (VirtualRegister) rhs));
+                    curAsmBlock.appendASMInstBack(new Sra(curAsmBlock, result, lhs, (VirtualRegister) rhs));
             }
             case and -> {
                 rhs = getOperand(inst.getRhs());
                 if (rhs instanceof Immediate)
-                    curAsmBlock.appendASMInst(new Andi(curAsmBlock, result, lhs, (Immediate) rhs));
+                    curAsmBlock.appendASMInstBack(new Andi(curAsmBlock, result, lhs, (Immediate) rhs));
                 else
-                    curAsmBlock.appendASMInst(new And(curAsmBlock, result, lhs, (VirtualRegister) rhs));
+                    curAsmBlock.appendASMInstBack(new And(curAsmBlock, result, lhs, (VirtualRegister) rhs));
             }
             case or -> {
                 rhs = getOperand(inst.getRhs());
                 if (rhs instanceof Immediate)
-                    curAsmBlock.appendASMInst(new Ori(curAsmBlock, result, lhs, (Immediate) rhs));
+                    curAsmBlock.appendASMInstBack(new Ori(curAsmBlock, result, lhs, (Immediate) rhs));
                 else
-                    curAsmBlock.appendASMInst(new Or(curAsmBlock, result, lhs, (VirtualRegister) rhs));
+                    curAsmBlock.appendASMInstBack(new Or(curAsmBlock, result, lhs, (VirtualRegister) rhs));
             }
             case xor -> {
                 rhs = getOperand(inst.getRhs());
                 if (rhs instanceof Immediate)
-                    curAsmBlock.appendASMInst(new Xori(curAsmBlock, result, lhs, (Immediate) rhs));
+                    curAsmBlock.appendASMInstBack(new Xori(curAsmBlock, result, lhs, (Immediate) rhs));
                 else
-                    curAsmBlock.appendASMInst(new Xor(curAsmBlock, result, lhs, (VirtualRegister) rhs));
+                    curAsmBlock.appendASMInstBack(new Xor(curAsmBlock, result, lhs, (VirtualRegister) rhs));
             }
         }
     }
 
     @Override
     public void visit(BitCastToInst inst) {
-        curAsmBlock.appendASMInst(new Mv(curAsmBlock,
+        curAsmBlock.appendASMInstBack(new Mv(curAsmBlock,
                 getVirtualRegisterOfOperand(inst.getResult()),
                 getVirtualRegisterOfOperand(inst.getSource())));
     }
@@ -231,12 +238,12 @@ public class InstructionSelector implements IRVisitor {
     public void visit(BrInst inst) {
         // TODO: 2021/4/6
         if (inst.getCond() == null)
-            curAsmBlock.appendASMInst(new J(curAsmBlock, curAsmFunction.getAsmBlockMap().get(inst.getThemBlock())));
+            curAsmBlock.appendASMInstBack(new J(curAsmBlock, curAsmFunction.getAsmBlockMap().get(inst.getThemBlock())));
         else {
-            curAsmBlock.appendASMInst(new Beqz(curAsmBlock,
+            curAsmBlock.appendASMInstBack(new Beqz(curAsmBlock,
                     getVirtualRegisterOfOperand(inst.getCond()),
-                    curAsmFunction.getAsmBlockMap().get(inst.getThemBlock())));
-            curAsmBlock.appendASMInst(new J(curAsmBlock, curAsmFunction.getAsmBlockMap().get(inst.getElseBlock())));
+                    curAsmFunction.getAsmBlockMap().get(inst.getElseBlock())));
+            curAsmBlock.appendASMInstBack(new J(curAsmBlock, curAsmFunction.getAsmBlockMap().get(inst.getThemBlock())));
         }
     }
 
@@ -255,7 +262,7 @@ public class InstructionSelector implements IRVisitor {
 
         for (int i = 0; i < Integer.min(8, parameters.size()); i++) {
             VirtualRegister vr = getVirtualRegisterOfOperand(parameters.get(i));
-            curAsmBlock.appendASMInst(new Mv(curAsmBlock, PhysicalRegister.getv("a" + i), vr));
+            curAsmBlock.appendASMInstBack(new Mv(curAsmBlock, PhysicalRegister.getv("a" + i), vr));
         }
 
         StackFrame stackFrame = curAsmFunction.getStackFrame();
@@ -268,51 +275,54 @@ public class InstructionSelector implements IRVisitor {
 
         for (int i = 8; i < parameters.size(); i++) {
             VirtualRegister vr = getVirtualRegisterOfOperand(parameters.get(i));
-            curAsmBlock.appendASMInst(new Sw(curAsmBlock,
+            curAsmBlock.appendASMInstBack(new Sw(curAsmBlock,
                     vr, stackFrame.getCalleeParameterLocation().get(asmFunction).get(i - 8)));
         }
 
-        curAsmBlock.appendASMInst(new Call(curAsmBlock, asmFunction));
+        curAsmBlock.appendASMInstBack(new Call(curAsmBlock, asmFunction));
 
         if (inst.getFunction().getFuncType().getReturnType() != void_t) {
-            System.out.println(inst);
-            System.out.println(inst.getFunction().getFuncType().getReturnType());
             VirtualRegister result = getVirtualRegisterOfOperand(inst.getResult());
-            curAsmBlock.appendASMInst(new Mv(curAsmBlock, result, PhysicalRegister.getv("a0")));
+            curAsmBlock.appendASMInstBack(new Mv(curAsmBlock, result, PhysicalRegister.getv("a0")));
         }
     }
 
     @Override
     public void visit(RetInst inst) {
         if (inst.getValue() != null)
-            curAsmBlock.appendASMInst(new Mv(curAsmBlock,
+            curAsmBlock.appendASMInstBack(new Mv(curAsmBlock,
                     PhysicalRegister.getv("a0"), getVirtualRegisterOfOperand(inst.getValue())));
-
+        /*
         // callee
         for (VirtualRegister vr : PhysicalRegister.virtualRegisters.values()) {
             if (vr.getPhysicalRegister().getRegType() == PhysicalRegister.RegType.callee) {
                 VirtualRegister copy = virtualRegisterTable.get(vr.getName() + ".copy");
-                curAsmBlock.appendASMInst(new Mv(curAsmBlock, vr, copy));
+                curAsmBlock.appendASMInstBack(new Mv(curAsmBlock, vr, copy));
             }
         }
+        */
+
 
         // ra
         {
             VirtualRegister raCopy = virtualRegisterTable.get(PhysicalRegister.getv("ra").getName() + ".copy");
-            curAsmBlock.appendASMInst(new Mv(curAsmBlock, PhysicalRegister.getv("ra"), raCopy));
+            curAsmBlock.appendASMInstBack(new Mv(curAsmBlock, PhysicalRegister.getv("ra"), raCopy));
         }
+
+        curAsmBlock.appendASMInstBack(new Ret(curAsmBlock));
     }
 
     @Override
     public void visit(GetElementPtrInst inst) {
         VirtualRegister result = getVirtualRegisterOfOperand(inst.getResult());
-        VirtualRegister address = getVirtualRegisterOfOperand(inst.getAddress());
 
         if (inst.getAddress() instanceof GlobalRegister) {
-            curAsmBlock.appendASMInst(new La(curAsmBlock,
+            curAsmBlock.appendASMInstBack(new La(curAsmBlock,
                     result, asmModule.getGlobalVariableMap().get(inst.getAddress().getName())));
             return;
         }
+
+        VirtualRegister address = getVirtualRegisterOfOperand(inst.getAddress());
 
         if (inst.getIndex().size() == 1) {
             Operand operand = inst.getIndex().get(0);
@@ -320,14 +330,14 @@ public class InstructionSelector implements IRVisitor {
                 int offsetInt = (int) (4 * ((ConstInt) operand).getValue());
                 RISCV.Operand.Operand offsetOpt = getOperand(new ConstInt(int_t, offsetInt));
                 if (offsetOpt instanceof IntImm)
-                    curAsmBlock.appendASMInst(new Addi(curAsmBlock, result, address, (Immediate) offsetOpt));
+                    curAsmBlock.appendASMInstBack(new Addi(curAsmBlock, result, address, (Immediate) offsetOpt));
                 else
-                    curAsmBlock.appendASMInst(new Add(curAsmBlock, result, address, (VirtualRegister) offsetOpt));
+                    curAsmBlock.appendASMInstBack(new Add(curAsmBlock, result, address, (VirtualRegister) offsetOpt));
             } else {
                 VirtualRegister temp = getVirtualRegisterOfOperand(operand);
                 VirtualRegister offset = new VirtualRegister("array_offset");
-                curAsmBlock.appendASMInst(new Slli(curAsmBlock, offset, temp, new IntImm(2)));
-                curAsmBlock.appendASMInst(new Add(curAsmBlock, result, address, offset));
+                curAsmBlock.appendASMInstBack(new Slli(curAsmBlock, offset, temp, new IntImm(2)));
+                curAsmBlock.appendASMInstBack(new Add(curAsmBlock, result, address, offset));
             }
             return;
         }
@@ -339,13 +349,14 @@ public class InstructionSelector implements IRVisitor {
             int elementID = (int) ((ConstInt) inst.getIndex().get(1)).getValue();
             assert inst.getAddress().getType() instanceof PointerIRT;
             IRType irType = ((PointerIRT) inst.getAddress().getType()).getBase();
+            // System.out.println(irType);
             assert irType instanceof ClassIRT;
             int offsetInt = ((ClassIRT) irType).getElementOffset(elementID);
             RISCV.Operand.Operand offsetOpt = getOperand(new ConstInt(int_t, offsetInt));
             if (offsetOpt instanceof IntImm)
-                curAsmBlock.appendASMInst(new Addi(curAsmBlock, result, address, (Immediate) offsetOpt));
+                curAsmBlock.appendASMInstBack(new Addi(curAsmBlock, result, address, (Immediate) offsetOpt));
             else
-                curAsmBlock.appendASMInst(new Add(curAsmBlock, result, address, (VirtualRegister) offsetOpt));
+                curAsmBlock.appendASMInstBack(new Add(curAsmBlock, result, address, (VirtualRegister) offsetOpt));
             return;
         }
 
@@ -363,42 +374,42 @@ public class InstructionSelector implements IRVisitor {
 
         VirtualRegister lhs = getVirtualRegisterOfOperand(inst.getLhs());
         VirtualRegister result = getVirtualRegisterOfOperand(inst.getResult());
-        VirtualRegister temp = new VirtualRegister("icmp temp");
+        VirtualRegister temp = new VirtualRegister("icmp");
 
         switch (inst.getOpType()) {
             case eq -> {
                 RISCV.Operand.Operand rhs = getOperand(inst.getRhs());
                 if (rhs instanceof IntImm)
-                    curAsmBlock.appendASMInst(new Addi(curAsmBlock, temp, lhs, ((IntImm) rhs).getNegative()));
+                    curAsmBlock.appendASMInstBack(new Addi(curAsmBlock, temp, lhs, ((IntImm) rhs).getNegative()));
                 else
-                    curAsmBlock.appendASMInst(new Sub(curAsmBlock, temp, lhs, (VirtualRegister) rhs));
-                curAsmBlock.appendASMInst(new Seqz(curAsmBlock, result, temp));
+                    curAsmBlock.appendASMInstBack(new Sub(curAsmBlock, temp, lhs, (VirtualRegister) rhs));
+                curAsmBlock.appendASMInstBack(new Seqz(curAsmBlock, result, temp));
             }
             case ne -> {
                 RISCV.Operand.Operand rhs = getOperand(inst.getRhs());
                 if (rhs instanceof IntImm)
-                    curAsmBlock.appendASMInst(new Addi(curAsmBlock, temp, lhs, ((IntImm) rhs).getNegative()));
+                    curAsmBlock.appendASMInstBack(new Addi(curAsmBlock, temp, lhs, ((IntImm) rhs).getNegative()));
                 else
-                    curAsmBlock.appendASMInst(new Sub(curAsmBlock, temp, lhs, (VirtualRegister) rhs));
-                curAsmBlock.appendASMInst(new Snez(curAsmBlock, result, temp));
+                    curAsmBlock.appendASMInstBack(new Sub(curAsmBlock, temp, lhs, (VirtualRegister) rhs));
+                curAsmBlock.appendASMInstBack(new Snez(curAsmBlock, result, temp));
             }
             case sge -> {
                 VirtualRegister rhs = getVirtualRegisterOfOperand(inst.getRhs());
-                curAsmBlock.appendASMInst(new Slt(curAsmBlock, temp, lhs, rhs));
-                curAsmBlock.appendASMInst(new Xori(curAsmBlock, result, temp, new IntImm(1)));
+                curAsmBlock.appendASMInstBack(new Slt(curAsmBlock, temp, lhs, rhs));
+                curAsmBlock.appendASMInstBack(new Xori(curAsmBlock, result, temp, new IntImm(1)));
             }
             case sgt -> {
                 VirtualRegister rhs = getVirtualRegisterOfOperand(inst.getRhs());
-                curAsmBlock.appendASMInst(new Slt(curAsmBlock, result, rhs, lhs));
+                curAsmBlock.appendASMInstBack(new Slt(curAsmBlock, result, rhs, lhs));
             }
             case sle -> {
                 VirtualRegister rhs = getVirtualRegisterOfOperand(inst.getRhs());
-                curAsmBlock.appendASMInst(new Slt(curAsmBlock, temp, rhs, lhs));
-                curAsmBlock.appendASMInst(new Xori(curAsmBlock, result, temp, new IntImm(1)));
+                curAsmBlock.appendASMInstBack(new Slt(curAsmBlock, temp, rhs, lhs));
+                curAsmBlock.appendASMInstBack(new Xori(curAsmBlock, result, temp, new IntImm(1)));
             }
             case slt -> {
                 VirtualRegister rhs = getVirtualRegisterOfOperand(inst.getRhs());
-                curAsmBlock.appendASMInst(new Slt(curAsmBlock, result, lhs, rhs));
+                curAsmBlock.appendASMInstBack(new Slt(curAsmBlock, result, lhs, rhs));
             }
         }
     }
@@ -411,19 +422,19 @@ public class InstructionSelector implements IRVisitor {
         if (inst.getAddress() instanceof GlobalRegister) {
             GlobalVariable gv = asmModule.getGlobalVariableMap().get(inst.getAddress().getName());
             VirtualRegister lui = new VirtualRegister("lui");
-            curAsmBlock.appendASMInst(new Lui(curAsmBlock, lui, new Relocation(gv, Relocation.ImmType.hi)));
+            curAsmBlock.appendASMInstBack(new Lui(curAsmBlock, lui, new Relocation(gv, Relocation.ImmType.hi)));
             if (irType.getByte() == 1)
-                curAsmBlock.appendASMInst(new Lb(curAsmBlock,
+                curAsmBlock.appendASMInstBack(new Lb(curAsmBlock,
                         result, new Address(lui, new Relocation(gv, Relocation.ImmType.lo))));
             else
-                curAsmBlock.appendASMInst(new Lw(curAsmBlock,
+                curAsmBlock.appendASMInstBack(new Lw(curAsmBlock,
                         result, new Address(lui, new Relocation(gv, Relocation.ImmType.lo))));
         } else {
             VirtualRegister address = getVirtualRegisterOfOperand(inst.getAddress());
             if (irType.getByte() == 1)
-                curAsmBlock.appendASMInst(new Lb(curAsmBlock, result, new Address(address, new IntImm(0))));
+                curAsmBlock.appendASMInstBack(new Lb(curAsmBlock, result, new Address(address, new IntImm(0))));
             else
-                curAsmBlock.appendASMInst(new Lw(curAsmBlock, result, new Address(address, new IntImm(0))));
+                curAsmBlock.appendASMInstBack(new Lw(curAsmBlock, result, new Address(address, new IntImm(0))));
         }
     }
 
@@ -443,19 +454,19 @@ public class InstructionSelector implements IRVisitor {
         if (inst.getAddress() instanceof GlobalRegister) {
             GlobalVariable gv = asmModule.getGlobalVariableMap().get(inst.getAddress().getName());
             VirtualRegister lui = new VirtualRegister("lui");
-            curAsmBlock.appendASMInst(new Lui(curAsmBlock, lui, new Relocation(gv, Relocation.ImmType.hi)));
+            curAsmBlock.appendASMInstBack(new Lui(curAsmBlock, lui, new Relocation(gv, Relocation.ImmType.hi)));
             if (irType.getByte() == 1)
-                curAsmBlock.appendASMInst(new Sb(curAsmBlock,
+                curAsmBlock.appendASMInstBack(new Sb(curAsmBlock,
                         value, new Address(lui, new Relocation(gv, Relocation.ImmType.lo))));
             else
-                curAsmBlock.appendASMInst(new Sw(curAsmBlock,
+                curAsmBlock.appendASMInstBack(new Sw(curAsmBlock,
                         value, new Address(lui, new Relocation(gv, Relocation.ImmType.lo))));
         } else {
             VirtualRegister address = getVirtualRegisterOfOperand(inst.getAddress());
             if (irType.getByte() == 1)
-                curAsmBlock.appendASMInst(new Sb(curAsmBlock, value, new Address(address, new IntImm(0))));
+                curAsmBlock.appendASMInstBack(new Sb(curAsmBlock, value, new Address(address, new IntImm(0))));
             else
-                curAsmBlock.appendASMInst(new Sw(curAsmBlock, value, new Address(address, new IntImm(0))));
+                curAsmBlock.appendASMInstBack(new Sw(curAsmBlock, value, new Address(address, new IntImm(0))));
         }
     }
 
@@ -464,10 +475,10 @@ public class InstructionSelector implements IRVisitor {
         VirtualRegister result = getVirtualRegisterOfOperand(inst.getResult());
         RISCV.Operand.Operand source = getOperand(inst.getSource());
         if (source instanceof VirtualRegister)
-            curAsmBlock.appendASMInst(new Mv(curAsmBlock, result, (VirtualRegister) source));
+            curAsmBlock.appendASMInstBack(new Mv(curAsmBlock, result, (VirtualRegister) source));
         else {
             assert source instanceof IntImm;
-            curAsmBlock.appendASMInst(new Addi(curAsmBlock,
+            curAsmBlock.appendASMInstBack(new Addi(curAsmBlock,
                     result, PhysicalRegister.getv("zero"), (Immediate) source));
         }
     }
@@ -477,7 +488,7 @@ public class InstructionSelector implements IRVisitor {
         if (operand instanceof ConstBool) {
             if (((ConstBool) operand).getValue()) {
                 VirtualRegister vr = new VirtualRegister("const.bool");
-                curAsmBlock.appendASMInst(new Addi(curAsmBlock,
+                curAsmBlock.appendASMInstBack(new Addi(curAsmBlock,
                         vr, PhysicalRegister.getv("zero"), new IntImm(1)));
                 return vr;
             } else
@@ -488,9 +499,9 @@ public class InstructionSelector implements IRVisitor {
             if (value != 0) {
                 VirtualRegister vr = new VirtualRegister("const.int");
                 if (needLoad(value))
-                    curAsmBlock.appendASMInst(new Li(curAsmBlock, vr, new IntImm((int) value)));
+                    curAsmBlock.appendASMInstBack(new Li(curAsmBlock, vr, new IntImm((int) value)));
                 else
-                    curAsmBlock.appendASMInst(new Addi(curAsmBlock,
+                    curAsmBlock.appendASMInstBack(new Addi(curAsmBlock,
                             vr, PhysicalRegister.getv("zero"), new IntImm((int) value)));
                 return vr;
             } else
@@ -498,8 +509,10 @@ public class InstructionSelector implements IRVisitor {
         }
         if (operand instanceof ConstNull)
             return PhysicalRegister.getv("zero");
-        if (operand instanceof GlobalRegister)
-            throw new ComplicationError("global register ?", new Position());
+        if (operand instanceof GlobalRegister) {
+            throw new RuntimeException();
+            // throw new ComplicationError("global register ? " + operand, new Position());
+        }
         if (operand instanceof LocalRegister) {
             if (operandVirtualRegisterMap.containsKey(operand))
                 return operandVirtualRegisterMap.get(operand);
@@ -530,7 +543,7 @@ public class InstructionSelector implements IRVisitor {
         if (operand instanceof ConstNull)
             return PhysicalRegister.getv("zero");
         if (operand instanceof GlobalRegister)
-            throw new ComplicationError("global register ?", new Position());
+            throw new ComplicationError("global register ? " + operand, new Position());
         if (operand instanceof LocalRegister)
             return getVirtualRegisterOfOperand(operand);
         throw new RuntimeException("operand type error: " + operand);

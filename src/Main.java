@@ -1,8 +1,5 @@
 import AST.ProgramNode;
-import Backend.CodeEmitter;
-import Backend.IRBuilder;
-import Backend.IRPrinter;
-import Backend.InstructionSelector;
+import Backend.*;
 import Frontend.ASTPrinter;
 import Frontend.ASTBuilder;
 import Frontend.SemanticChecker;
@@ -50,23 +47,40 @@ public class Main {
             ASTBuilder astBuilder = new ASTBuilder();
             ProgramNode ASTRoot = (ProgramNode) astBuilder.visit(parseTreeRoot);
 
-            SemanticChecker semanticChecker = new SemanticChecker();
-            semanticChecker.visit(ASTRoot);
-            if (emitAST)
-                new ASTPrinter("output.ast").visit(ASTRoot);
-            if (doCodeGen) {
-                IRBuilder irBuilder = new IRBuilder();
-                irBuilder.visit(ASTRoot);
-                Module irModule = irBuilder.getModule();
-                if (emitLLVM) {
-                    new IRPrinter("output.ll").run(irModule);
-                }
-                InstructionSelector instructionSelector = new InstructionSelector();
-                instructionSelector.visit(irModule);
-                ASMModule asmModule = instructionSelector.getAsmModule();
-                new CodeEmitter("output.s").run(asmModule);
+            {
+                SemanticChecker semanticChecker = new SemanticChecker();
+                semanticChecker.visit(ASTRoot);
 
+                if (emitAST)
+                    new ASTPrinter("output.ast").visit(ASTRoot);
             }
+
+            if (!doCodeGen) return;
+
+            IRBuilder irBuilder = new IRBuilder();
+            irBuilder.visit(ASTRoot);
+            Module irModule = irBuilder.getModule();
+            if (emitLLVM)
+                new IRPrinter("output-O0.ll").visit(irModule);
+
+            // TODO: 2021/4/7 optimize
+            new PhiResolve(irModule).run();
+
+            if (emitLLVM)
+                new IRPrinter("output-O1.ll").visit(irModule);
+
+            InstructionSelector instructionSelector = new InstructionSelector();
+            instructionSelector.visit(irModule);
+            ASMModule asmModule = instructionSelector.getAsmModule();
+
+            new CodeEmitter("lab/test.ir").visit(asmModule);
+
+            // new RegisterAllocate(asmModule).run();
+            new RegisterAllocate(asmModule).piss();
+
+            //new CodeEmitter("output.s").visit(asmModule);
+            new CodeEmitter("lab/test.s").visit(asmModule);
+
         } catch (Error error) {
             System.err.println(error.toString());
             throw new RuntimeException();

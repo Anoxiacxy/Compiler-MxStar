@@ -59,6 +59,7 @@ public class GlobalVariable extends Operand {
                         .replace("\"", "\\\"") + "\"";
             }
             default -> {
+                //System.out.println(varType);
                 throw new RuntimeException();
             }
         }

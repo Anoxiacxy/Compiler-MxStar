@@ -43,7 +43,7 @@ public class BranchInst extends ASMInst {
 
     @Override
     public String emitCode() {
-        return opType.name() + "\t" + rs1.emitCode() + "," +
-                ((rs2 != null) ? rs2.emitCode() + "," : "") + targetBlock.emitCode();
+        return opType.name() + "\t" + rs1.emitCode() + ", " +
+                ((rs2 != null) ? rs2.emitCode() + ", " : "") + targetBlock.emitCode();
     }
 }

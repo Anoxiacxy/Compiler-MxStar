@@ -5,7 +5,9 @@ import IR.Function;
 import IR.IRVisitor;
 import IR.Instruction.*;
 import IR.Module;
+import IR.Operand.GlobalRegister;
 import IR.Operand.Parameter;
+import IR.TypeSystem.ClassIRT;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,33 +22,12 @@ public class IRPrinter implements IRVisitor {
 
     public IRPrinter(String fileName) {
         this.fileName = fileName;
-
     }
 
 
 
     public void run(Module module) {
-        try {
-            File file = new File(fileName);
-            assert file.exists() || file.createNewFile();
-            outputStream = new FileOutputStream(fileName, false);
-            printWriter = new PrintWriter(outputStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e.getMessage());
-        }
 
-        indent = "";
-
-        module.accept(this);
-
-        try {
-            printWriter.close();
-            outputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e.getMessage());
-        }
     }
 
     private void println(String string) {
@@ -59,35 +40,56 @@ public class IRPrinter implements IRVisitor {
 
     @Override
     public void visit(Module module) {
+        try {
+            File file = new File(fileName);
+            assert file.exists() || file.createNewFile();
+            outputStream = new FileOutputStream(fileName, false);
+            printWriter = new PrintWriter(outputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
+        }
+
+        indent = "";
+
         println("; ModuleID = 'test.cpp'");
         println("source_filename = \"test.cpp\"");
         println("");
         // TODO: 2021/4/2
-        /*
-        if (module.getStructureMap().size() > 0) {
-            for (String name : module.getStructureMap().keySet())
-                println(module.getStructureMap().get(name).structureToString());
+
+        if (module.getClassIRTMap().size() > 0) {
+            for (ClassIRT classIRT : module.getClassIRTMap().values())
+                println(classIRT.toConstructorString());
             println("");
         }
-        */
-        /*
+
         if (module.getGlobalVariableMap().size() > 0) {
-            for (String name : module.getGlobalVariableMap().keySet())
-                println(module.getGlobalVariableMap().get(name).definitionToString());
+            for (GlobalRegister register : module.getGlobalVariableMap().values())
+                println(register.definitionToString());
             println("");
         }
 
         if (module.getSystemFunctionMap().size() > 0) {
-            for (String name : module.getSystemFunctionMap().keySet())
-                println(module.getSystemFunctionMap().get(name).declareToString());
+            for (Function function : module.getSystemFunctionMap().values())
+                println(function.declareToString());
             println("");
         }
-        */
+
 
         for (String name : module.getFunctionMap().keySet()) {
             module.getFunctionMap().get(name).accept(this);
             println("");
         }
+
+        try {
+            printWriter.close();
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
+        }
+
+
     }
 
     @Override

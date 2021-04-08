@@ -2,8 +2,10 @@ package IR;
 
 import IR.Instruction.BrInst;
 import IR.Instruction.IRInst;
+import IR.Instruction.RetInst;
 import RISCV.Instruction.Catagory.BranchInst;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,7 +19,7 @@ public class BasicBlock extends IRObject {
 
 
 
-    private Set<BasicBlock> successors, predecessors;
+    private ArrayList<BasicBlock> successors, predecessors;
 
     public void insertInstAfter(IRInst index, IRInst newInst) {
         if (index == instEnd) {
@@ -51,32 +53,34 @@ public class BasicBlock extends IRObject {
         nextBlock = null;
         prevBlock = null;
 
-        successors = new HashSet<>();
-        predecessors = new HashSet<>();
+        successors = new ArrayList<>();
+        predecessors = new ArrayList<>();
     }
 
-    public Set<BasicBlock> getPredecessors() {
+    public ArrayList<BasicBlock> getPredecessors() {
         return predecessors;
     }
 
-    public void setPredecessors(Set<BasicBlock> predecessors) {
+    public void setPredecessors(ArrayList<BasicBlock> predecessors) {
         this.predecessors = predecessors;
     }
 
     public void calcSuccessors() {
         successors.clear();
         IRInst inst = getInstEnd();
+        if (inst instanceof RetInst)
+            return;
         assert inst instanceof BrInst;
         successors.add(((BrInst) inst).getThemBlock());
         if (((BrInst) inst).getElseBlock() != null)
             successors.add(((BrInst) inst).getElseBlock());
     }
 
-    public Set<BasicBlock> getSuccessors() {
+    public ArrayList<BasicBlock> getSuccessors() {
         return successors;
     }
 
-    public void setSuccessors(Set<BasicBlock> successors) {
+    public void setSuccessors(ArrayList<BasicBlock> successors) {
         this.successors = successors;
     }
 

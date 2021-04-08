@@ -26,13 +26,20 @@ public class LoadInst extends ASMInst {
 
     @Override
     public void replaceDef(VirtualRegister oldRegister, VirtualRegister newRegister) {
-        assert  this.rd == oldRegister;
+        assert this.rd == oldRegister;
         this.rd = newRegister;
         super.replaceDef(oldRegister, newRegister);
     }
 
     @Override
+    public void replaceUse(VirtualRegister oldRegister, VirtualRegister newRegister) {
+        super.replaceUse(oldRegister, newRegister);
+        if (this.address.getBase() == oldRegister)
+            this.address.setBase(newRegister);
+    }
+
+    @Override
     public String emitCode() {
-        return opType.name() + "\t" + rd.emitCode() + "," + address.emitCode();
+        return opType.name() + "\t" + rd.emitCode() + ", " + address.emitCode();
     }
 }

@@ -9,9 +9,6 @@ public class ComplicationError extends Error {
 
     @Override
     public String toString() {
-        return "ComplicationError{" +
-                "position=" + position +
-                ", msg='" + msg + '\'' +
-                '}';
+        return super.toString();
     }
 }

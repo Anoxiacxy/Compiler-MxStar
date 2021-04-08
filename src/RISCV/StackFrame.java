@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class StackFrame {
     private ASMFunction function;
-    private int byteSize;
+    private int frameSize;
     private ArrayList<Address> parameterLocation;
     private ArrayList<Address> runtimeRegisterLocation;
     private Map<ASMFunction, ArrayList<Address>> calleeParameterLocation;
@@ -23,24 +23,24 @@ public class StackFrame {
         calleeParameterLocation = new HashMap<>();
     }
 
-    public int getByteSize() {
-        return byteSize;
+    public int getFrameSize() {
+        return frameSize;
     }
 
-    public void calcByteSize() {
-        byteSize = 0;
+    public void calcFrameSize() {
+        frameSize = 0;
         for (ArrayList<Address> stackLocations : calleeParameterLocation.values()) {
-            byteSize = Integer.max(byteSize, stackLocations.size());
+            frameSize = Integer.max(frameSize, stackLocations.size());
             for (int i = 0; i < stackLocations.size(); i++)
                 stackLocations.get(i).setOffset(new IntImm(i * 4));
         }
 
         for (int i = 0; i < runtimeRegisterLocation.size(); i++)
-            runtimeRegisterLocation.get(i).setOffset(new IntImm((i + byteSize) * 4));
-        byteSize = byteSize + runtimeRegisterLocation.size();
+            runtimeRegisterLocation.get(i).setOffset(new IntImm((i + frameSize) * 4));
+        frameSize = frameSize + runtimeRegisterLocation.size();
 
         for (int i = 0; i < parameterLocation.size(); i++)
-            parameterLocation.get(i).setOffset(new IntImm((i + byteSize) * 4));
+            parameterLocation.get(i).setOffset(new IntImm((i + frameSize) * 4));
     }
 
     public ASMFunction getFunction() {
@@ -51,8 +51,8 @@ public class StackFrame {
         this.function = function;
     }
 
-    public void setByteSize(int byteSize) {
-        this.byteSize = byteSize;
+    public void setFrameSize(int byteSize) {
+        this.frameSize = byteSize;
     }
 
     public ArrayList<Address> getParameterLocation() {

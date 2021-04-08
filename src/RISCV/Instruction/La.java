@@ -27,6 +27,6 @@ public class La extends ASMInst {
 
     @Override
     public String emitCode() {
-        return "la\t" + rd.emitCode() + "," + globalVariable.getName();
+        return "la\t" + rd.emitCode() + ", " + globalVariable.getName();
     }
 }

@@ -40,6 +40,6 @@ public class UnaryInst extends ASMInst {
 
     @Override
     public String emitCode() {
-        return opType.name() + "\t" + rd.emitCode() + "," + rs.emitCode();
+        return opType.name() + "\t" + rd.emitCode() + ", " + rs.emitCode();
     }
 }

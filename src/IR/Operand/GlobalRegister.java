@@ -27,7 +27,16 @@ public class GlobalRegister extends Register {
         return "@" + getName();
     }
 
-
+    public String definitionToString() {
+        StringBuilder string = new StringBuilder(toString() + " = ");
+        assert init instanceof Constant;
+        if (init instanceof ConstStr)
+            string.append("private unnamed_addr constant ").
+                    append(getType().toString()).append(" ").append(init.toString());
+        else
+            string.append("global ").append(getType().toString()).append(" ").append(init.toString());
+        return string.toString();
+    }
 }
 
 

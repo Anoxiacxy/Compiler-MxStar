@@ -20,7 +20,21 @@ public class Mv extends ASMInst {
     }
 
     @Override
+    public void replaceDef(VirtualRegister oldRegister, VirtualRegister newRegister) {
+        super.replaceDef(oldRegister, newRegister);
+        if (rd == oldRegister)
+            rd = newRegister;
+    }
+
+    @Override
+    public void replaceUse(VirtualRegister oldRegister, VirtualRegister newRegister) {
+        super.replaceUse(oldRegister, newRegister);
+        if (rs == oldRegister)
+            rs = newRegister;
+    }
+
+    @Override
     public String emitCode() {
-        return "mv\t" + rd.emitCode() + "," + rs.emitCode();
+        return "mv\t" + rd.emitCode() + ", " + rs.emitCode();
     }
 }

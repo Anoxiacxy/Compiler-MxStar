@@ -23,6 +23,7 @@ public class Module extends IRObject {
     private Map<String, Function> systemFunctionMap;
     private Map<String, GlobalRegister> globalVariableMap;
     private Map<String, GlobalRegister> constantStringMap;
+    private Map<String, ClassIRT> classIRTMap;
 
     public Module() {
         functionMap = new HashMap<>();
@@ -35,6 +36,14 @@ public class Module extends IRObject {
         Function __init__ = new Function(this, "mx__init", void_t, new ArrayList<>(), false);
         this.addFunction(__init__);
 
+    }
+
+    public Map<String, ClassIRT> getClassIRTMap() {
+        return classIRTMap;
+    }
+
+    public void setClassIRTMap(Map<String, ClassIRT> classIRTMap) {
+        this.classIRTMap = classIRTMap;
     }
 
     public GlobalRegister addConstantString(String str) {

@@ -17,10 +17,28 @@ public class StoreInst extends ASMInst {
         this.rs = rs;
         this.address = address;
         this.opType = opType;
+        this.rs.addUse(this);
+        this.addUse(rs);
+        this.address.getBase().addUse(this);
+        this.addUse(this.address.getBase());
+    }
+
+    @Override
+    public void replaceUse(VirtualRegister oldRegister, VirtualRegister newRegister) {
+        super.replaceUse(oldRegister, newRegister);
+        if (rs == oldRegister)
+            rs = newRegister;
+        if (this.address.getBase() == oldRegister)
+            this.address.setBase(newRegister);
+    }
+
+    @Override
+    public void replaceDef(VirtualRegister oldRegister, VirtualRegister newRegister) {
+        super.replaceDef(oldRegister, newRegister);
     }
 
     @Override
     public String emitCode() {
-        return opType.name() + "\t" + rs.emitCode() + "," + address.emitCode();
+        return opType.name() + "\t" + rs.emitCode() + ", " + address.emitCode();
     }
 }

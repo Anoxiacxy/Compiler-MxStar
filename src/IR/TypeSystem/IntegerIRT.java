@@ -31,7 +31,7 @@ public class IntegerIRT extends IRType {
 
     @Override
     public int getByte() {
-        return (size + 7 / 8);
+        return (size + 7) / 8;
     }
 
     @Override
