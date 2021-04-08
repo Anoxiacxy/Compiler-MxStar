@@ -23,6 +23,7 @@ public class Main {
         boolean doCodeGen = true;
         boolean emitLLVM = false;
         boolean emitAST = false;
+        boolean local = false;
 
         if (args.length > 0) {
             for (String arg : args) {
@@ -31,6 +32,7 @@ public class Main {
                     case "-semantic": doCodeGen = false; break;
                     case "-emit-llvm": emitLLVM = true; break;
                     case "-emit-ast": emitAST = true; break;
+                    case "-local": local = true; break;
                     default: break;
                 }
             }
@@ -73,14 +75,16 @@ public class Main {
             instructionSelector.visit(irModule);
             ASMModule asmModule = instructionSelector.getAsmModule();
 
-            new CodeEmitter("lab/test.ir").visit(asmModule);
+            if (local)
+                new CodeEmitter("lab/test.ir").visit(asmModule);
 
             // new RegisterAllocate(asmModule).run();
             new RegisterAllocate(asmModule).piss();
 
-            //new CodeEmitter("output.s").visit(asmModule);
-            new CodeEmitter("lab/test.s").visit(asmModule);
-
+            if (local)
+                new CodeEmitter("lab/test.s").visit(asmModule);
+            else
+                new CodeEmitter("output.s").visit(asmModule);
         } catch (Error error) {
             System.err.println(error.toString());
             throw new RuntimeException();
