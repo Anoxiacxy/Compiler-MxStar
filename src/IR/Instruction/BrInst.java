@@ -14,6 +14,20 @@ public class BrInst extends IRInst {
         this.cond = cond;
         this.themBlock = themBlock;
         this.elseBlock = elseBlock;
+        if (cond != null) {
+            cond.addUse(this);
+            addUse(cond);
+        }
+    }
+
+    @Override
+    public void replaceUse(Operand oldOperand, Operand newOperand) {
+        super.replaceUse(oldOperand, newOperand);
+        if (cond != null && oldOperand == cond) {
+            oldOperand.removeUse(this);
+            cond = newOperand;
+            newOperand.addUse(this);
+        }
     }
 
     @Override

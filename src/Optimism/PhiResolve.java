@@ -1,4 +1,4 @@
-package Backend;
+package Optimism;
 
 import IR.BasicBlock;
 import IR.Function;
@@ -19,12 +19,28 @@ public class PhiResolve extends Pass {
     }
 
     @Override
+    protected void modulePass(Module module) {
+
+    }
+
+    @Override
+    protected void functionPass(Function function) {
+
+    }
+
+    @Override
+    protected void blockPass(BasicBlock block) {
+
+    }
+
+    @Override
     public boolean run() {
         module.getFunctionMap().forEach((s, function) -> {
             splitCriticalEdges(function);
         });
         return false;
     }
+
 
     public void splitCriticalEdges(Function function) {
         ArrayList<BasicBlock> dfsOrder = function.getDfsOrder();

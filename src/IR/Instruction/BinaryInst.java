@@ -21,6 +21,41 @@ public class BinaryInst extends IRInst {
         this.lhs = lhs;
         this.rhs = rhs;
         this.result = result;
+
+        result.addDef(this);
+        lhs.addUse(this);
+        rhs.addUse(this);
+
+        this.addDef(result);
+        this.addUse(lhs);
+        this.addUse(rhs);
+    }
+
+    @Override
+    public void replaceUse(Operand oldOperand, Operand newOperand) {
+        super.replaceUse(oldOperand, newOperand);
+        if (oldOperand == lhs) {
+            oldOperand.removeUse(this);
+            lhs = newOperand;
+            newOperand.addUse(this);
+        }
+
+        if (oldOperand == rhs) {
+            oldOperand.removeUse(this);
+            rhs = newOperand;
+            newOperand.addUse(this);
+        }
+    }
+
+    @Override
+    public void replaceDef(Operand oldOperand, Operand newOperand) {
+        super.replaceDef(oldOperand, newOperand);
+        if (oldOperand == result) {
+            oldOperand.removeDef(this);
+            assert newOperand instanceof Register;
+            result = (Register) newOperand;
+            newOperand.addDef(this);
+        }
     }
 
     public OpType getOpType() {

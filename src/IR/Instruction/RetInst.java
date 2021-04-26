@@ -14,6 +14,25 @@ public class RetInst extends IRInst {
         super(basicBlock);
         this.type = type;
         this.value = value;
+        if (value != null) {
+            value.addUse(this);
+            addUse(value);
+        }
+    }
+
+    @Override
+    public void replaceDef(Operand oldOperand, Operand newOperand) {
+        super.replaceDef(oldOperand, newOperand);
+    }
+
+    @Override
+    public void replaceUse(Operand oldOperand, Operand newOperand) {
+        super.replaceUse(oldOperand, newOperand);
+        if (value != null && oldOperand == value) {
+            oldOperand.removeUse(this);
+            value = newOperand;
+            newOperand.addUse(this);
+        }
     }
 
     public IRType getType() {

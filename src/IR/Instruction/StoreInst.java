@@ -12,6 +12,31 @@ public class StoreInst extends IRInst {
         super(basicBlock);
         this.value = value;
         this.address = address;
+        value.addUse(this);
+        address.addUse(this);
+        addUse(value);
+        addUse(address);
+    }
+
+    @Override
+    public void replaceUse(Operand oldOperand, Operand newOperand) {
+        super.replaceUse(oldOperand, newOperand);
+        if (oldOperand == value) {
+            oldOperand.removeUse(this);
+            value = newOperand;
+            newOperand.addUse(this);
+        }
+
+        if (oldOperand == address) {
+            oldOperand.removeUse(this);
+            address = newOperand;
+            newOperand.addUse(this);
+        }
+    }
+
+    @Override
+    public void replaceDef(Operand oldOperand, Operand newOperand) {
+        super.replaceDef(oldOperand, newOperand);
     }
 
     @Override

@@ -19,14 +19,55 @@ public class CallInst extends IRInst {
         this.function = function;
         this.parameters = parameters;
         this.result = result;
+        if (result != null) {
+            result.addDef(this);
+            addDef(result);
+        }
+
+        for (Operand operand : parameters) {
+            operand.addUse(this);
+            addUse(operand);
+        }
     }
 
     public CallInst(BasicBlock basicBlock, Function function, Operand parameter, Register result) {
         super(basicBlock);
         this.function = function;
         this.parameters = new ArrayList<>();
-        this.parameters.add(parameter);
-        this.result = result;
+        if (result != null) {
+            this.result = result;
+            result.addDef(this);
+            addDef(result);
+        }
+        if (parameter != null) {
+            this.parameters.add(parameter);
+            parameter.addUse(this);
+            addUse(parameter);
+        }
+    }
+
+    @Override
+    public void replaceDef(Operand oldOperand, Operand newOperand) {
+        super.replaceDef(oldOperand, newOperand);
+        if (oldOperand == result) {
+            oldOperand.removeDef(this);
+            assert newOperand instanceof Register;
+            result = (Register) newOperand;
+            newOperand.addDef(this);
+        }
+    }
+
+    @Override
+    public void replaceUse(Operand oldOperand, Operand newOperand) {
+        super.replaceUse(oldOperand, newOperand);
+        for (int i = 0; i < parameters.size(); i++) {
+            Operand operand = parameters.get(i);
+            if (operand == oldOperand) {
+                oldOperand.removeUse(this);
+                parameters.set(i, newOperand);
+                newOperand.addUse(this);
+            }
+        }
     }
 
     public Function getFunction() {

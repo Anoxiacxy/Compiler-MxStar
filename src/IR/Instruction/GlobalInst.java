@@ -11,11 +11,12 @@ public class GlobalInst extends IRInst {
     private IRType type;
     private Operand init;
 
-    public GlobalInst(BasicBlock basicBlock, GlobalRegister result, IRType type, Operand init) {
+    private GlobalInst(BasicBlock basicBlock, GlobalRegister result, IRType type, Operand init) {
         super(basicBlock);
         this.result = result;
         this.type = type;
         this.init = init;
+        // should never used
     }
 
     @Override

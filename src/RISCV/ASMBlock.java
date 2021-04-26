@@ -8,6 +8,8 @@ import java.util.Set;
 public class ASMBlock extends ASMObject {
     private String name;
 
+    private BasicBlock irBlock;
+
     private ASMFunction asmFunction;
     private ASMBlock nextBlock, prevBlock;
     private ASMInst instBegin, instEnd;
@@ -23,6 +25,14 @@ public class ASMBlock extends ASMObject {
             inst.setPrevInst(instEnd);
             instEnd = inst;
         }
+    }
+
+    public BasicBlock getIrBlock() {
+        return irBlock;
+    }
+
+    public void setIrBlock(BasicBlock irBlock) {
+        this.irBlock = irBlock;
     }
 
     public void appendASMInstFront(ASMInst inst) {

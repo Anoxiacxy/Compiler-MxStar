@@ -2,6 +2,7 @@ package IR.Instruction;
 
 import IR.BasicBlock;
 import IR.IRVisitor;
+import IR.Operand.Operand;
 import IR.Operand.Register;
 import IR.TypeSystem.IRType;
 import IR.TypeSystem.PointerIRT;
@@ -14,7 +15,25 @@ public class AllocaInst extends IRInst {
         super(basicBlock);
         this.result = result;
         this.type = type;
+        result.addDef(this);
+        this.addDef(result);
         assert result.getType() instanceof PointerIRT;
+    }
+
+    @Override
+    public void replaceDef(Operand oldOperand, Operand newOperand) {
+        super.replaceDef(oldOperand, newOperand);
+        if (oldOperand == result) {
+            oldOperand.removeDef(this);
+            assert newOperand instanceof Register;
+            result = (Register) newOperand;
+            newOperand.addDef(this);
+        }
+    }
+
+    @Override
+    public void replaceUse(Operand oldOperand, Operand newOperand) {
+        super.replaceUse(oldOperand, newOperand);
     }
 
     public IRType getType() {

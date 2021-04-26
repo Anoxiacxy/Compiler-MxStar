@@ -12,6 +12,14 @@ public class StoreInst extends ASMInst {
     private Address address;
     private OpType opType;
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     public StoreInst(ASMBlock asmBlock, VirtualRegister rs, Address address, OpType opType) {
         super(asmBlock);
         this.rs = rs;

@@ -71,26 +71,26 @@ public class Function extends IRObject {
         exitBlock = block;
     }
 
-    private ArrayList<BasicBlock> dfsOrder;
+
     private Set<BasicBlock> visTag;
 
     public ArrayList<BasicBlock> getDfsOrder() {
-        dfsOrder = new ArrayList<>();
+        ArrayList<BasicBlock> dfsOrder = new ArrayList<>();
         visTag = new HashSet<>();
         entryBlock.setDfsFather(null);
-        dfsBlock(entryBlock);
+        dfsBlock(entryBlock, dfsOrder);
         return dfsOrder;
     }
 
-    public void dfsBlock(BasicBlock cur) {
-        visTag.add(cur);
+    public void dfsBlock(BasicBlock cur, ArrayList<BasicBlock> dfsOrder) {
         dfsOrder.add(cur);
         cur.calcSuccessors();
         for (BasicBlock next : cur.getSuccessors()) {
             next.getPredecessors().add(cur);
             if (!visTag.contains(next)) {
+                visTag.add(cur);
                 next.setDfsFather(cur);
-                dfsBlock(next);
+                dfsBlock(next, dfsOrder);
             }
         }
     }

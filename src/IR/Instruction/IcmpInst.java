@@ -24,6 +24,40 @@ public class IcmpInst extends IRInst {
         this.rhs = rhs;
         this.result = result;
         this.irType = irType;
+        result.addDef(this);
+        lhs.addUse(this);
+        rhs.addUse(this);
+        addDef(result);
+        addUse(lhs);
+        addUse(rhs);
+    }
+
+    @Override
+    public void replaceDef(Operand oldOperand, Operand newOperand) {
+        super.replaceDef(oldOperand, newOperand);
+        if (oldOperand == result) {
+            oldOperand.removeDef(this);
+            assert newOperand instanceof Register;
+            result = (Register) newOperand;
+            newOperand.addUse(this);
+        }
+    }
+
+    @Override
+    public void replaceUse(Operand oldOperand, Operand newOperand) {
+        super.replaceUse(oldOperand, newOperand);
+        if (oldOperand == lhs) {
+            oldOperand.removeUse(this);
+            lhs = newOperand;
+            newOperand.addUse(this);
+        }
+
+        if (oldOperand == rhs) {
+            oldOperand.removeUse(this);
+            rhs = newOperand;
+            newOperand.addUse(this);
+        }
+
     }
 
     public OpType getOpType() {

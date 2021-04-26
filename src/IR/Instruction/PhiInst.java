@@ -22,7 +22,34 @@ public class PhiInst extends IRInst {
         this.branch = new ArrayList<>();
         branch.forEach((operand, block) -> {
             this.branch.add(new Pair<>(operand, block));
+            operand.addUse(this);
+            addUse(operand);
         });
+        result.addDef(this);
+        addDef(result);
+    }
+
+    @Override
+    public void replaceUse(Operand oldOperand, Operand newOperand) {
+        super.replaceUse(oldOperand, newOperand);
+        for (int i = 0; i < branch.size(); i++) {
+            if (oldOperand == branch.get(i).a) {
+                oldOperand.removeUse(this);
+                branch.set(i, new Pair<>(newOperand, branch.get(i).b));
+                newOperand.addUse(this);
+            }
+        }
+    }
+
+    @Override
+    public void replaceDef(Operand oldOperand, Operand newOperand) {
+        super.replaceDef(oldOperand, newOperand);
+        if (oldOperand == result) {
+            oldOperand.removeDef(this);
+            assert newOperand instanceof Register;
+            result = (Register) newOperand;
+            newOperand.addDef(this);
+        }
     }
 
     public ArrayList<Pair<Operand, BasicBlock>> getBranch() {

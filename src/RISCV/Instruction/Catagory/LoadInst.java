@@ -11,6 +11,14 @@ public class LoadInst extends ASMInst {
     private Address address;
     private OpType opType;
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     public LoadInst(ASMBlock asmBlock, VirtualRegister rd, Address address, OpType opType) {
         super(asmBlock);
         this.rd = rd;

@@ -4,11 +4,11 @@ import Frontend.ASTPrinter;
 import Frontend.ASTBuilder;
 import Frontend.SemanticChecker;
 import IR.Module;
+import Optimism.PhiResolve;
 import Parser.MxStarLexer;
 import Parser.MxStarParser;
 import RISCV.ASMModule;
 import Util.Error.Error;
-import Util.Error.SemanticError;
 import Util.MxStarErrorListener;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -54,7 +54,7 @@ public class Main {
                 semanticChecker.visit(ASTRoot);
 
                 if (emitAST)
-                    new ASTPrinter("output.ast").visit(ASTRoot);
+                    new ASTPrinter("lab/output.ast").visit(ASTRoot);
             }
 
             if (!doCodeGen) return;
@@ -63,13 +63,13 @@ public class Main {
             irBuilder.visit(ASTRoot);
             Module irModule = irBuilder.getModule();
             if (emitLLVM)
-                new IRPrinter("output-O0.ll").visit(irModule);
+                new IRPrinter("lab/output-O0.ll").visit(irModule);
 
             // TODO: 2021/4/7 optimize
             new PhiResolve(irModule).run();
 
             if (emitLLVM)
-                new IRPrinter("output-O1.ll").visit(irModule);
+                new IRPrinter("lab/output-O1.ll").visit(irModule);
 
             InstructionSelector instructionSelector = new InstructionSelector();
             instructionSelector.visit(irModule);
@@ -78,8 +78,8 @@ public class Main {
             if (local)
                 new CodeEmitter("lab/test.ir").visit(asmModule);
 
-            // new RegisterAllocate(asmModule).run();
-            new RegisterAllocate(asmModule).piss();
+            new RegisterAllocate(asmModule).run();
+            //new RegisterAllocate(asmModule).piss();
 
             if (local)
                 new CodeEmitter("lab/test.s").visit(asmModule);

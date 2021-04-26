@@ -85,7 +85,11 @@ abstract public class ASMInst extends ASMObject {
         int cntNew = def.getOrDefault(newRegister, 0);
         assert cntNew == 0;
         def.put(newRegister, cntOld);
+        for (int i = 0; i < cntOld; i++)
+            newRegister.addDef(this);
         def.remove(oldRegister);
+        for (int i = 0; i < cntOld; i++)
+            oldRegister.removeDef(this);
     }
 
     public void addUse(VirtualRegister register) {
@@ -107,10 +111,17 @@ abstract public class ASMInst extends ASMObject {
         int cntNew = use.getOrDefault(newRegister, 0);
         assert cntNew == 0;
         use.put(newRegister, cntOld);
+        for (int i = 0; i < cntOld; i++)
+            newRegister.addUse(this);
         use.remove(oldRegister);
+        for (int i = 0; i < cntOld; i++)
+            oldRegister.removeUse(this);
     }
 
     public ArrayList<VirtualRegister> getVirtualRegister() {
         return new ArrayList<>();
     }
+
+
+
 }

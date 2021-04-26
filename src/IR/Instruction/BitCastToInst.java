@@ -16,6 +16,33 @@ public class BitCastToInst extends IRInst {
         this.source = source;
         this.irType = irType;
         this.result = result;
+
+        source.addUse(this);
+        result.addDef(this);
+
+        addUse(source);
+        addDef(result);
+    }
+
+    @Override
+    public void replaceDef(Operand oldOperand, Operand newOperand) {
+        super.replaceDef(oldOperand, newOperand);
+        if (oldOperand == result) {
+            oldOperand.removeDef(this);
+            assert newOperand instanceof Register;
+            result = (Register) newOperand;
+            newOperand.addDef(this);
+        }
+    }
+
+    @Override
+    public void replaceUse(Operand oldOperand, Operand newOperand) {
+        super.replaceUse(oldOperand, newOperand);
+        if (oldOperand == source) {
+            oldOperand.removeUse(this);
+            source = newOperand;
+            newOperand.addUse(this);
+        }
     }
 
     public Operand getSource() {

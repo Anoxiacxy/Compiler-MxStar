@@ -16,6 +16,31 @@ public class LoadInst extends IRInst {
         this.type = type;
         this.address = address;
         this.result = result;
+        address.addUse(this);
+        result.addDef(this);
+        addUse(address);
+        addDef(result);
+    }
+
+    @Override
+    public void replaceUse(Operand oldOperand, Operand newOperand) {
+        super.replaceUse(oldOperand, newOperand);
+        if (oldOperand == address) {
+            oldOperand.removeUse(this);
+            address = newOperand;
+            newOperand.addUse(this);
+        }
+    }
+
+    @Override
+    public void replaceDef(Operand oldOperand, Operand newOperand) {
+        super.replaceDef(oldOperand, newOperand);
+        if (oldOperand == result) {
+            oldOperand.removeDef(this);
+            assert newOperand instanceof Register;
+            result = (Register) newOperand;
+            newOperand.addDef(this);
+        }
     }
 
     @Override

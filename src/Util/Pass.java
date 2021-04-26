@@ -1,5 +1,7 @@
 package Util;
 
+import IR.BasicBlock;
+import IR.Function;
 import IR.Module;
 
 abstract public class Pass {
@@ -11,5 +13,10 @@ abstract public class Pass {
         this.changed = false;
     }
 
+    protected abstract void modulePass(Module module);
+    protected abstract void functionPass(Function function);
+    protected abstract void blockPass(BasicBlock block);
+
     abstract public boolean run();
+
 }

@@ -110,7 +110,7 @@ public class InstructionSelector implements IRVisitor {
             curAsmBlock.appendASMInstBack(new Mv(curAsmBlock, raCopy, PhysicalRegister.getv("ra")));
         }
 
-        /*
+
         // callee
         for (VirtualRegister vr : PhysicalRegister.virtualRegisters.values()) {
             if (vr.getPhysicalRegister().getRegType() == PhysicalRegister.RegType.callee) {
@@ -119,7 +119,7 @@ public class InstructionSelector implements IRVisitor {
                 curAsmBlock.appendASMInstBack(new Mv(curAsmBlock, copy, vr));
             }
         }
-        */
+
 
         ArrayList<Parameter> parameters = function.getParameters();
 
@@ -292,7 +292,7 @@ public class InstructionSelector implements IRVisitor {
         if (inst.getValue() != null)
             curAsmBlock.appendASMInstBack(new Mv(curAsmBlock,
                     PhysicalRegister.getv("a0"), getVirtualRegisterOfOperand(inst.getValue())));
-        /*
+
         // callee
         for (VirtualRegister vr : PhysicalRegister.virtualRegisters.values()) {
             if (vr.getPhysicalRegister().getRegType() == PhysicalRegister.RegType.callee) {
@@ -300,7 +300,6 @@ public class InstructionSelector implements IRVisitor {
                 curAsmBlock.appendASMInstBack(new Mv(curAsmBlock, vr, copy));
             }
         }
-        */
 
 
         // ra
@@ -483,11 +482,12 @@ public class InstructionSelector implements IRVisitor {
         }
     }
 
+    int constCnt = 0;
     public VirtualRegister getVirtualRegisterOfOperand(Operand operand) {
         assert operand != null;
         if (operand instanceof ConstBool) {
             if (((ConstBool) operand).getValue()) {
-                VirtualRegister vr = new VirtualRegister("const.bool");
+                VirtualRegister vr = new VirtualRegister("const.bool(true)" + ++constCnt);
                 curAsmBlock.appendASMInstBack(new Addi(curAsmBlock,
                         vr, PhysicalRegister.getv("zero"), new IntImm(1)));
                 return vr;
@@ -497,7 +497,7 @@ public class InstructionSelector implements IRVisitor {
         if (operand instanceof ConstInt) {
             long value = ((ConstInt) operand).getValue();
             if (value != 0) {
-                VirtualRegister vr = new VirtualRegister("const.int");
+                VirtualRegister vr = new VirtualRegister("const.int(" + value + ")" + ++constCnt);
                 if (needLoad(value))
                     curAsmBlock.appendASMInstBack(new Li(curAsmBlock, vr, new IntImm((int) value)));
                 else

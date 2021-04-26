@@ -1,0 +1,512 @@
+Ignoring directive: .type	qpow,@function
+Ignoring directive: .size	qpow, .-qpow
+Ignoring directive: .type	main,@function
+Ignoring directive: .size	main, .-main
+Ignoring directive: .type	mx__init,@function
+Ignoring directive: .size	mx__init, .-mx__init
+Ignoring directive: .file	"builtin.c"
+Ignoring directive: .type	mx__print,@function
+Ignoring directive: .size	mx__print, .Lfunc_end0-mx__print
+Ignoring directive: .type	mx__println,@function
+Ignoring directive: .size	mx__println, .Lfunc_end1-mx__println
+Ignoring directive: .type	mx__printInt,@function
+Ignoring directive: .size	mx__printInt, .Lfunc_end2-mx__printInt
+Ignoring directive: .type	mx__printlnInt,@function
+Ignoring directive: .size	mx__printlnInt, .Lfunc_end3-mx__printlnInt
+Ignoring directive: .type	mx__getString,@function
+Ignoring directive: .size	mx__getString, .Lfunc_end4-mx__getString
+Ignoring directive: .type	mx__getInt,@function
+Ignoring directive: .size	mx__getInt, .Lfunc_end5-mx__getInt
+Ignoring directive: .type	mx__toString,@function
+Ignoring directive: .size	mx__toString, .Lfunc_end6-mx__toString
+Ignoring directive: .type	mx__string_ord,@function
+Ignoring directive: .size	mx__string_ord, .Lfunc_end7-mx__string_ord
+Ignoring directive: .type	mx__string_substring,@function
+Ignoring directive: .size	mx__string_substring, .Lfunc_end8-mx__string_substring
+Ignoring directive: .type	mx__string_parseInt,@function
+Ignoring directive: .size	mx__string_parseInt, .Lfunc_end9-mx__string_parseInt
+Ignoring directive: .type	mx__string_length,@function
+Ignoring directive: .size	mx__string_length, .Lfunc_end10-mx__string_length
+Ignoring directive: .type	mx__string_add,@function
+Ignoring directive: .size	mx__string_add, .Lfunc_end11-mx__string_add
+Ignoring directive: .type	mx__string_eq,@function
+Ignoring directive: .size	mx__string_eq, .Lfunc_end12-mx__string_eq
+Ignoring directive: .type	mx__string_ne,@function
+Ignoring directive: .size	mx__string_ne, .Lfunc_end13-mx__string_ne
+Ignoring directive: .type	mx__string_lt,@function
+Ignoring directive: .size	mx__string_lt, .Lfunc_end14-mx__string_lt
+Ignoring directive: .type	mx__string_le,@function
+Ignoring directive: .size	mx__string_le, .Lfunc_end15-mx__string_le
+Ignoring directive: .type	mx__string_gt,@function
+Ignoring directive: .size	mx__string_gt, .Lfunc_end16-mx__string_gt
+Ignoring directive: .type	mx__string_ge,@function
+Ignoring directive: .size	mx__string_ge, .Lfunc_end17-mx__string_ge
+Ignoring directive: .type	.L.str,@object
+Ignoring directive: .size	.L.str, 3
+Ignoring directive: .type	.L.str.2,@object
+Ignoring directive: .size	.L.str.2, 3
+Ignoring directive: .type	.L.str.3,@object
+Ignoring directive: .size	.L.str.3, 4
+Ignoring directive: .ident	"clang version 10.0.0-4ubuntu1 "
+Ignoring directive: .section	".note.GNU-stack","",@progbits
+
+Build finished in 8 ms
+auipc t1, 0
+		# t1: 0 -> 0
+jalr ra, 1200(t1)
+		# ra: 0 -> 8
+addi sp, sp, -8
+		# sp: 536870912 -> 536870904
+sw ra, 4(sp)
+		# stored value = 8
+sw s10, 0(sp)
+		# stored value = 0
+auipc t1, 0
+		# t1: 0 -> 1212
+jalr ra, 96(t1)
+		# ra: 8 -> 1220
+jal zero, 2  # .L2_1
+		# zero: 0 -> 1312
+jalr zero, 0(ra)
+		# zero: 0 -> 1316
+addi a0, zero, 4
+		# a0: 0 -> 4
+auipc t1, 4294967295
+		# t1: 1212 -> 4294964424
+jalr ra, 2896(t1)
+		# ra: 1220 -> 1232
+call libc-24
+		# return value = 1328
+addi s10, a0, 0
+		# s10: 0 -> 1328
+addi a0, zero, 2
+		# a0: 1328 -> 2
+addi a1, zero, 10
+		# a1: 4660 -> 10
+lui a2, 2
+		# a2: 4660 -> 8192
+ori a2, a2, 1808
+		# a2: 8192 -> 10000
+auipc t1, 4294967295
+		# t1: 1788 -> 4294964452
+jalr ra, 3676(t1)
+		# ra: 5892 -> 1260
+addi sp, sp, -36
+		# sp: 536870904 -> 536870868
+sw ra, 28(sp)
+		# stored value = 1260
+sw s10, 0(sp)
+		# stored value = 1328
+sw s0, 32(sp)
+		# stored value = 0
+sw s1, 20(sp)
+		# stored value = 0
+sw s2, 24(sp)
+		# stored value = 0
+sw s3, 16(sp)
+		# stored value = 0
+sw s4, 4(sp)
+		# stored value = 0
+sw s5, 12(sp)
+		# stored value = 0
+sw s7, 8(sp)
+		# stored value = 0
+addi s5, a0, 0
+		# s5: 0 -> 2
+addi s0, a1, 0
+		# s0: 0 -> 10
+addi s4, a2, 0
+		# s4: 0 -> 10000
+addi a0, zero, 4
+		# a0: 2 -> 4
+auipc t1, 4294967295
+		# t1: 4294964452 -> 4294964088
+jalr ra, 3232(t1)
+		# ra: 1260 -> 896
+call libc-24
+		# return value = 1334
+addi s2, a0, 0
+		# s2: 0 -> 1334
+addi a0, zero, 4
+		# a0: 1334 -> 4
+auipc t1, 4294967295
+		# t1: 1452 -> 4294964104
+jalr ra, 3216(t1)
+		# ra: 5556 -> 912
+call libc-24
+		# return value = 1340
+addi s1, a0, 0
+		# s1: 0 -> 1340
+addi a0, zero, 4
+		# a0: 1340 -> 4
+auipc t1, 4294967295
+		# t1: 1468 -> 4294964120
+jalr ra, 3200(t1)
+		# ra: 5572 -> 928
+call libc-24
+		# return value = 1346
+addi s3, a0, 0
+		# s3: 0 -> 1346
+addi a0, zero, 4
+		# a0: 1346 -> 4
+auipc t1, 4294967295
+		# t1: 1484 -> 4294964136
+jalr ra, 3184(t1)
+		# ra: 5588 -> 944
+call libc-24
+		# return value = 1352
+addi s10, a0, 0
+		# s10: 1328 -> 1352
+sw s5, 0(s10)
+		# stored value = 2
+addi a0, zero, 4
+		# a0: 1352 -> 4
+auipc t1, 4294967295
+		# t1: 1500 -> 4294964156
+jalr ra, 3164(t1)
+		# ra: 5604 -> 964
+call libc-24
+		# return value = 1358
+addi s5, a0, 0
+		# s5: 2 -> 1358
+sw s0, 0(s5)
+		# stored value = 10
+addi a0, zero, 4
+		# a0: 1358 -> 4
+auipc t1, 4294967295
+		# t1: 1520 -> 4294964176
+jalr ra, 3144(t1)
+		# ra: 5624 -> 984
+call libc-24
+		# return value = 1364
+sw s4, 0(a0)
+		# stored value = 10000
+addi t4, zero, 1
+		# t4: 32620 -> 1
+sw t4, 0(s1)
+		# stored value = 1
+lw t4, 0(s10)
+		# t4: 1 -> 2
+sw t4, 0(s2)
+		# stored value = 2
+jal zero, 2  # .L0_1
+		# zero: 0 -> 1008
+lw t4, 0(s5)
+		# t4: 2 -> 10
+slt t4, zero, t4
+		# t4: 10 -> 1
+beq t4, zero, 120  # .L0_6
+jal zero, 2  # .L0_2
+		# zero: 0 -> 1024
+lw t4, 0(s5)
+		# t4: 1 -> 10
+andi t4, t4, 1
+		# t4: 10 -> 0
+addi t4, t4, -1
+		# t4: 0 -> 4294967295
+sltiu t4, t4, 1
+		# t4: 4294967295 -> 0
+beq t4, zero, 40  # .L0_4
+jal zero, 2  # .L0_5
+		# zero: 0 -> 1084
+lw t4, 0(s2)
+		# t4: 0 -> 2
+lw t4, 0(s2)
+		# t4: 2 -> 2
+lw t5, 0(s2)
+		# t5: 32620 -> 2
+mul t4, t4, t5
+		# t4: 2 -> 4
+lw t5, 0(a0)
+		# t5: 2 -> 10000
+rem t4, t4, t5
+		# t4: 4 -> 4
+sw t4, 0(s2)
+		# stored value = 4
+lw t4, 0(s5)
+		# t4: 4 -> 10
+lw t4, 0(s5)
+		# t4: 10 -> 10
+addi t5, zero, 2
+		# t5: 10000 -> 2
+div t4, t4, t5
+		# t4: 10 -> 5
+sw t4, 0(s5)
+		# stored value = 5
+jal zero, -62  # .L0_1
+		# zero: 0 -> 1136
+lw t4, 0(s5)
+		# t4: 5 -> 5
+slt t4, zero, t4
+		# t4: 5 -> 1
+beq t4, zero, 120  # .L0_6
+jal zero, 2  # .L0_2
+		# zero: 0 -> 1024
+lw t4, 0(s5)
+		# t4: 1 -> 5
+andi t4, t4, 1
+		# t4: 5 -> 1
+addi t4, t4, -1
+		# t4: 1 -> 0
+sltiu t4, t4, 1
+		# t4: 0 -> 1
+beq t4, zero, 40  # .L0_4
+jal zero, 2  # .L0_3
+		# zero: 0 -> 1048
+lw t4, 0(s1)
+		# t4: 1 -> 1
+lw t5, 0(s1)
+		# t5: 2 -> 1
+lw t4, 0(s2)
+		# t4: 1 -> 4
+mul t4, t5, t4
+		# t4: 4 -> 4
+lw t5, 0(a0)
+		# t5: 1 -> 10000
+rem t4, t4, t5
+		# t4: 4 -> 4
+sw t4, 0(s1)
+		# stored value = 4
+jal zero, 4  # .L0_5
+		# zero: 0 -> 1080
+lw t4, 0(s2)
+		# t4: 4 -> 4
+lw t4, 0(s2)
+		# t4: 4 -> 4
+lw t5, 0(s2)
+		# t5: 10000 -> 4
+mul t4, t4, t5
+		# t4: 4 -> 16
+lw t5, 0(a0)
+		# t5: 4 -> 10000
+rem t4, t4, t5
+		# t4: 16 -> 16
+sw t4, 0(s2)
+		# stored value = 16
+lw t4, 0(s5)
+		# t4: 16 -> 5
+lw t4, 0(s5)
+		# t4: 5 -> 5
+addi t5, zero, 2
+		# t5: 10000 -> 2
+div t4, t4, t5
+		# t4: 5 -> 2
+sw t4, 0(s5)
+		# stored value = 2
+jal zero, -62  # .L0_1
+		# zero: 0 -> 1136
+lw t4, 0(s5)
+		# t4: 2 -> 2
+slt t4, zero, t4
+		# t4: 2 -> 1
+beq t4, zero, 120  # .L0_6
+jal zero, 2  # .L0_2
+		# zero: 0 -> 1024
+lw t4, 0(s5)
+		# t4: 1 -> 2
+andi t4, t4, 1
+		# t4: 2 -> 0
+addi t4, t4, -1
+		# t4: 0 -> 4294967295
+sltiu t4, t4, 1
+		# t4: 4294967295 -> 0
+beq t4, zero, 40  # .L0_4
+jal zero, 2  # .L0_5
+		# zero: 0 -> 1084
+lw t4, 0(s2)
+		# t4: 0 -> 16
+lw t4, 0(s2)
+		# t4: 16 -> 16
+lw t5, 0(s2)
+		# t5: 2 -> 16
+mul t4, t4, t5
+		# t4: 16 -> 256
+lw t5, 0(a0)
+		# t5: 16 -> 10000
+rem t4, t4, t5
+		# t4: 256 -> 256
+sw t4, 0(s2)
+		# stored value = 256
+lw t4, 0(s5)
+		# t4: 256 -> 2
+lw t4, 0(s5)
+		# t4: 2 -> 2
+addi t5, zero, 2
+		# t5: 10000 -> 2
+div t4, t4, t5
+		# t4: 2 -> 1
+sw t4, 0(s5)
+		# stored value = 1
+jal zero, -62  # .L0_1
+		# zero: 0 -> 1136
+lw t4, 0(s5)
+		# t4: 1 -> 1
+slt t4, zero, t4
+		# t4: 1 -> 1
+beq t4, zero, 120  # .L0_6
+jal zero, 2  # .L0_2
+		# zero: 0 -> 1024
+lw t4, 0(s5)
+		# t4: 1 -> 1
+andi t4, t4, 1
+		# t4: 1 -> 1
+addi t4, t4, -1
+		# t4: 1 -> 0
+sltiu t4, t4, 1
+		# t4: 0 -> 1
+beq t4, zero, 40  # .L0_4
+jal zero, 2  # .L0_3
+		# zero: 0 -> 1048
+lw t4, 0(s1)
+		# t4: 1 -> 4
+lw t5, 0(s1)
+		# t5: 2 -> 4
+lw t4, 0(s2)
+		# t4: 4 -> 256
+mul t4, t5, t4
+		# t4: 256 -> 1024
+lw t5, 0(a0)
+		# t5: 4 -> 10000
+rem t4, t4, t5
+		# t4: 1024 -> 1024
+sw t4, 0(s1)
+		# stored value = 1024
+jal zero, 4  # .L0_5
+		# zero: 0 -> 1080
+lw t4, 0(s2)
+		# t4: 1024 -> 256
+lw t4, 0(s2)
+		# t4: 256 -> 256
+lw t5, 0(s2)
+		# t5: 10000 -> 256
+mul t4, t4, t5
+		# t4: 256 -> 65536
+lw t5, 0(a0)
+		# t5: 256 -> 10000
+rem t4, t4, t5
+		# t4: 65536 -> 5536
+sw t4, 0(s2)
+		# stored value = 5536
+lw t4, 0(s5)
+		# t4: 5536 -> 1
+lw t4, 0(s5)
+		# t4: 1 -> 1
+addi t5, zero, 2
+		# t5: 10000 -> 2
+div t4, t4, t5
+		# t4: 1 -> 0
+sw t4, 0(s5)
+		# stored value = 0
+jal zero, -62  # .L0_1
+		# zero: 0 -> 1136
+lw t4, 0(s5)
+		# t4: 0 -> 0
+slt t4, zero, t4
+		# t4: 0 -> 0
+beq t4, zero, 120  # .L0_6
+lw t4, 0(s1)
+		# t4: 0 -> 1024
+sw t4, 0(s3)
+		# stored value = 1024
+jal zero, 4  # .L0_8
+		# zero: 0 -> 1148
+lw a0, 0(s3)
+		# a0: 1364 -> 1024
+lw s10, 0(sp)
+		# s10: 1352 -> 1328
+lw s0, 32(sp)
+		# s0: 10 -> 0
+lw s1, 20(sp)
+		# s1: 1340 -> 0
+lw s2, 24(sp)
+		# s2: 1334 -> 0
+lw s3, 16(sp)
+		# s3: 1346 -> 0
+lw s4, 4(sp)
+		# s4: 10000 -> 0
+lw s5, 12(sp)
+		# s5: 1358 -> 0
+lw s7, 8(sp)
+		# s7: 0 -> 0
+lw ra, 28(sp)
+		# ra: 5644 -> 1260
+addi sp, sp, 36
+		# sp: 536870868 -> 536870904
+jalr zero, 0(ra)
+		# zero: 0 -> 1200
+auipc t1, 4294967295
+		# t1: 1540 -> 4294964460
+jalr ra, 3088(t1)
+		# ra: 1260 -> 1268
+addi sp, sp, -16
+		# sp: 536870904 -> 536870888
+sw ra, 12(sp)
+		# stored value = 1268
+sw s0, 8(sp)
+		# stored value = 0
+sw s1, 4(sp)
+		# stored value = 0
+addi s0, a0, 0
+		# s0: 0 -> 1024
+addi a0, zero, 12
+		# a0: 1024 -> 12
+auipc t1, 4294967295
+		# t1: 4294964460 -> 4294963476
+jalr ra, 3844(t1)
+		# ra: 1268 -> 284
+call libc-24
+		# return value = 1370
+addi s1, a0, 0
+		# s1: 0 -> 1370
+lui a0, 0
+		# a0: 1370 -> 0
+addi a1, a0, 819
+		# a1: 32630 -> 819
+addi a0, s1, 0
+		# a0: 0 -> 1370
+addi a2, s0, 0
+		# a2: 42620 -> 1024
+auipc t1, 4294967295
+		# t1: 840 -> 4294963504
+jalr ra, 3812(t1)
+		# ra: 4944 -> 312
+call libc-20
+		# return value = 4
+addi a0, s1, 0
+		# a0: 4 -> 1370
+lw s1, 4(sp)
+		# s1: 1370 -> 0
+lw s0, 8(sp)
+		# s0: 1024 -> 0
+lw ra, 12(sp)
+		# ra: 4972 -> 1268
+addi sp, sp, 16
+		# sp: 536870888 -> 536870904
+jalr zero, 0(ra)
+		# zero: 0 -> 336
+auipc t1, 4294967295
+		# t1: 868 -> 4294964468
+jalr ra, 2904(t1)
+		# ra: 1268 -> 1276
+auipc t1, 4294967295
+		# t1: 4294964468 -> 4294963276
+jalr zero, 4032(t1)
+		# zero: 0 -> 84
+call libc-12
+		# return value = 4
+sw zero, 0(s10)
+		# stored value = 0
+jal zero, 4  # .L1_2
+		# zero: 0 -> 1284
+lw a0, 0(s10)
+		# a0: 4 -> 0
+lw s10, 0(sp)
+		# s10: 1328 -> 0
+lw ra, 4(sp)
+		# ra: 5936 -> 8
+addi sp, sp, 8
+		# sp: 536870904 -> 536870912
+jalr zero, 0(ra)
+		# zero: 0 -> 1308
+
+Interpretation finished in 183 ms

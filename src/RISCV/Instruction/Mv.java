@@ -19,6 +19,39 @@ public class Mv extends ASMInst {
         this.addUse(this.rs);
     }
 
+    public void remove() {
+        rs.removeUse(this);
+        rd.removeDef(this);
+        removeUse(rs);
+        removeDef(rd);
+        rs = null;
+        rd = null;
+        if (getPrevInst() == null)
+            getAsmBlock().setInstBegin(getNextInst());
+        else
+            getPrevInst().setNextInst(getNextInst());
+        if (getNextInst() == null)
+            getAsmBlock().setInstEnd(getPrevInst());
+        else
+            getNextInst().setPrevInst(getPrevInst());
+    }
+
+    public VirtualRegister getRd() {
+        return rd;
+    }
+
+    public void setRd(VirtualRegister rd) {
+        this.rd = rd;
+    }
+
+    public VirtualRegister getRs() {
+        return rs;
+    }
+
+    public void setRs(VirtualRegister rs) {
+        this.rs = rs;
+    }
+
     @Override
     public void replaceDef(VirtualRegister oldRegister, VirtualRegister newRegister) {
         super.replaceDef(oldRegister, newRegister);

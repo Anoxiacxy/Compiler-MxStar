@@ -29,15 +29,29 @@ public class PhysicalRegister extends Register {
             RegType.caller, RegType.caller, RegType.caller, RegType.caller
     ));
 
+    public static Map<String, PhysicalRegister> allocatableRegisters;
     public static Map<String, PhysicalRegister> physicalRegisters;
     public static Map<String, VirtualRegister> virtualRegisters;
+
     static {
         physicalRegisters = new HashMap<>();
         virtualRegisters = new HashMap<>();
+        allocatableRegisters = new HashMap<>();
+
         for (int i = 0; i < phyRegName.size(); i++)
             physicalRegisters.put(phyRegName.get(i), new PhysicalRegister(phyRegName.get(i), saveStatus.get(i), i));
+
+        for (int i = 0; i < phyRegName.size(); i++)
+            if (saveStatus.get(i) != RegType.special)
+                allocatableRegisters.put(phyRegName.get(i), physicalRegisters.get(phyRegName.get(i)));
+
         for (String name : phyRegName)
             virtualRegisters.put(name, new VirtualRegister(name, physicalRegisters.get(name)));
+
+    }
+
+    public static Map<String, PhysicalRegister> getAllocatableRegisters() {
+        return allocatableRegisters;
     }
 
     public static VirtualRegister getv(String name) {
