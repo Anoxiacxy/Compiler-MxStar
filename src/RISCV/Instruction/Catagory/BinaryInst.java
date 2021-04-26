@@ -63,4 +63,11 @@ public class BinaryInst extends ASMInst {
                 ((rs2 == null) ? imm.emitCode() : rs2.emitCode());
     }
 
+    public VirtualRegister getRd() {
+        return rd;
+    }
+
+    public void setRd(VirtualRegister rd) {
+        this.rd = rd;
+    }
 }

@@ -465,6 +465,7 @@ public class RegisterAllocate implements ASMPass {
 
     private void rewriteProgram(ASMFunction function) {
         for (VirtualRegister v : spilledNodes) {
+
             Address address = new Address(PhysicalRegister.getv("sp"), new IntImm(0));
             function.getStackFrame().getRuntimeRegisterLocation().add(address);
 

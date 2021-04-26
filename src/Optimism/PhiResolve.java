@@ -87,6 +87,8 @@ public class PhiResolve extends Pass {
                     if (((BrInst) pre.getInstEnd()).getElseBlock() == block)
                         ((BrInst) pre.getInstEnd()).setElseBlock(preNext);
 
+                    pre.getSuccessors().add(preNext);
+                    pre.getSuccessors().remove(block);
                     preNext.getPredecessors().add(pre);
                     preNext.getSuccessors().add(block);
                     block.getPredecessors().remove(pre);
