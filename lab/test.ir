@@ -1,9 +1,9 @@
 	.text
 
-	.globl	exchange
+	.globl	init
 	.p2align	2
-	.type	exchange,@function
-exchange:
+	.type	init,@function
+init:
 .L0_0:
 	mv	[v]ra.copy, ra
 	mv	[v]s11.copy, s11
@@ -18,52 +18,205 @@ exchange:
 	mv	[v]s7.copy, s7
 	mv	[v]s8.copy, s8
 	mv	[v]s9.copy, s9
-	mv	[v]x0, a0
-	mv	[v]y1, a1
 	addi	[v]const.int(4)1, zero, 4
 	mv	a0, [v]const.int(4)1
 	call	malloc
-	mv	[v]t2, a0
+	mv	[v]w0, a0
 	addi	[v]const.int(4)2, zero, 4
 	mv	a0, [v]const.int(4)2
 	call	malloc
-	mv	[v]x$addr3, a0
-	sw	[v]x0, 0([v]x$addr3)
+	mv	[v]v1, a0
 	addi	[v]const.int(4)3, zero, 4
 	mv	a0, [v]const.int(4)3
 	call	malloc
-	mv	[v]y$addr4, a0
-	sw	[v]y1, 0([v]y$addr4)
+	mv	[v]u2, a0
+	addi	[v]const.int(4)4, zero, 4
+	mv	a0, [v]const.int(4)4
+	call	malloc
+	mv	[v]j3, a0
+	addi	[v]const.int(4)5, zero, 4
+	mv	a0, [v]const.int(4)5
+	call	malloc
+	mv	[v]i4, a0
+	addi	[v]const.int(4)6, zero, 4
+	mv	a0, [v]const.int(4)6
+	call	malloc
+	mv	[v]arrayIterator5, a0
+	lui	[v]lui, %hi(n)
+	lw	[v]variable6, %lo(n)([v]lui)
+	call	mx__getInt
+	mv	[v]result7, a0
+	lui	[v]lui, %hi(n)
+	sw	[v]result7, %lo(n)([v]lui)
+	lui	[v]lui, %hi(m)
+	lw	[v]variable8, %lo(m)([v]lui)
+	call	mx__getInt
+	mv	[v]result9, a0
+	lui	[v]lui, %hi(m)
+	sw	[v]result9, %lo(m)([v]lui)
 	lui	[v]lui, %hi(a)
-	lw	[v]variable5, %lo(a)([v]lui)
-	lw	[v]variable6, 0([v]x$addr3)
-	slli	[v]array_offset, [v]variable6, 2
-	add	[v]element$addr7, [v]variable5, [v]array_offset
-	lw	[v]element8, 0([v]element$addr7)
-	sw	[v]element8, 0([v]t2)
-	lui	[v]lui, %hi(a)
-	lw	[v]variable9, %lo(a)([v]lui)
-	lw	[v]variable10, 0([v]x$addr3)
-	slli	[v]array_offset, [v]variable10, 2
-	add	[v]element$addr11, [v]variable9, [v]array_offset
-	lw	[v]element12, 0([v]element$addr11)
-	lui	[v]lui, %hi(a)
-	lw	[v]variable13, %lo(a)([v]lui)
-	lw	[v]variable14, 0([v]y$addr4)
-	slli	[v]array_offset, [v]variable14, 2
-	add	[v]element$addr15, [v]variable13, [v]array_offset
-	lw	[v]element16, 0([v]element$addr15)
-	sw	[v]element16, 0([v]element$addr11)
-	lui	[v]lui, %hi(a)
-	lw	[v]variable17, %lo(a)([v]lui)
-	lw	[v]variable18, 0([v]y$addr4)
-	slli	[v]array_offset, [v]variable18, 2
-	add	[v]element$addr19, [v]variable17, [v]array_offset
-	lw	[v]element20, 0([v]element$addr19)
-	lw	[v]variable21, 0([v]t2)
-	sw	[v]variable21, 0([v]element$addr19)
+	lw	[v]variable10, %lo(a)([v]lui)
+	lui	[v]lui, %hi(n)
+	lw	[v]variable11, %lo(n)([v]lui)
+	lui	[v]lui, %hi(n)
+	lw	[v]variable12, %lo(n)([v]lui)
+	addi	[v]const.int(4)7, zero, 4
+	mul	[v]contentSize13, [v]variable11, [v]const.int(4)7
+	addi	[v]totalByte14, [v]contentSize13, 4
+	mv	a0, [v]totalByte14
+	call	malloc
+	mv	[v]mallocPointer15, a0
+	mv	[v]mallocInt16, [v]mallocPointer15
+	sw	[v]variable11, 0([v]mallocInt16)
+	addi	[v]arrayBeginInt17, [v]mallocInt16, 4
+	mv	[v]arrayBegin18, [v]arrayBeginInt17
+	slli	[v]array_offset, [v]variable11, 2
+	add	[v]arrayEnd19, [v]arrayBegin18, [v]array_offset
+	sw	[v]arrayBegin18, 0([v]arrayIterator5)
 	j	.L0_1
 .L0_1:
+	lw	[v]arrayIterator20, 0([v]arrayIterator5)
+	sub	[v]icmp, [v]arrayIterator20, [v]arrayEnd19
+	snez	[v]cond21, [v]icmp
+	beqz	[v]cond21, .L0_3
+	j	.L0_2
+.L0_2:
+	addi	[v]const.int(4)8, zero, 4
+	mul	[v]contentSize22, [v]variable12, [v]const.int(4)8
+	addi	[v]totalByte23, [v]contentSize22, 4
+	mv	a0, [v]totalByte23
+	call	malloc
+	mv	[v]mallocPointer24, a0
+	mv	[v]mallocInt25, [v]mallocPointer24
+	sw	[v]variable12, 0([v]mallocInt25)
+	addi	[v]arrayBeginInt26, [v]mallocInt25, 4
+	mv	[v]arrayBegin27, [v]arrayBeginInt26
+	sw	[v]arrayBegin27, 0([v]arrayIterator20)
+	addi	[v]arrayIteratorNext28, [v]arrayIterator20, 4
+	sw	[v]arrayIteratorNext28, 0([v]arrayIterator5)
+	j	.L0_1
+.L0_3:
+	lui	[v]lui, %hi(a)
+	sw	[v]arrayBegin18, %lo(a)([v]lui)
+	lw	[v]variable29, 0([v]i4)
+	sw	zero, 0([v]i4)
+	j	.L0_4
+.L0_4:
+	lw	[v]variable30, 0([v]i4)
+	lui	[v]lui, %hi(n)
+	lw	[v]variable31, %lo(n)([v]lui)
+	slt	[v]result32, [v]variable30, [v]variable31
+	beqz	[v]result32, .L0_11
+	j	.L0_5
+.L0_5:
+	lw	[v]variable33, 0([v]j3)
+	sw	zero, 0([v]j3)
+	j	.L0_6
+.L0_6:
+	lw	[v]variable34, 0([v]j3)
+	lui	[v]lui, %hi(n)
+	lw	[v]variable35, %lo(n)([v]lui)
+	slt	[v]result36, [v]variable34, [v]variable35
+	beqz	[v]result36, .L0_9
+	j	.L0_7
+.L0_7:
+	lui	[v]lui, %hi(a)
+	lw	[v]variable37, %lo(a)([v]lui)
+	lw	[v]variable38, 0([v]i4)
+	slli	[v]array_offset, [v]variable38, 2
+	add	[v]element$addr39, [v]variable37, [v]array_offset
+	lw	[v]element40, 0([v]element$addr39)
+	lw	[v]variable41, 0([v]j3)
+	slli	[v]array_offset, [v]variable41, 2
+	add	[v]element$addr42, [v]element40, [v]array_offset
+	lw	[v]element43, 0([v]element$addr42)
+	lui	[v]lui, %hi(INF)
+	lw	[v]variable44, %lo(INF)([v]lui)
+	sw	[v]variable44, 0([v]element$addr42)
+	j	.L0_8
+.L0_8:
+	lw	[v]variable45, 0([v]j3)
+	addi	[v]result46, [v]variable45, 1
+	sw	[v]result46, 0([v]j3)
+	j	.L0_6
+.L0_9:
+	j	.L0_10
+.L0_10:
+	lw	[v]variable47, 0([v]i4)
+	addi	[v]result48, [v]variable47, 1
+	sw	[v]result48, 0([v]i4)
+	j	.L0_4
+.L0_11:
+	lw	[v]variable49, 0([v]i4)
+	sw	zero, 0([v]i4)
+	j	.L0_12
+.L0_12:
+	lw	[v]variable50, 0([v]i4)
+	lui	[v]lui, %hi(n)
+	lw	[v]variable51, %lo(n)([v]lui)
+	slt	[v]result52, [v]variable50, [v]variable51
+	beqz	[v]result52, .L0_15
+	j	.L0_13
+.L0_13:
+	lui	[v]lui, %hi(a)
+	lw	[v]variable53, %lo(a)([v]lui)
+	lw	[v]variable54, 0([v]i4)
+	slli	[v]array_offset, [v]variable54, 2
+	add	[v]element$addr55, [v]variable53, [v]array_offset
+	lw	[v]element56, 0([v]element$addr55)
+	lw	[v]variable57, 0([v]i4)
+	slli	[v]array_offset, [v]variable57, 2
+	add	[v]element$addr58, [v]element56, [v]array_offset
+	lw	[v]element59, 0([v]element$addr58)
+	sw	zero, 0([v]element$addr58)
+	j	.L0_14
+.L0_14:
+	lw	[v]variable60, 0([v]i4)
+	addi	[v]result61, [v]variable60, 1
+	sw	[v]result61, 0([v]i4)
+	j	.L0_12
+.L0_15:
+	lw	[v]variable62, 0([v]i4)
+	sw	zero, 0([v]i4)
+	j	.L0_16
+.L0_16:
+	lw	[v]variable63, 0([v]i4)
+	lui	[v]lui, %hi(m)
+	lw	[v]variable64, %lo(m)([v]lui)
+	slt	[v]result65, [v]variable63, [v]variable64
+	beqz	[v]result65, .L0_19
+	j	.L0_17
+.L0_17:
+	call	mx__getInt
+	mv	[v]result66, a0
+	sw	[v]result66, 0([v]u2)
+	call	mx__getInt
+	mv	[v]result67, a0
+	sw	[v]result67, 0([v]v1)
+	call	mx__getInt
+	mv	[v]result68, a0
+	sw	[v]result68, 0([v]w0)
+	lui	[v]lui, %hi(a)
+	lw	[v]variable69, %lo(a)([v]lui)
+	lw	[v]variable70, 0([v]u2)
+	slli	[v]array_offset, [v]variable70, 2
+	add	[v]element$addr71, [v]variable69, [v]array_offset
+	lw	[v]element72, 0([v]element$addr71)
+	lw	[v]variable73, 0([v]v1)
+	slli	[v]array_offset, [v]variable73, 2
+	add	[v]element$addr74, [v]element72, [v]array_offset
+	lw	[v]element75, 0([v]element$addr74)
+	lw	[v]variable76, 0([v]w0)
+	sw	[v]variable76, 0([v]element$addr74)
+	j	.L0_18
+.L0_18:
+	lw	[v]variable77, 0([v]i4)
+	addi	[v]result78, [v]variable77, 1
+	sw	[v]result78, 0([v]i4)
+	j	.L0_16
+.L0_19:
+	j	.L0_20
+.L0_20:
 	mv	s11, [v]s11.copy
 	mv	s10, [v]s10.copy
 	mv	s0, [v]s0.copy
@@ -78,7 +231,7 @@ exchange:
 	mv	s9, [v]s9.copy
 	mv	ra, [v]ra.copy
 	ret
-	.size	exchange, .-exchange
+	.size	init, .-init
 	.globl	main
 	.p2align	2
 	.type	main,@function
@@ -98,121 +251,236 @@ main:
 	mv	[v]s8.copy, s8
 	mv	[v]s9.copy, s9
 	call	mx__init
-	addi	[v]const.int(4)4, zero, 4
-	mv	a0, [v]const.int(4)4
+	addi	[v]const.int(4)9, zero, 4
+	mv	a0, [v]const.int(4)9
 	call	malloc
-	mv	[v]i22, a0
-	addi	[v]const.int(4)5, zero, 4
-	mv	a0, [v]const.int(4)5
+	mv	[v]k79, a0
+	addi	[v]const.int(4)10, zero, 4
+	mv	a0, [v]const.int(4)10
 	call	malloc
-	mv	[v]returnValue$address23, a0
-	lui	[v]lui, %hi(n)
-	lw	[v]variable24, %lo(n)([v]lui)
-	call	mx__getString
-	mv	[v]result25, a0
-	mv	a0, [v]result25
-	call	mx__string_parseInt
-	mv	[v]result26, a0
-	lui	[v]lui, %hi(n)
-	sw	[v]result26, %lo(n)([v]lui)
-	lui	[v]lui, %hi(a)
-	lw	[v]variable27, %lo(a)([v]lui)
-	lui	[v]lui, %hi(n)
-	lw	[v]variable28, %lo(n)([v]lui)
-	addi	[v]const.int(4)6, zero, 4
-	mul	[v]contentSize29, [v]variable28, [v]const.int(4)6
-	addi	[v]totalByte30, [v]contentSize29, 4
-	mv	a0, [v]totalByte30
+	mv	[v]j80, a0
+	addi	[v]const.int(4)11, zero, 4
+	mv	a0, [v]const.int(4)11
 	call	malloc
-	mv	[v]mallocPointer31, a0
-	mv	[v]mallocInt32, [v]mallocPointer31
-	sw	[v]variable28, 0([v]mallocInt32)
-	addi	[v]arrayBeginInt33, [v]mallocInt32, 4
-	mv	[v]arrayBegin34, [v]arrayBeginInt33
-	lui	[v]lui, %hi(a)
-	sw	[v]arrayBegin34, %lo(a)([v]lui)
-	lw	[v]variable35, 0([v]i22)
-	sw	zero, 0([v]i22)
+	mv	[v]i81, a0
+	addi	[v]const.int(4)12, zero, 4
+	mv	a0, [v]const.int(4)12
+	call	malloc
+	mv	[v]returnValue$address82, a0
+	call	init
+	lw	[v]variable83, 0([v]k79)
+	sw	zero, 0([v]k79)
 	j	.L1_1
 .L1_1:
-	lw	[v]variable36, 0([v]i22)
-	lui	[v]lui, %hi(a)
-	lw	[v]variable37, %lo(a)([v]lui)
-	mv	[v]castPtr38, [v]variable37
-	addi	[v]arraySizePtr39, [v]castPtr38, -4
-	lw	[v]arraySize40, 0([v]arraySizePtr39)
-	slt	[v]result41, [v]variable36, [v]arraySize40
-	beqz	[v]result41, .L1_4
+	lw	[v]variable84, 0([v]k79)
+	lui	[v]lui, %hi(n)
+	lw	[v]variable85, %lo(n)([v]lui)
+	slt	[v]result86, [v]variable84, [v]variable85
+	beqz	[v]result86, .L1_15
 	j	.L1_2
 .L1_2:
-	lui	[v]lui, %hi(a)
-	lw	[v]variable42, %lo(a)([v]lui)
-	lw	[v]variable43, 0([v]i22)
-	slli	[v]array_offset, [v]variable43, 2
-	add	[v]element$addr44, [v]variable42, [v]array_offset
-	lw	[v]element45, 0([v]element$addr44)
-	lw	[v]variable46, 0([v]i22)
-	sw	[v]variable46, 0([v]element$addr44)
+	lw	[v]variable87, 0([v]i81)
+	sw	zero, 0([v]i81)
 	j	.L1_3
 .L1_3:
-	lw	[v]variable47, 0([v]i22)
-	lw	[v]variable48, 0([v]i22)
-	addi	[v]result49, [v]variable48, 1
-	sw	[v]result49, 0([v]i22)
-	j	.L1_1
+	lw	[v]variable88, 0([v]i81)
+	lui	[v]lui, %hi(n)
+	lw	[v]variable89, %lo(n)([v]lui)
+	slt	[v]result90, [v]variable88, [v]variable89
+	beqz	[v]result90, .L1_13
+	j	.L1_4
 .L1_4:
-	call	makeHeap
-	mv	[v]result50, a0
-	call	heapSort
-	mv	[v]result51, a0
-	lw	[v]variable52, 0([v]i22)
-	sw	zero, 0([v]i22)
+	lw	[v]variable91, 0([v]j80)
+	sw	zero, 0([v]j80)
 	j	.L1_5
 .L1_5:
-	lw	[v]variable53, 0([v]i22)
-	lui	[v]lui, %hi(a)
-	lw	[v]variable54, %lo(a)([v]lui)
-	mv	[v]castPtr55, [v]variable54
-	addi	[v]arraySizePtr56, [v]castPtr55, -4
-	lw	[v]arraySize57, 0([v]arraySizePtr56)
-	slt	[v]result58, [v]variable53, [v]arraySize57
-	beqz	[v]result58, .L1_8
+	lw	[v]variable92, 0([v]j80)
+	lui	[v]lui, %hi(n)
+	lw	[v]variable93, %lo(n)([v]lui)
+	slt	[v]result94, [v]variable92, [v]variable93
+	beqz	[v]result94, .L1_11
 	j	.L1_6
 .L1_6:
 	lui	[v]lui, %hi(a)
-	lw	[v]variable59, %lo(a)([v]lui)
-	lw	[v]variable60, 0([v]i22)
-	slli	[v]array_offset, [v]variable60, 2
-	add	[v]element$addr61, [v]variable59, [v]array_offset
-	lw	[v]element62, 0([v]element$addr61)
-	mv	a0, [v]element62
-	call	mx__toString
-	mv	[v]result63, a0
-	la	[v]string64, .str.0
-	mv	a0, [v]result63
-	mv	a1, [v]string64
-	call	mx__string_add
-	mv	[v]result65, a0
-	mv	a0, [v]result65
-	call	mx__print
+	lw	[v]variable95, %lo(a)([v]lui)
+	lw	[v]variable96, 0([v]i81)
+	slli	[v]array_offset, [v]variable96, 2
+	add	[v]element$addr97, [v]variable95, [v]array_offset
+	lw	[v]element98, 0([v]element$addr97)
+	lw	[v]variable99, 0([v]j80)
+	slli	[v]array_offset, [v]variable99, 2
+	add	[v]element$addr100, [v]element98, [v]array_offset
+	lw	[v]element101, 0([v]element$addr100)
+	lui	[v]lui, %hi(a)
+	lw	[v]variable102, %lo(a)([v]lui)
+	lw	[v]variable103, 0([v]i81)
+	slli	[v]array_offset, [v]variable103, 2
+	add	[v]element$addr104, [v]variable102, [v]array_offset
+	lw	[v]element105, 0([v]element$addr104)
+	lw	[v]variable106, 0([v]k79)
+	slli	[v]array_offset, [v]variable106, 2
+	add	[v]element$addr107, [v]element105, [v]array_offset
+	lw	[v]element108, 0([v]element$addr107)
+	lui	[v]lui, %hi(a)
+	lw	[v]variable109, %lo(a)([v]lui)
+	lw	[v]variable110, 0([v]k79)
+	slli	[v]array_offset, [v]variable110, 2
+	add	[v]element$addr111, [v]variable109, [v]array_offset
+	lw	[v]element112, 0([v]element$addr111)
+	lw	[v]variable113, 0([v]j80)
+	slli	[v]array_offset, [v]variable113, 2
+	add	[v]element$addr114, [v]element112, [v]array_offset
+	lw	[v]element115, 0([v]element$addr114)
+	add	[v]result116, [v]element108, [v]element115
+	slt	[v]result117, [v]result116, [v]element101
+	beqz	[v]result117, .L1_8
 	j	.L1_7
 .L1_7:
-	lw	[v]variable66, 0([v]i22)
-	lw	[v]variable67, 0([v]i22)
-	addi	[v]result68, [v]variable67, 1
-	sw	[v]result68, 0([v]i22)
-	j	.L1_5
+	lui	[v]lui, %hi(a)
+	lw	[v]variable118, %lo(a)([v]lui)
+	lw	[v]variable119, 0([v]i81)
+	slli	[v]array_offset, [v]variable119, 2
+	add	[v]element$addr120, [v]variable118, [v]array_offset
+	lw	[v]element121, 0([v]element$addr120)
+	lw	[v]variable122, 0([v]j80)
+	slli	[v]array_offset, [v]variable122, 2
+	add	[v]element$addr123, [v]element121, [v]array_offset
+	lw	[v]element124, 0([v]element$addr123)
+	lui	[v]lui, %hi(a)
+	lw	[v]variable125, %lo(a)([v]lui)
+	lw	[v]variable126, 0([v]i81)
+	slli	[v]array_offset, [v]variable126, 2
+	add	[v]element$addr127, [v]variable125, [v]array_offset
+	lw	[v]element128, 0([v]element$addr127)
+	lw	[v]variable129, 0([v]k79)
+	slli	[v]array_offset, [v]variable129, 2
+	add	[v]element$addr130, [v]element128, [v]array_offset
+	lw	[v]element131, 0([v]element$addr130)
+	lui	[v]lui, %hi(a)
+	lw	[v]variable132, %lo(a)([v]lui)
+	lw	[v]variable133, 0([v]k79)
+	slli	[v]array_offset, [v]variable133, 2
+	add	[v]element$addr134, [v]variable132, [v]array_offset
+	lw	[v]element135, 0([v]element$addr134)
+	lw	[v]variable136, 0([v]j80)
+	slli	[v]array_offset, [v]variable136, 2
+	add	[v]element$addr137, [v]element135, [v]array_offset
+	lw	[v]element138, 0([v]element$addr137)
+	add	[v]result139, [v]element131, [v]element138
+	sw	[v]result139, 0([v]element$addr123)
+	j	.L1_9
 .L1_8:
-	la	[v]string69, .str.1
-	mv	a0, [v]string69
-	call	mx__print
-	sw	zero, 0([v]returnValue$address23)
-	j	.L1_10
+	j	.L1_9
 .L1_9:
 	j	.L1_10
 .L1_10:
-	lw	[v]returnValue70, 0([v]returnValue$address23)
-	mv	a0, [v]returnValue70
+	lw	[v]variable140, 0([v]j80)
+	addi	[v]result141, [v]variable140, 1
+	sw	[v]result141, 0([v]j80)
+	j	.L1_5
+.L1_11:
+	j	.L1_12
+.L1_12:
+	lw	[v]variable142, 0([v]i81)
+	addi	[v]result143, [v]variable142, 1
+	sw	[v]result143, 0([v]i81)
+	j	.L1_3
+.L1_13:
+	j	.L1_14
+.L1_14:
+	lw	[v]variable144, 0([v]k79)
+	addi	[v]result145, [v]variable144, 1
+	sw	[v]result145, 0([v]k79)
+	j	.L1_1
+.L1_15:
+	lw	[v]variable146, 0([v]i81)
+	sw	zero, 0([v]i81)
+	j	.L1_16
+.L1_16:
+	lw	[v]variable147, 0([v]i81)
+	lui	[v]lui, %hi(n)
+	lw	[v]variable148, %lo(n)([v]lui)
+	slt	[v]result149, [v]variable147, [v]variable148
+	beqz	[v]result149, .L1_26
+	j	.L1_17
+.L1_17:
+	lw	[v]variable150, 0([v]j80)
+	sw	zero, 0([v]j80)
+	j	.L1_18
+.L1_18:
+	lw	[v]variable151, 0([v]j80)
+	lui	[v]lui, %hi(n)
+	lw	[v]variable152, %lo(n)([v]lui)
+	slt	[v]result153, [v]variable151, [v]variable152
+	beqz	[v]result153, .L1_24
+	j	.L1_19
+.L1_19:
+	lui	[v]lui, %hi(a)
+	lw	[v]variable154, %lo(a)([v]lui)
+	lw	[v]variable155, 0([v]i81)
+	slli	[v]array_offset, [v]variable155, 2
+	add	[v]element$addr156, [v]variable154, [v]array_offset
+	lw	[v]element157, 0([v]element$addr156)
+	lw	[v]variable158, 0([v]j80)
+	slli	[v]array_offset, [v]variable158, 2
+	add	[v]element$addr159, [v]element157, [v]array_offset
+	lw	[v]element160, 0([v]element$addr159)
+	lui	[v]lui, %hi(INF)
+	lw	[v]variable161, %lo(INF)([v]lui)
+	sub	[v]icmp, [v]element160, [v]variable161
+	seqz	[v]result162, [v]icmp
+	beqz	[v]result162, .L1_21
+	j	.L1_20
+.L1_20:
+	la	[v]string163, .str.0
+	mv	a0, [v]string163
+	call	mx__print
+	j	.L1_22
+.L1_21:
+	lui	[v]lui, %hi(a)
+	lw	[v]variable164, %lo(a)([v]lui)
+	lw	[v]variable165, 0([v]i81)
+	slli	[v]array_offset, [v]variable165, 2
+	add	[v]element$addr166, [v]variable164, [v]array_offset
+	lw	[v]element167, 0([v]element$addr166)
+	lw	[v]variable168, 0([v]j80)
+	slli	[v]array_offset, [v]variable168, 2
+	add	[v]element$addr169, [v]element167, [v]array_offset
+	lw	[v]element170, 0([v]element$addr169)
+	mv	a0, [v]element170
+	call	mx__toString
+	mv	[v]result171, a0
+	mv	a0, [v]result171
+	call	mx__print
+	j	.L1_22
+.L1_22:
+	la	[v]string172, .str.1
+	mv	a0, [v]string172
+	call	mx__print
+	j	.L1_23
+.L1_23:
+	lw	[v]variable173, 0([v]j80)
+	addi	[v]result174, [v]variable173, 1
+	sw	[v]result174, 0([v]j80)
+	j	.L1_18
+.L1_24:
+	la	[v]string175, .str.2
+	mv	a0, [v]string175
+	call	mx__println
+	j	.L1_25
+.L1_25:
+	lw	[v]variable176, 0([v]i81)
+	addi	[v]result177, [v]variable176, 1
+	sw	[v]result177, 0([v]i81)
+	j	.L1_16
+.L1_26:
+	sw	zero, 0([v]returnValue$address82)
+	j	.L1_28
+.L1_27:
+	j	.L1_28
+.L1_28:
+	lw	[v]returnValue178, 0([v]returnValue$address82)
+	mv	a0, [v]returnValue178
 	mv	s11, [v]s11.copy
 	mv	s10, [v]s10.copy
 	mv	s0, [v]s0.copy
@@ -228,10 +496,10 @@ main:
 	mv	ra, [v]ra.copy
 	ret
 	.size	main, .-main
-	.globl	adjustHeap
+	.globl	mx__init
 	.p2align	2
-	.type	adjustHeap,@function
-adjustHeap:
+	.type	mx__init,@function
+mx__init:
 .L2_0:
 	mv	[v]ra.copy, ra
 	mv	[v]s11.copy, s11
@@ -246,464 +514,8 @@ adjustHeap:
 	mv	[v]s7.copy, s7
 	mv	[v]s8.copy, s8
 	mv	[v]s9.copy, s9
-	mv	[v]n71, a0
-	addi	[v]const.int(4)7, zero, 4
-	mv	a0, [v]const.int(4)7
-	call	malloc
-	mv	[v]t72, a0
-	addi	[v]const.int(4)8, zero, 4
-	mv	a0, [v]const.int(4)8
-	call	malloc
-	mv	[v]t73, a0
-	addi	[v]const.int(4)9, zero, 4
-	mv	a0, [v]const.int(4)9
-	call	malloc
-	mv	[v]j74, a0
-	addi	[v]const.int(4)10, zero, 4
-	mv	a0, [v]const.int(4)10
-	call	malloc
-	mv	[v]i75, a0
-	addi	[v]const.int(4)11, zero, 4
-	mv	a0, [v]const.int(4)11
-	call	malloc
-	mv	[v]returnValue$address76, a0
-	addi	[v]const.int(4)12, zero, 4
-	mv	a0, [v]const.int(4)12
-	call	malloc
-	mv	[v]n$addr77, a0
-	sw	[v]n71, 0([v]n$addr77)
-	sw	zero, 0([v]i75)
-	sw	zero, 0([v]j74)
-	sw	zero, 0([v]t73)
 	j	.L2_1
 .L2_1:
-	lw	[v]variable78, 0([v]i75)
-	addi	[v]const.int(2)13, zero, 2
-	mul	[v]result79, [v]variable78, [v]const.int(2)13
-	lw	[v]variable80, 0([v]n$addr77)
-	slt	[v]result81, [v]result79, [v]variable80
-	beqz	[v]result81, .L2_12
-	j	.L2_2
-.L2_2:
-	lw	[v]variable82, 0([v]j74)
-	lw	[v]variable83, 0([v]i75)
-	addi	[v]const.int(2)14, zero, 2
-	mul	[v]result84, [v]variable83, [v]const.int(2)14
-	sw	[v]result84, 0([v]j74)
-	lw	[v]variable85, 0([v]i75)
-	addi	[v]const.int(2)15, zero, 2
-	mul	[v]result86, [v]variable85, [v]const.int(2)15
-	addi	[v]result87, [v]result86, 1
-	lw	[v]variable88, 0([v]n$addr77)
-	slt	[v]result89, [v]result87, [v]variable88
-	beqz	[v]result89, .L2_3
-	j	.L2_4
-.L2_3:
-	addi	[v]result90, zero, 0
-	j	.L2_5
-.L2_4:
-	lui	[v]lui, %hi(a)
-	lw	[v]variable91, %lo(a)([v]lui)
-	lw	[v]variable92, 0([v]i75)
-	addi	[v]const.int(2)16, zero, 2
-	mul	[v]result93, [v]variable92, [v]const.int(2)16
-	addi	[v]result94, [v]result93, 1
-	slli	[v]array_offset, [v]result94, 2
-	add	[v]element$addr95, [v]variable91, [v]array_offset
-	lw	[v]element96, 0([v]element$addr95)
-	lui	[v]lui, %hi(a)
-	lw	[v]variable97, %lo(a)([v]lui)
-	lw	[v]variable98, 0([v]i75)
-	addi	[v]const.int(2)17, zero, 2
-	mul	[v]result99, [v]variable98, [v]const.int(2)17
-	slli	[v]array_offset, [v]result99, 2
-	add	[v]element$addr100, [v]variable97, [v]array_offset
-	lw	[v]element101, 0([v]element$addr100)
-	slt	[v]result102, [v]element96, [v]element101
-	mv	[v]result90, [v]result102
-	j	.L2_5
-.L2_5:
-	beqz	[v]result90, .L2_7
-	j	.L2_6
-.L2_6:
-	lw	[v]variable103, 0([v]j74)
-	lw	[v]variable104, 0([v]i75)
-	addi	[v]const.int(2)18, zero, 2
-	mul	[v]result105, [v]variable104, [v]const.int(2)18
-	addi	[v]result106, [v]result105, 1
-	sw	[v]result106, 0([v]j74)
-	j	.L2_8
-.L2_7:
-	j	.L2_8
-.L2_8:
-	lui	[v]lui, %hi(a)
-	lw	[v]variable107, %lo(a)([v]lui)
-	lw	[v]variable108, 0([v]i75)
-	slli	[v]array_offset, [v]variable108, 2
-	add	[v]element$addr109, [v]variable107, [v]array_offset
-	lw	[v]element110, 0([v]element$addr109)
-	lui	[v]lui, %hi(a)
-	lw	[v]variable111, %lo(a)([v]lui)
-	lw	[v]variable112, 0([v]j74)
-	slli	[v]array_offset, [v]variable112, 2
-	add	[v]element$addr113, [v]variable111, [v]array_offset
-	lw	[v]element114, 0([v]element$addr113)
-	slt	[v]result115, [v]element114, [v]element110
-	beqz	[v]result115, .L2_10
-	j	.L2_9
-.L2_9:
-	lui	[v]lui, %hi(a)
-	lw	[v]variable116, %lo(a)([v]lui)
-	lw	[v]variable117, 0([v]i75)
-	slli	[v]array_offset, [v]variable117, 2
-	add	[v]element$addr118, [v]variable116, [v]array_offset
-	lw	[v]element119, 0([v]element$addr118)
-	sw	[v]element119, 0([v]t72)
-	lui	[v]lui, %hi(a)
-	lw	[v]variable120, %lo(a)([v]lui)
-	lw	[v]variable121, 0([v]i75)
-	slli	[v]array_offset, [v]variable121, 2
-	add	[v]element$addr122, [v]variable120, [v]array_offset
-	lw	[v]element123, 0([v]element$addr122)
-	lui	[v]lui, %hi(a)
-	lw	[v]variable124, %lo(a)([v]lui)
-	lw	[v]variable125, 0([v]j74)
-	slli	[v]array_offset, [v]variable125, 2
-	add	[v]element$addr126, [v]variable124, [v]array_offset
-	lw	[v]element127, 0([v]element$addr126)
-	sw	[v]element127, 0([v]element$addr122)
-	lui	[v]lui, %hi(a)
-	lw	[v]variable128, %lo(a)([v]lui)
-	lw	[v]variable129, 0([v]j74)
-	slli	[v]array_offset, [v]variable129, 2
-	add	[v]element$addr130, [v]variable128, [v]array_offset
-	lw	[v]element131, 0([v]element$addr130)
-	lw	[v]variable132, 0([v]t72)
-	sw	[v]variable132, 0([v]element$addr130)
-	lw	[v]variable133, 0([v]i75)
-	lw	[v]variable134, 0([v]j74)
-	sw	[v]variable134, 0([v]i75)
-	j	.L2_11
-.L2_10:
-	j	.L2_12
-	j	.L2_11
-.L2_11:
-	j	.L2_1
-.L2_12:
-	sw	zero, 0([v]returnValue$address76)
-	j	.L2_14
-.L2_13:
-	j	.L2_14
-.L2_14:
-	lw	[v]returnValue135, 0([v]returnValue$address76)
-	mv	a0, [v]returnValue135
-	mv	s11, [v]s11.copy
-	mv	s10, [v]s10.copy
-	mv	s0, [v]s0.copy
-	mv	s1, [v]s1.copy
-	mv	s2, [v]s2.copy
-	mv	s3, [v]s3.copy
-	mv	s4, [v]s4.copy
-	mv	s5, [v]s5.copy
-	mv	s6, [v]s6.copy
-	mv	s7, [v]s7.copy
-	mv	s8, [v]s8.copy
-	mv	s9, [v]s9.copy
-	mv	ra, [v]ra.copy
-	ret
-	.size	adjustHeap, .-adjustHeap
-	.globl	heapSort
-	.p2align	2
-	.type	heapSort,@function
-heapSort:
-.L3_0:
-	mv	[v]ra.copy, ra
-	mv	[v]s11.copy, s11
-	mv	[v]s10.copy, s10
-	mv	[v]s0.copy, s0
-	mv	[v]s1.copy, s1
-	mv	[v]s2.copy, s2
-	mv	[v]s3.copy, s3
-	mv	[v]s4.copy, s4
-	mv	[v]s5.copy, s5
-	mv	[v]s6.copy, s6
-	mv	[v]s7.copy, s7
-	mv	[v]s8.copy, s8
-	mv	[v]s9.copy, s9
-	addi	[v]const.int(4)19, zero, 4
-	mv	a0, [v]const.int(4)19
-	call	malloc
-	mv	[v]k136, a0
-	addi	[v]const.int(4)20, zero, 4
-	mv	a0, [v]const.int(4)20
-	call	malloc
-	mv	[v]t137, a0
-	addi	[v]const.int(4)21, zero, 4
-	mv	a0, [v]const.int(4)21
-	call	malloc
-	mv	[v]returnValue$address138, a0
-	lw	[v]variable139, 0([v]t137)
-	sw	zero, 0([v]t137)
-	lw	[v]variable140, 0([v]k136)
-	sw	zero, 0([v]k136)
-	j	.L3_1
-.L3_1:
-	lw	[v]variable141, 0([v]k136)
-	lui	[v]lui, %hi(n)
-	lw	[v]variable142, %lo(n)([v]lui)
-	slt	[v]result143, [v]variable141, [v]variable142
-	beqz	[v]result143, .L3_4
-	j	.L3_2
-.L3_2:
-	lw	[v]variable144, 0([v]t137)
-	lui	[v]lui, %hi(a)
-	lw	[v]variable145, %lo(a)([v]lui)
-	addi	[v]element$addr146, [v]variable145, 0
-	lw	[v]element147, 0([v]element$addr146)
-	sw	[v]element147, 0([v]t137)
-	lui	[v]lui, %hi(a)
-	lw	[v]variable148, %lo(a)([v]lui)
-	addi	[v]element$addr149, [v]variable148, 0
-	lw	[v]element150, 0([v]element$addr149)
-	lui	[v]lui, %hi(a)
-	lw	[v]variable151, %lo(a)([v]lui)
-	lui	[v]lui, %hi(n)
-	lw	[v]variable152, %lo(n)([v]lui)
-	lw	[v]variable153, 0([v]k136)
-	sub	[v]result154, [v]variable152, [v]variable153
-	addi	[v]result155, [v]result154, -1
-	slli	[v]array_offset, [v]result155, 2
-	add	[v]element$addr156, [v]variable151, [v]array_offset
-	lw	[v]element157, 0([v]element$addr156)
-	sw	[v]element157, 0([v]element$addr149)
-	lui	[v]lui, %hi(a)
-	lw	[v]variable158, %lo(a)([v]lui)
-	lui	[v]lui, %hi(n)
-	lw	[v]variable159, %lo(n)([v]lui)
-	lw	[v]variable160, 0([v]k136)
-	sub	[v]result161, [v]variable159, [v]variable160
-	addi	[v]result162, [v]result161, -1
-	slli	[v]array_offset, [v]result162, 2
-	add	[v]element$addr163, [v]variable158, [v]array_offset
-	lw	[v]element164, 0([v]element$addr163)
-	lw	[v]variable165, 0([v]t137)
-	sw	[v]variable165, 0([v]element$addr163)
-	lui	[v]lui, %hi(n)
-	lw	[v]variable166, %lo(n)([v]lui)
-	lw	[v]variable167, 0([v]k136)
-	sub	[v]result168, [v]variable166, [v]variable167
-	addi	[v]result169, [v]result168, -1
-	mv	a0, [v]result169
-	call	adjustHeap
-	mv	[v]result170, a0
-	j	.L3_3
-.L3_3:
-	lw	[v]variable171, 0([v]k136)
-	lw	[v]variable172, 0([v]k136)
-	addi	[v]result173, [v]variable172, 1
-	sw	[v]result173, 0([v]k136)
-	j	.L3_1
-.L3_4:
-	sw	zero, 0([v]returnValue$address138)
-	j	.L3_6
-.L3_5:
-	j	.L3_6
-.L3_6:
-	lw	[v]returnValue174, 0([v]returnValue$address138)
-	mv	a0, [v]returnValue174
-	mv	s11, [v]s11.copy
-	mv	s10, [v]s10.copy
-	mv	s0, [v]s0.copy
-	mv	s1, [v]s1.copy
-	mv	s2, [v]s2.copy
-	mv	s3, [v]s3.copy
-	mv	s4, [v]s4.copy
-	mv	s5, [v]s5.copy
-	mv	s6, [v]s6.copy
-	mv	s7, [v]s7.copy
-	mv	s8, [v]s8.copy
-	mv	s9, [v]s9.copy
-	mv	ra, [v]ra.copy
-	ret
-	.size	heapSort, .-heapSort
-	.globl	makeHeap
-	.p2align	2
-	.type	makeHeap,@function
-makeHeap:
-.L4_0:
-	mv	[v]ra.copy, ra
-	mv	[v]s11.copy, s11
-	mv	[v]s10.copy, s10
-	mv	[v]s0.copy, s0
-	mv	[v]s1.copy, s1
-	mv	[v]s2.copy, s2
-	mv	[v]s3.copy, s3
-	mv	[v]s4.copy, s4
-	mv	[v]s5.copy, s5
-	mv	[v]s6.copy, s6
-	mv	[v]s7.copy, s7
-	mv	[v]s8.copy, s8
-	mv	[v]s9.copy, s9
-	addi	[v]const.int(4)22, zero, 4
-	mv	a0, [v]const.int(4)22
-	call	malloc
-	mv	[v]j175, a0
-	addi	[v]const.int(4)23, zero, 4
-	mv	a0, [v]const.int(4)23
-	call	malloc
-	mv	[v]t176, a0
-	addi	[v]const.int(4)24, zero, 4
-	mv	a0, [v]const.int(4)24
-	call	malloc
-	mv	[v]i177, a0
-	addi	[v]const.int(4)25, zero, 4
-	mv	a0, [v]const.int(4)25
-	call	malloc
-	mv	[v]returnValue$address178, a0
-	lw	[v]variable179, 0([v]i177)
-	lui	[v]lui, %hi(n)
-	lw	[v]variable180, %lo(n)([v]lui)
-	addi	[v]result181, [v]variable180, -1
-	addi	[v]const.int(2)26, zero, 2
-	div	[v]result182, [v]result181, [v]const.int(2)26
-	sw	[v]result182, 0([v]i177)
-	lw	[v]variable183, 0([v]t176)
-	sw	zero, 0([v]t176)
-	lw	[v]variable184, 0([v]j175)
-	sw	zero, 0([v]j175)
-	j	.L4_1
-.L4_1:
-	lw	[v]variable185, 0([v]i177)
-	slt	[v]icmp, [v]variable185, zero
-	xori	[v]result186, [v]icmp, 1
-	beqz	[v]result186, .L4_12
-	j	.L4_2
-.L4_2:
-	lw	[v]variable187, 0([v]j175)
-	lw	[v]variable188, 0([v]i177)
-	addi	[v]const.int(2)27, zero, 2
-	mul	[v]result189, [v]variable188, [v]const.int(2)27
-	sw	[v]result189, 0([v]j175)
-	lw	[v]variable190, 0([v]i177)
-	addi	[v]const.int(2)28, zero, 2
-	mul	[v]result191, [v]variable190, [v]const.int(2)28
-	addi	[v]result192, [v]result191, 1
-	lui	[v]lui, %hi(n)
-	lw	[v]variable193, %lo(n)([v]lui)
-	slt	[v]result194, [v]result192, [v]variable193
-	beqz	[v]result194, .L4_3
-	j	.L4_4
-.L4_3:
-	addi	[v]result195, zero, 0
-	j	.L4_5
-.L4_4:
-	lui	[v]lui, %hi(a)
-	lw	[v]variable196, %lo(a)([v]lui)
-	lw	[v]variable197, 0([v]i177)
-	addi	[v]const.int(2)29, zero, 2
-	mul	[v]result198, [v]variable197, [v]const.int(2)29
-	addi	[v]result199, [v]result198, 1
-	slli	[v]array_offset, [v]result199, 2
-	add	[v]element$addr200, [v]variable196, [v]array_offset
-	lw	[v]element201, 0([v]element$addr200)
-	lui	[v]lui, %hi(a)
-	lw	[v]variable202, %lo(a)([v]lui)
-	lw	[v]variable203, 0([v]i177)
-	addi	[v]const.int(2)30, zero, 2
-	mul	[v]result204, [v]variable203, [v]const.int(2)30
-	slli	[v]array_offset, [v]result204, 2
-	add	[v]element$addr205, [v]variable202, [v]array_offset
-	lw	[v]element206, 0([v]element$addr205)
-	slt	[v]result207, [v]element201, [v]element206
-	mv	[v]result195, [v]result207
-	j	.L4_5
-.L4_5:
-	beqz	[v]result195, .L4_7
-	j	.L4_6
-.L4_6:
-	lw	[v]variable208, 0([v]j175)
-	lw	[v]variable209, 0([v]i177)
-	addi	[v]const.int(2)31, zero, 2
-	mul	[v]result210, [v]variable209, [v]const.int(2)31
-	addi	[v]result211, [v]result210, 1
-	sw	[v]result211, 0([v]j175)
-	j	.L4_8
-.L4_7:
-	j	.L4_8
-.L4_8:
-	lui	[v]lui, %hi(a)
-	lw	[v]variable212, %lo(a)([v]lui)
-	lw	[v]variable213, 0([v]i177)
-	slli	[v]array_offset, [v]variable213, 2
-	add	[v]element$addr214, [v]variable212, [v]array_offset
-	lw	[v]element215, 0([v]element$addr214)
-	lui	[v]lui, %hi(a)
-	lw	[v]variable216, %lo(a)([v]lui)
-	lw	[v]variable217, 0([v]j175)
-	slli	[v]array_offset, [v]variable217, 2
-	add	[v]element$addr218, [v]variable216, [v]array_offset
-	lw	[v]element219, 0([v]element$addr218)
-	slt	[v]result220, [v]element219, [v]element215
-	beqz	[v]result220, .L4_10
-	j	.L4_9
-.L4_9:
-	lw	[v]variable221, 0([v]i177)
-	lw	[v]variable222, 0([v]j175)
-	mv	a0, [v]variable221
-	mv	a1, [v]variable222
-	call	exchange
-	j	.L4_11
-.L4_10:
-	j	.L4_11
-.L4_11:
-	lw	[v]variable223, 0([v]i177)
-	lw	[v]variable224, 0([v]i177)
-	addi	[v]result225, [v]variable224, -1
-	sw	[v]result225, 0([v]i177)
-	j	.L4_1
-.L4_12:
-	sw	zero, 0([v]returnValue$address178)
-	j	.L4_14
-.L4_13:
-	j	.L4_14
-.L4_14:
-	lw	[v]returnValue226, 0([v]returnValue$address178)
-	mv	a0, [v]returnValue226
-	mv	s11, [v]s11.copy
-	mv	s10, [v]s10.copy
-	mv	s0, [v]s0.copy
-	mv	s1, [v]s1.copy
-	mv	s2, [v]s2.copy
-	mv	s3, [v]s3.copy
-	mv	s4, [v]s4.copy
-	mv	s5, [v]s5.copy
-	mv	s6, [v]s6.copy
-	mv	s7, [v]s7.copy
-	mv	s8, [v]s8.copy
-	mv	s9, [v]s9.copy
-	mv	ra, [v]ra.copy
-	ret
-	.size	makeHeap, .-makeHeap
-	.globl	mx__init
-	.p2align	2
-	.type	mx__init,@function
-mx__init:
-.L5_0:
-	mv	[v]ra.copy, ra
-	mv	[v]s11.copy, s11
-	mv	[v]s10.copy, s10
-	mv	[v]s0.copy, s0
-	mv	[v]s1.copy, s1
-	mv	[v]s2.copy, s2
-	mv	[v]s3.copy, s3
-	mv	[v]s4.copy, s4
-	mv	[v]s5.copy, s5
-	mv	[v]s6.copy, s6
-	mv	[v]s7.copy, s7
-	mv	[v]s8.copy, s8
-	mv	[v]s9.copy, s9
-	j	.L5_1
-.L5_1:
 	mv	s11, [v]s11.copy
 	mv	s10, [v]s10.copy
 	mv	s0, [v]s0.copy
@@ -721,15 +533,25 @@ mx__init:
 	.size	mx__init, .-mx__init
 
 	.section	.sdata,"aw",@progbits
+	.global	INF
+	.p2align	2
+	INF:
+	.word	10000000                # 10000000
 	.global	a
 	.p2align	2
 	a:
 	.word	0                       # 0
 	.str.0:
-	.asciz	"  "
+	.asciz	"-1 "
+	.global	m
+	.p2align	2
+	m:
+	.word	0                       # 0
 	.global	n
 	.p2align	2
 	n:
 	.word	0                       # 0
+	.str.2:
+	.asciz	" "
 	.str.1:
-	.asciz	"\n "
+	.asciz	"  "

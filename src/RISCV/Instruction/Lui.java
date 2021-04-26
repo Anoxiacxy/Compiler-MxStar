@@ -14,13 +14,13 @@ public class Lui extends ASMInst {
         this.rd = rd;
         this.imm = imm;
 
-        this.rd.addUse(this);
+        this.rd.addDef(this);
         this.addDef(this.rd);
     }
 
     @Override
     public void replaceDef(VirtualRegister oldRegister, VirtualRegister newRegister) {
-        assert  this.rd == oldRegister;
+        assert this.rd == oldRegister;
         this.rd = newRegister;
         super.replaceDef(oldRegister, newRegister);
     }

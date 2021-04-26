@@ -700,7 +700,7 @@ public class IRBuilder extends IRObject implements ASTVisitor {
             index = new ArrayList<>();
             index.add(new ConstInt(int_t, 1));
             curBasicBlock.appendInstBack(new GetElementPtrInst(curBasicBlock,
-                    arrayIterator, index, arrayIteratorNext));
+                    arrayIteratorNext, index, arrayIterator));
             curBasicBlock.appendInstBack(new StoreInst(curBasicBlock, arrayIteratorNext, arrayIterator$addr));
             curBasicBlock.appendInstBack(new BrInst(curBasicBlock, null, condBlock, null));
 
@@ -716,7 +716,7 @@ public class IRBuilder extends IRObject implements ASTVisitor {
         Register result;
         if (node.getExpressions() != null && node.getExpressions().size() != 0) {
             // array
-            Type type = new ArrayType(node.getExpressions().size(), node.getType());
+            Type type = node.getType();
             // TODO: 2021/4/2
             ArrayList<Operand> arraySizeList = new ArrayList<>();
             node.getExpressions().forEach(exprNode -> {

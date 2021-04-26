@@ -14,7 +14,7 @@ public class Li extends ASMInst {
         this.rd = rd;
         this.imm = imm;
 
-        this.rd.addUse(this);
+        this.rd.addDef(this);
         this.addDef(this.rd);
     }
 
