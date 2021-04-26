@@ -215,9 +215,7 @@ public class IRBuilder extends IRObject implements ASTVisitor {
                                 BinaryInst.OpType.mul, lhs, rhs, (Register) result));
                     break;
                 case "/":
-                    if (lhs instanceof ConstInt && rhs instanceof ConstInt) {
-                        if (((ConstInt) rhs).getValue() == 0)
-                            throw new ComplicationError("divide by zero", node.getPosition());
+                    if (lhs instanceof ConstInt && rhs instanceof ConstInt && ((ConstInt) rhs).getValue() != 0) {
                         result = new ConstInt(int_t, ((ConstInt) lhs).getValue() / ((ConstInt) rhs).getValue());
                     }
                     else
@@ -225,9 +223,7 @@ public class IRBuilder extends IRObject implements ASTVisitor {
                                 BinaryInst.OpType.sdiv, lhs, rhs, (Register) result));
                     break;
                 case "%":
-                    if (lhs instanceof ConstInt && rhs instanceof ConstInt) {
-                        if (((ConstInt) rhs).getValue() == 0)
-                            throw new ComplicationError("divide by zero", node.getPosition());
+                    if (lhs instanceof ConstInt && rhs instanceof ConstInt && ((ConstInt) rhs).getValue() != 0) {
                         result = new ConstInt(int_t, ((ConstInt) lhs).getValue() % ((ConstInt) rhs).getValue());
                     }
                     else
