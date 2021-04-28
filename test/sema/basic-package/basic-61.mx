@@ -7,7 +7,7 @@ Verdict: Fail
 Comment: This cannot be assigned.
 Origin Package: Semantic Pretest
 */
-class A{A a;void f(A t){this=t;}};
+class A{A a;void f(A t){this=t;}}
 int main(){
   return 0;
 }

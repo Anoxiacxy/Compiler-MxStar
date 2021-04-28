@@ -579,7 +579,7 @@ public class RegisterAllocate implements ASMPass {
             for (ASMBlock block : function.getDfsOrder())
                 for (ASMInst inst = block.getInstBegin(); inst != null; inst = inst.getNextInst())
                     if (inst instanceof Mv && ((Mv) inst).getRd().getPhysicalRegister() == ((Mv) inst).getRs().getPhysicalRegister())
-                        ((Mv) inst).remove();
+                        ((Mv) inst).removeFromBlock();
 
 
             function.getStackFrame().calcFrameSize();

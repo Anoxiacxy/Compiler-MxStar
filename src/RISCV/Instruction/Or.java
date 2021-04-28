@@ -7,6 +7,6 @@ import RISCV.Operand.Register.VirtualRegister;
 
 public class Or extends BinaryInst {
     public Or(ASMBlock asmBlock, VirtualRegister rd, VirtualRegister rs1, VirtualRegister rs2) {
-        super(asmBlock, rd, rs1, rs2, null, OpType.and);
+        super(asmBlock, rd, rs1, rs2, null, OpType.or);
     }
 }

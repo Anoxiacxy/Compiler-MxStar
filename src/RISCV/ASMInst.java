@@ -122,6 +122,23 @@ abstract public class ASMInst extends ASMObject {
         return new ArrayList<>();
     }
 
+    public void removeFromBlock() {
+        for (VirtualRegister v : def.keySet())
+            v.removeDef(this);
+        for (VirtualRegister v : use.keySet())
+            v.removeUse(this);
 
+        def.clear();
+        use.clear();
+
+        if (getPrevInst() == null)
+            getAsmBlock().setInstBegin(getNextInst());
+        else
+            getPrevInst().setNextInst(getNextInst());
+        if (getNextInst() == null)
+            getAsmBlock().setInstEnd(getPrevInst());
+        else
+            getNextInst().setPrevInst(getPrevInst());
+    }
 
 }

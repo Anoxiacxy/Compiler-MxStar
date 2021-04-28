@@ -4,6 +4,8 @@ import Frontend.ASTPrinter;
 import Frontend.ASTBuilder;
 import Frontend.SemanticChecker;
 import IR.Module;
+import Optimism.AggressiveDeadCodeElimination;
+import Optimism.Mem2Reg;
 import Optimism.PhiResolve;
 import Parser.MxStarLexer;
 import Parser.MxStarParser;
@@ -65,11 +67,21 @@ public class Main {
             if (emitLLVM)
                 new IRPrinter("lab/output-O0.ll").visit(irModule);
 
-            // TODO: 2021/4/7 optimize
-            new PhiResolve(irModule).run();
+            new Mem2Reg(irModule).run();
 
             if (emitLLVM)
                 new IRPrinter("lab/output-O1.ll").visit(irModule);
+
+            boolean changed = false;
+            do {
+                changed |= new AggressiveDeadCodeElimination(irModule).run();
+
+            } while (changed);
+
+            new PhiResolve(irModule).run();
+
+            if (emitLLVM)
+                new IRPrinter("lab/output-O2.ll").visit(irModule);
 
             InstructionSelector instructionSelector = new InstructionSelector();
             instructionSelector.visit(irModule);

@@ -68,6 +68,14 @@ abstract public class Operand extends IRObject {
         return type;
     }
 
+    public Map<IRInst, Integer> getDef() {
+        return def;
+    }
+
+    public Map<IRInst, Integer> getUse() {
+        return use;
+    }
+
     public String getName() { return null; }
 
     public void setType(IRType type) {

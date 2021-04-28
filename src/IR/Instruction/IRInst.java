@@ -84,7 +84,15 @@ abstract public class IRInst {
 
     public abstract void accept(IRVisitor visitor);
 
-    public void removeFromBasicBlock() {
+    public void removeFromBlock() {
+        for (Operand operand : def.keySet())
+            operand.removeDef(this);
+        for (Operand operand : use.keySet())
+            operand.removeUse(this);
+
+        def.clear();
+        use.clear();
+
         if (nextInst != null) {
             nextInst.setPrevInst(prevInst);
             if (prevInst == null)
@@ -97,17 +105,5 @@ abstract public class IRInst {
                 basicBlock.setInstEnd(prevInst);
         }
 
-    }
-
-    public void removeFromBlock() {
-        if (getPrevInst() == null)
-            basicBlock.setInstBegin(getNextInst());
-        else
-            getPrevInst().setNextInst(getNextInst());
-
-        if (getNextInst() == null)
-            basicBlock.setInstEnd(getPrevInst());
-        else
-            getNextInst().setPrevInst(getPrevInst());
     }
 }

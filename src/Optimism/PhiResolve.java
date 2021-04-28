@@ -62,7 +62,7 @@ public class PhiResolve extends Pass {
                     // phiInst.setResult((Register) phiInst.getBranch().get(0).a);
                     block.insertInstBefore(phiInst, new MoveInst(block,
                             phiInst.getBranch().get(0).a, phiInst.getResult()));
-                    phiInst.removeFromBasicBlock();
+                    phiInst.removeFromBlock();
                 }
                 continue;
             }
@@ -118,7 +118,7 @@ public class PhiResolve extends Pass {
                 }
             }
             for (PhiInst phiInst : phiInstArrayList)
-                phiInst.removeFromBasicBlock();
+                phiInst.removeFromBlock();
         }
     }
 }
