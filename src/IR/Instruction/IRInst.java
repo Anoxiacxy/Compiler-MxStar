@@ -93,17 +93,29 @@ abstract public class IRInst {
         def.clear();
         use.clear();
 
+        if (getPrevInst() == null)
+            basicBlock.setInstBegin(getNextInst());
+        else
+            getPrevInst().setNextInst(getNextInst());
+
+        if (getNextInst() == null)
+            basicBlock.setInstEnd(getPrevInst());
+        else
+            getNextInst().setPrevInst(getPrevInst());
+
+        /*
         if (nextInst != null) {
             nextInst.setPrevInst(prevInst);
-            if (prevInst == null)
-                basicBlock.setInstBegin(nextInst);
+        } else {
+            basicBlock.setInstEnd(prevInst);
         }
 
         if (prevInst != null) {
             prevInst.setNextInst(nextInst);
-            if (nextInst == null)
-                basicBlock.setInstEnd(prevInst);
+        } else {
+            basicBlock.setInstBegin(nextInst);
         }
+        */
 
     }
 }

@@ -1,9 +1,9 @@
 	.text
 
-	.globl	main
+	.globl	gcd
 	.p2align	2
-	.type	main,@function
-main:
+	.type	gcd,@function
+gcd:
 .L0_0:
 	mv	[v]ra.copy, ra
 	mv	[v]s11.copy, s11
@@ -18,134 +18,1336 @@ main:
 	mv	[v]s7.copy, s7
 	mv	[v]s8.copy, s8
 	mv	[v]s9.copy, s9
-	call	mx__init
-	lui	[v]lui, %hi(m)
-	lw	[v]variable0, %lo(m)([v]lui)
-	call	mx__getInt
-	mv	[v]result1, a0
-	lui	[v]lui, %hi(m)
-	sw	[v]result1, %lo(m)([v]lui)
-	lui	[v]lui, %hi(k)
-	lw	[v]variable2, %lo(k)([v]lui)
-	call	mx__getInt
-	mv	[v]result3, a0
-	lui	[v]lui, %hi(k)
-	sw	[v]result3, %lo(k)([v]lui)
-	lui	[v]lui, %hi(i)
-	lw	[v]variable4, %lo(i)([v]lui)
-	lui	[v]lui, %hi(i)
-	sw	zero, %lo(i)([v]lui)
+	mv	[v]x0, a0
+	mv	[v]y1, a1
+	mv	[v]j02, a2
+	mv	[v]j13, a3
+	mv	[v]j24, a4
+	mv	[v]j35, a5
+	mv	[v]j46, a6
+	mv	[v]j57, a7
+	lw	[v]j68, 0(sp)
+	lw	[v]j79, 0(sp)
+	lw	[v]j810, 0(sp)
+	lw	[v]j911, 0(sp)
+	lw	[v]j1012, 0(sp)
+	lw	[v]j1113, 0(sp)
+	lw	[v]j1214, 0(sp)
+	lw	[v]j1315, 0(sp)
+	lw	[v]j1416, 0(sp)
+	lw	[v]j1517, 0(sp)
+	lw	[v]j1618, 0(sp)
+	lw	[v]j1719, 0(sp)
+	lw	[v]j1820, 0(sp)
+	lw	[v]j1921, 0(sp)
+	lw	[v]j2022, 0(sp)
+	lw	[v]j2123, 0(sp)
+	lw	[v]j2224, 0(sp)
+	lw	[v]j2325, 0(sp)
+	lw	[v]j2426, 0(sp)
+	lw	[v]j2527, 0(sp)
+	lw	[v]j2628, 0(sp)
+	lw	[v]j2729, 0(sp)
+	lw	[v]j2830, 0(sp)
+	lw	[v]j2931, 0(sp)
+	addi	[v]const.int(4)1, zero, 4
+	mv	a0, [v]const.int(4)1
+	call	malloc
+	mv	[v]j32, a0
+	addi	[v]const.int(4)2, zero, 4
+	mv	a0, [v]const.int(4)2
+	call	malloc
+	mv	[v]i33, a0
+	addi	[v]const.int(4)3, zero, 4
+	mv	a0, [v]const.int(4)3
+	call	malloc
+	mv	[v]returnValue$address34, a0
+	addi	[v]const.int(4)4, zero, 4
+	mv	a0, [v]const.int(4)4
+	call	malloc
+	mv	[v]x$addr35, a0
+	sw	[v]x0, 0([v]x$addr35)
+	addi	[v]const.int(4)5, zero, 4
+	mv	a0, [v]const.int(4)5
+	call	malloc
+	mv	[v]y$addr36, a0
+	sw	[v]y1, 0([v]y$addr36)
+	addi	[v]const.int(4)6, zero, 4
+	mv	a0, [v]const.int(4)6
+	call	malloc
+	mv	[v]j0$addr37, a0
+	sw	[v]j02, 0([v]j0$addr37)
+	addi	[v]const.int(4)7, zero, 4
+	mv	a0, [v]const.int(4)7
+	call	malloc
+	mv	[v]j1$addr38, a0
+	sw	[v]j13, 0([v]j1$addr38)
+	addi	[v]const.int(4)8, zero, 4
+	mv	a0, [v]const.int(4)8
+	call	malloc
+	mv	[v]j2$addr39, a0
+	sw	[v]j24, 0([v]j2$addr39)
+	addi	[v]const.int(4)9, zero, 4
+	mv	a0, [v]const.int(4)9
+	call	malloc
+	mv	[v]j3$addr40, a0
+	sw	[v]j35, 0([v]j3$addr40)
+	addi	[v]const.int(4)10, zero, 4
+	mv	a0, [v]const.int(4)10
+	call	malloc
+	mv	[v]j4$addr41, a0
+	sw	[v]j46, 0([v]j4$addr41)
+	addi	[v]const.int(4)11, zero, 4
+	mv	a0, [v]const.int(4)11
+	call	malloc
+	mv	[v]j5$addr42, a0
+	sw	[v]j57, 0([v]j5$addr42)
+	addi	[v]const.int(4)12, zero, 4
+	mv	a0, [v]const.int(4)12
+	call	malloc
+	mv	[v]j6$addr43, a0
+	sw	[v]j68, 0([v]j6$addr43)
+	addi	[v]const.int(4)13, zero, 4
+	mv	a0, [v]const.int(4)13
+	call	malloc
+	mv	[v]j7$addr44, a0
+	sw	[v]j79, 0([v]j7$addr44)
+	addi	[v]const.int(4)14, zero, 4
+	mv	a0, [v]const.int(4)14
+	call	malloc
+	mv	[v]j8$addr45, a0
+	sw	[v]j810, 0([v]j8$addr45)
+	addi	[v]const.int(4)15, zero, 4
+	mv	a0, [v]const.int(4)15
+	call	malloc
+	mv	[v]j9$addr46, a0
+	sw	[v]j911, 0([v]j9$addr46)
+	addi	[v]const.int(4)16, zero, 4
+	mv	a0, [v]const.int(4)16
+	call	malloc
+	mv	[v]j10$addr47, a0
+	sw	[v]j1012, 0([v]j10$addr47)
+	addi	[v]const.int(4)17, zero, 4
+	mv	a0, [v]const.int(4)17
+	call	malloc
+	mv	[v]j11$addr48, a0
+	sw	[v]j1113, 0([v]j11$addr48)
+	addi	[v]const.int(4)18, zero, 4
+	mv	a0, [v]const.int(4)18
+	call	malloc
+	mv	[v]j12$addr49, a0
+	sw	[v]j1214, 0([v]j12$addr49)
+	addi	[v]const.int(4)19, zero, 4
+	mv	a0, [v]const.int(4)19
+	call	malloc
+	mv	[v]j13$addr50, a0
+	sw	[v]j1315, 0([v]j13$addr50)
+	addi	[v]const.int(4)20, zero, 4
+	mv	a0, [v]const.int(4)20
+	call	malloc
+	mv	[v]j14$addr51, a0
+	sw	[v]j1416, 0([v]j14$addr51)
+	addi	[v]const.int(4)21, zero, 4
+	mv	a0, [v]const.int(4)21
+	call	malloc
+	mv	[v]j15$addr52, a0
+	sw	[v]j1517, 0([v]j15$addr52)
+	addi	[v]const.int(4)22, zero, 4
+	mv	a0, [v]const.int(4)22
+	call	malloc
+	mv	[v]j16$addr53, a0
+	sw	[v]j1618, 0([v]j16$addr53)
+	addi	[v]const.int(4)23, zero, 4
+	mv	a0, [v]const.int(4)23
+	call	malloc
+	mv	[v]j17$addr54, a0
+	sw	[v]j1719, 0([v]j17$addr54)
+	addi	[v]const.int(4)24, zero, 4
+	mv	a0, [v]const.int(4)24
+	call	malloc
+	mv	[v]j18$addr55, a0
+	sw	[v]j1820, 0([v]j18$addr55)
+	addi	[v]const.int(4)25, zero, 4
+	mv	a0, [v]const.int(4)25
+	call	malloc
+	mv	[v]j19$addr56, a0
+	sw	[v]j1921, 0([v]j19$addr56)
+	addi	[v]const.int(4)26, zero, 4
+	mv	a0, [v]const.int(4)26
+	call	malloc
+	mv	[v]j20$addr57, a0
+	sw	[v]j2022, 0([v]j20$addr57)
+	addi	[v]const.int(4)27, zero, 4
+	mv	a0, [v]const.int(4)27
+	call	malloc
+	mv	[v]j21$addr58, a0
+	sw	[v]j2123, 0([v]j21$addr58)
+	addi	[v]const.int(4)28, zero, 4
+	mv	a0, [v]const.int(4)28
+	call	malloc
+	mv	[v]j22$addr59, a0
+	sw	[v]j2224, 0([v]j22$addr59)
+	addi	[v]const.int(4)29, zero, 4
+	mv	a0, [v]const.int(4)29
+	call	malloc
+	mv	[v]j23$addr60, a0
+	sw	[v]j2325, 0([v]j23$addr60)
+	addi	[v]const.int(4)30, zero, 4
+	mv	a0, [v]const.int(4)30
+	call	malloc
+	mv	[v]j24$addr61, a0
+	sw	[v]j2426, 0([v]j24$addr61)
+	addi	[v]const.int(4)31, zero, 4
+	mv	a0, [v]const.int(4)31
+	call	malloc
+	mv	[v]j25$addr62, a0
+	sw	[v]j2527, 0([v]j25$addr62)
+	addi	[v]const.int(4)32, zero, 4
+	mv	a0, [v]const.int(4)32
+	call	malloc
+	mv	[v]j26$addr63, a0
+	sw	[v]j2628, 0([v]j26$addr63)
+	addi	[v]const.int(4)33, zero, 4
+	mv	a0, [v]const.int(4)33
+	call	malloc
+	mv	[v]j27$addr64, a0
+	sw	[v]j2729, 0([v]j27$addr64)
+	addi	[v]const.int(4)34, zero, 4
+	mv	a0, [v]const.int(4)34
+	call	malloc
+	mv	[v]j28$addr65, a0
+	sw	[v]j2830, 0([v]j28$addr65)
+	addi	[v]const.int(4)35, zero, 4
+	mv	a0, [v]const.int(4)35
+	call	malloc
+	mv	[v]j29$addr66, a0
+	sw	[v]j2931, 0([v]j29$addr66)
+	lw	[v]variable67, 0([v]i33)
+	sw	zero, 0([v]i33)
 	j	.L0_1
 .L0_1:
-	lui	[v]lui, %hi(i)
-	lw	[v]variable5, %lo(i)([v]lui)
-	lui	[v]lui, %hi(m)
-	lw	[v]variable6, %lo(m)([v]lui)
-	slt	[v]result7, [v]variable5, [v]variable6
-	beqz	[v]result7, .L0_4
+	lw	[v]variable68, 0([v]i33)
+	addi	[v]const.int(10)36, zero, 10
+	slt	[v]icmp, [v]const.int(10)36, [v]variable68
+	xori	[v]result69, [v]icmp, 1
+	beqz	[v]result69, .L0_4
 	j	.L0_2
 .L0_2:
-	lui	[v]lui, %hi(a)
-	lw	[v]variable8, %lo(a)([v]lui)
-	lui	[v]lui, %hi(i)
-	lw	[v]variable9, %lo(i)([v]lui)
-	slli	[v]array_offset, [v]variable9, 2
-	add	[v]element$addr10, [v]variable8, [v]array_offset
-	lw	[v]element11, 0([v]element$addr10)
-	call	mx__getInt
-	mv	[v]result12, a0
-	sw	[v]result12, 0([v]element$addr10)
+	lw	[v]variable70, 0([v]j32)
+	lw	[v]variable71, 0([v]j0$addr37)
+	lw	[v]variable72, 0([v]j1$addr38)
+	add	[v]result73, [v]variable71, [v]variable72
+	lw	[v]variable74, 0([v]j2$addr39)
+	add	[v]result75, [v]result73, [v]variable74
+	lw	[v]variable76, 0([v]j3$addr40)
+	add	[v]result77, [v]result75, [v]variable76
+	lw	[v]variable78, 0([v]j4$addr41)
+	add	[v]result79, [v]result77, [v]variable78
+	lw	[v]variable80, 0([v]j5$addr42)
+	add	[v]result81, [v]result79, [v]variable80
+	lw	[v]variable82, 0([v]j6$addr43)
+	add	[v]result83, [v]result81, [v]variable82
+	lw	[v]variable84, 0([v]j7$addr44)
+	add	[v]result85, [v]result83, [v]variable84
+	lw	[v]variable86, 0([v]j8$addr45)
+	add	[v]result87, [v]result85, [v]variable86
+	lw	[v]variable88, 0([v]j9$addr46)
+	add	[v]result89, [v]result87, [v]variable88
+	lw	[v]variable90, 0([v]j10$addr47)
+	add	[v]result91, [v]result89, [v]variable90
+	lw	[v]variable92, 0([v]j11$addr48)
+	add	[v]result93, [v]result91, [v]variable92
+	lw	[v]variable94, 0([v]j12$addr49)
+	add	[v]result95, [v]result93, [v]variable94
+	lw	[v]variable96, 0([v]j13$addr50)
+	add	[v]result97, [v]result95, [v]variable96
+	lw	[v]variable98, 0([v]j14$addr51)
+	add	[v]result99, [v]result97, [v]variable98
+	lw	[v]variable100, 0([v]j15$addr52)
+	add	[v]result101, [v]result99, [v]variable100
+	lw	[v]variable102, 0([v]j16$addr53)
+	add	[v]result103, [v]result101, [v]variable102
+	lw	[v]variable104, 0([v]j17$addr54)
+	add	[v]result105, [v]result103, [v]variable104
+	lw	[v]variable106, 0([v]j18$addr55)
+	add	[v]result107, [v]result105, [v]variable106
+	lw	[v]variable108, 0([v]j19$addr56)
+	add	[v]result109, [v]result107, [v]variable108
+	lw	[v]variable110, 0([v]j20$addr57)
+	add	[v]result111, [v]result109, [v]variable110
+	lw	[v]variable112, 0([v]j21$addr58)
+	add	[v]result113, [v]result111, [v]variable112
+	lw	[v]variable114, 0([v]j22$addr59)
+	add	[v]result115, [v]result113, [v]variable114
+	lw	[v]variable116, 0([v]j23$addr60)
+	add	[v]result117, [v]result115, [v]variable116
+	lw	[v]variable118, 0([v]j24$addr61)
+	add	[v]result119, [v]result117, [v]variable118
+	lw	[v]variable120, 0([v]j25$addr62)
+	add	[v]result121, [v]result119, [v]variable120
+	lw	[v]variable122, 0([v]j26$addr63)
+	add	[v]result123, [v]result121, [v]variable122
+	lw	[v]variable124, 0([v]j27$addr64)
+	add	[v]result125, [v]result123, [v]variable124
+	lw	[v]variable126, 0([v]j28$addr65)
+	add	[v]result127, [v]result125, [v]variable126
+	lw	[v]variable128, 0([v]j29$addr66)
+	add	[v]result129, [v]result127, [v]variable128
+	addi	[v]const.int(100)37, zero, 100
+	rem	[v]result130, [v]result129, [v]const.int(100)37
+	sw	[v]result130, 0([v]j32)
 	j	.L0_3
 .L0_3:
-	lui	[v]lui, %hi(i)
-	lw	[v]variable13, %lo(i)([v]lui)
-	addi	[v]result14, [v]variable13, 1
-	lui	[v]lui, %hi(i)
-	sw	[v]result14, %lo(i)([v]lui)
+	lw	[v]variable131, 0([v]i33)
+	addi	[v]result132, [v]variable131, 1
+	sw	[v]result132, 0([v]i33)
 	j	.L0_1
 .L0_4:
-	lui	[v]lui, %hi(i)
-	lw	[v]variable15, %lo(i)([v]lui)
-	lui	[v]lui, %hi(i)
-	sw	zero, %lo(i)([v]lui)
+	lw	[v]variable133, 0([v]x$addr35)
+	lw	[v]variable134, 0([v]y$addr36)
+	rem	[v]result135, [v]variable133, [v]variable134
+	addi	[v]icmp, [v]result135, 0
+	seqz	[v]result136, [v]icmp
+	beqz	[v]result136, .L0_7
 	j	.L0_5
 .L0_5:
-	lui	[v]lui, %hi(a)
-	lw	[v]variable16, %lo(a)([v]lui)
-	lui	[v]lui, %hi(i)
-	lw	[v]variable17, %lo(i)([v]lui)
-	slli	[v]array_offset, [v]variable17, 2
-	add	[v]element$addr18, [v]variable16, [v]array_offset
-	lw	[v]element19, 0([v]element$addr18)
-	lui	[v]lui, %hi(a)
-	lw	[v]variable20, %lo(a)([v]lui)
-	lui	[v]lui, %hi(k)
-	lw	[v]variable21, %lo(k)([v]lui)
-	addi	[v]result22, [v]variable21, -1
-	slli	[v]array_offset, [v]result22, 2
-	add	[v]element$addr23, [v]variable20, [v]array_offset
-	lw	[v]element24, 0([v]element$addr23)
-	slt	[v]icmp, [v]element19, [v]element24
-	xori	[v]result25, [v]icmp, 1
-	beqz	[v]result25, .L0_7
-	j	.L0_8
+	lw	[v]variable137, 0([v]y$addr36)
+	sw	[v]variable137, 0([v]returnValue$address34)
+	j	.L0_10
 .L0_6:
-	addi	[v]result26, zero, 0
 	j	.L0_9
 .L0_7:
-	addi	[v]result26, zero, 0
-	j	.L0_9
+	lw	[v]variable138, 0([v]y$addr36)
+	lw	[v]variable139, 0([v]x$addr35)
+	lw	[v]variable140, 0([v]y$addr36)
+	rem	[v]result141, [v]variable139, [v]variable140
+	lw	[v]variable142, 0([v]j32)
+	addi	[v]const.int(10)38, zero, 10
+	mv	a0, [v]const.int(10)38
+	addi	[v]const.int(68)39, zero, 68
+	mv	a1, [v]const.int(68)39
+	mv	a2, zero
+	addi	[v]const.int(2)40, zero, 2
+	mv	a3, [v]const.int(2)40
+	addi	[v]const.int(4)41, zero, 4
+	mv	a4, [v]const.int(4)41
+	addi	[v]const.int(6)42, zero, 6
+	mv	a5, [v]const.int(6)42
+	addi	[v]const.int(8)43, zero, 8
+	mv	a6, [v]const.int(8)43
+	addi	[v]const.int(10)44, zero, 10
+	mv	a7, [v]const.int(10)44
+	addi	[v]const.int(12)45, zero, 12
+	sw	[v]const.int(12)45, 0(sp)
+	addi	[v]const.int(14)46, zero, 14
+	sw	[v]const.int(14)46, 0(sp)
+	addi	[v]const.int(16)47, zero, 16
+	sw	[v]const.int(16)47, 0(sp)
+	addi	[v]const.int(18)48, zero, 18
+	sw	[v]const.int(18)48, 0(sp)
+	addi	[v]const.int(20)49, zero, 20
+	sw	[v]const.int(20)49, 0(sp)
+	addi	[v]const.int(22)50, zero, 22
+	sw	[v]const.int(22)50, 0(sp)
+	addi	[v]const.int(24)51, zero, 24
+	sw	[v]const.int(24)51, 0(sp)
+	addi	[v]const.int(26)52, zero, 26
+	sw	[v]const.int(26)52, 0(sp)
+	addi	[v]const.int(28)53, zero, 28
+	sw	[v]const.int(28)53, 0(sp)
+	addi	[v]const.int(30)54, zero, 30
+	sw	[v]const.int(30)54, 0(sp)
+	addi	[v]const.int(32)55, zero, 32
+	sw	[v]const.int(32)55, 0(sp)
+	addi	[v]const.int(34)56, zero, 34
+	sw	[v]const.int(34)56, 0(sp)
+	addi	[v]const.int(36)57, zero, 36
+	sw	[v]const.int(36)57, 0(sp)
+	addi	[v]const.int(38)58, zero, 38
+	sw	[v]const.int(38)58, 0(sp)
+	addi	[v]const.int(40)59, zero, 40
+	sw	[v]const.int(40)59, 0(sp)
+	addi	[v]const.int(42)60, zero, 42
+	sw	[v]const.int(42)60, 0(sp)
+	addi	[v]const.int(44)61, zero, 44
+	sw	[v]const.int(44)61, 0(sp)
+	addi	[v]const.int(46)62, zero, 46
+	sw	[v]const.int(46)62, 0(sp)
+	addi	[v]const.int(48)63, zero, 48
+	sw	[v]const.int(48)63, 0(sp)
+	addi	[v]const.int(50)64, zero, 50
+	sw	[v]const.int(50)64, 0(sp)
+	addi	[v]const.int(52)65, zero, 52
+	sw	[v]const.int(52)65, 0(sp)
+	addi	[v]const.int(54)66, zero, 54
+	sw	[v]const.int(54)66, 0(sp)
+	addi	[v]const.int(56)67, zero, 56
+	sw	[v]const.int(56)67, 0(sp)
+	addi	[v]const.int(58)68, zero, 58
+	sw	[v]const.int(58)68, 0(sp)
+	call	gcd
+	mv	[v]result143, a0
+	lw	[v]variable144, 0([v]j2$addr39)
+	lw	[v]variable145, 0([v]j3$addr40)
+	lw	[v]variable146, 0([v]j4$addr41)
+	lw	[v]variable147, 0([v]j5$addr42)
+	lw	[v]variable148, 0([v]j6$addr43)
+	lw	[v]variable149, 0([v]j7$addr44)
+	lw	[v]variable150, 0([v]j8$addr45)
+	lw	[v]variable151, 0([v]j9$addr46)
+	lw	[v]variable152, 0([v]j10$addr47)
+	lw	[v]variable153, 0([v]j11$addr48)
+	lw	[v]variable154, 0([v]j12$addr49)
+	lw	[v]variable155, 0([v]j13$addr50)
+	lw	[v]variable156, 0([v]j14$addr51)
+	lw	[v]variable157, 0([v]j15$addr52)
+	lw	[v]variable158, 0([v]j16$addr53)
+	lw	[v]variable159, 0([v]j17$addr54)
+	lw	[v]variable160, 0([v]j18$addr55)
+	lw	[v]variable161, 0([v]j19$addr56)
+	lw	[v]variable162, 0([v]j20$addr57)
+	lw	[v]variable163, 0([v]j21$addr58)
+	lw	[v]variable164, 0([v]j22$addr59)
+	lw	[v]variable165, 0([v]j23$addr60)
+	lw	[v]variable166, 0([v]j24$addr61)
+	lw	[v]variable167, 0([v]j25$addr62)
+	lw	[v]variable168, 0([v]j26$addr63)
+	lw	[v]variable169, 0([v]j27$addr64)
+	lw	[v]variable170, 0([v]j28$addr65)
+	lw	[v]variable171, 0([v]j29$addr66)
+	mv	a0, [v]variable138
+	mv	a1, [v]result141
+	mv	a2, [v]variable142
+	mv	a3, [v]result143
+	mv	a4, [v]variable144
+	mv	a5, [v]variable145
+	mv	a6, [v]variable146
+	mv	a7, [v]variable147
+	sw	[v]variable148, 0(sp)
+	sw	[v]variable149, 0(sp)
+	sw	[v]variable150, 0(sp)
+	sw	[v]variable151, 0(sp)
+	sw	[v]variable152, 0(sp)
+	sw	[v]variable153, 0(sp)
+	sw	[v]variable154, 0(sp)
+	sw	[v]variable155, 0(sp)
+	sw	[v]variable156, 0(sp)
+	sw	[v]variable157, 0(sp)
+	sw	[v]variable158, 0(sp)
+	sw	[v]variable159, 0(sp)
+	sw	[v]variable160, 0(sp)
+	sw	[v]variable161, 0(sp)
+	sw	[v]variable162, 0(sp)
+	sw	[v]variable163, 0(sp)
+	sw	[v]variable164, 0(sp)
+	sw	[v]variable165, 0(sp)
+	sw	[v]variable166, 0(sp)
+	sw	[v]variable167, 0(sp)
+	sw	[v]variable168, 0(sp)
+	sw	[v]variable169, 0(sp)
+	sw	[v]variable170, 0(sp)
+	sw	[v]variable171, 0(sp)
+	call	gcd1
+	mv	[v]result172, a0
+	sw	[v]result172, 0([v]returnValue$address34)
+	j	.L0_10
 .L0_8:
-	lui	[v]lui, %hi(a)
-	lw	[v]variable27, %lo(a)([v]lui)
-	lui	[v]lui, %hi(i)
-	lw	[v]variable28, %lo(i)([v]lui)
-	slli	[v]array_offset, [v]variable28, 2
-	add	[v]element$addr29, [v]variable27, [v]array_offset
-	lw	[v]element30, 0([v]element$addr29)
-	slt	[v]result31, zero, [v]element30
-	mv	[v]result26, [v]result31
-	mv	[v]result26, [v]result31
 	j	.L0_9
 .L0_9:
-	beqz	[v]result26, .L0_11
-	j	.L0_12
+	j	.L0_10
 .L0_10:
-	addi	[v]result32, zero, 0
-	j	.L0_13
-.L0_11:
-	addi	[v]result32, zero, 0
-	j	.L0_13
-.L0_12:
-	lui	[v]lui, %hi(i)
-	lw	[v]variable33, %lo(i)([v]lui)
-	lui	[v]lui, %hi(m)
-	lw	[v]variable34, %lo(m)([v]lui)
-	slt	[v]result35, [v]variable33, [v]variable34
-	mv	[v]result32, [v]result35
-	mv	[v]result32, [v]result35
-	j	.L0_13
-.L0_13:
-	beqz	[v]result32, .L0_16
-	j	.L0_14
-.L0_14:
-	j	.L0_15
-.L0_15:
-	lui	[v]lui, %hi(i)
-	lw	[v]variable36, %lo(i)([v]lui)
-	addi	[v]result37, [v]variable36, 1
-	lui	[v]lui, %hi(i)
-	sw	[v]result37, %lo(i)([v]lui)
-	j	.L0_5
-.L0_16:
-	lui	[v]lui, %hi(i)
-	lw	[v]variable38, %lo(i)([v]lui)
-	mv	a0, [v]variable38
-	call	mx__printInt
-	j	.L0_17
-.L0_17:
-	addi	[v]returnValue39, zero, 0
-	mv	a0, [v]returnValue39
+	lw	[v]returnValue173, 0([v]returnValue$address34)
+	mv	a0, [v]returnValue173
+	mv	s11, [v]s11.copy
+	mv	s10, [v]s10.copy
+	mv	s0, [v]s0.copy
+	mv	s1, [v]s1.copy
+	mv	s2, [v]s2.copy
+	mv	s3, [v]s3.copy
+	mv	s4, [v]s4.copy
+	mv	s5, [v]s5.copy
+	mv	s6, [v]s6.copy
+	mv	s7, [v]s7.copy
+	mv	s8, [v]s8.copy
+	mv	s9, [v]s9.copy
+	mv	ra, [v]ra.copy
+	ret
+	.size	gcd, .-gcd
+	.globl	gcd1
+	.p2align	2
+	.type	gcd1,@function
+gcd1:
+.L1_0:
+	mv	[v]ra.copy, ra
+	mv	[v]s11.copy, s11
+	mv	[v]s10.copy, s10
+	mv	[v]s0.copy, s0
+	mv	[v]s1.copy, s1
+	mv	[v]s2.copy, s2
+	mv	[v]s3.copy, s3
+	mv	[v]s4.copy, s4
+	mv	[v]s5.copy, s5
+	mv	[v]s6.copy, s6
+	mv	[v]s7.copy, s7
+	mv	[v]s8.copy, s8
+	mv	[v]s9.copy, s9
+	mv	[v]x174, a0
+	mv	[v]y175, a1
+	mv	[v]j0176, a2
+	mv	[v]j1177, a3
+	mv	[v]j2178, a4
+	mv	[v]j3179, a5
+	mv	[v]j4180, a6
+	mv	[v]j5181, a7
+	lw	[v]j6182, 0(sp)
+	lw	[v]j7183, 0(sp)
+	lw	[v]j8184, 0(sp)
+	lw	[v]j9185, 0(sp)
+	lw	[v]j10186, 0(sp)
+	lw	[v]j11187, 0(sp)
+	lw	[v]j12188, 0(sp)
+	lw	[v]j13189, 0(sp)
+	lw	[v]j14190, 0(sp)
+	lw	[v]j15191, 0(sp)
+	lw	[v]j16192, 0(sp)
+	lw	[v]j17193, 0(sp)
+	lw	[v]j18194, 0(sp)
+	lw	[v]j19195, 0(sp)
+	lw	[v]j20196, 0(sp)
+	lw	[v]j21197, 0(sp)
+	lw	[v]j22198, 0(sp)
+	lw	[v]j23199, 0(sp)
+	lw	[v]j24200, 0(sp)
+	lw	[v]j25201, 0(sp)
+	lw	[v]j26202, 0(sp)
+	lw	[v]j27203, 0(sp)
+	lw	[v]j28204, 0(sp)
+	lw	[v]j29205, 0(sp)
+	addi	[v]const.int(4)69, zero, 4
+	mv	a0, [v]const.int(4)69
+	call	malloc
+	mv	[v]j206, a0
+	addi	[v]const.int(4)70, zero, 4
+	mv	a0, [v]const.int(4)70
+	call	malloc
+	mv	[v]returnValue$address207, a0
+	addi	[v]const.int(4)71, zero, 4
+	mv	a0, [v]const.int(4)71
+	call	malloc
+	mv	[v]x$addr208, a0
+	sw	[v]x174, 0([v]x$addr208)
+	addi	[v]const.int(4)72, zero, 4
+	mv	a0, [v]const.int(4)72
+	call	malloc
+	mv	[v]y$addr209, a0
+	sw	[v]y175, 0([v]y$addr209)
+	addi	[v]const.int(4)73, zero, 4
+	mv	a0, [v]const.int(4)73
+	call	malloc
+	mv	[v]j0$addr210, a0
+	sw	[v]j0176, 0([v]j0$addr210)
+	addi	[v]const.int(4)74, zero, 4
+	mv	a0, [v]const.int(4)74
+	call	malloc
+	mv	[v]j1$addr211, a0
+	sw	[v]j1177, 0([v]j1$addr211)
+	addi	[v]const.int(4)75, zero, 4
+	mv	a0, [v]const.int(4)75
+	call	malloc
+	mv	[v]j2$addr212, a0
+	sw	[v]j2178, 0([v]j2$addr212)
+	addi	[v]const.int(4)76, zero, 4
+	mv	a0, [v]const.int(4)76
+	call	malloc
+	mv	[v]j3$addr213, a0
+	sw	[v]j3179, 0([v]j3$addr213)
+	addi	[v]const.int(4)77, zero, 4
+	mv	a0, [v]const.int(4)77
+	call	malloc
+	mv	[v]j4$addr214, a0
+	sw	[v]j4180, 0([v]j4$addr214)
+	addi	[v]const.int(4)78, zero, 4
+	mv	a0, [v]const.int(4)78
+	call	malloc
+	mv	[v]j5$addr215, a0
+	sw	[v]j5181, 0([v]j5$addr215)
+	addi	[v]const.int(4)79, zero, 4
+	mv	a0, [v]const.int(4)79
+	call	malloc
+	mv	[v]j6$addr216, a0
+	sw	[v]j6182, 0([v]j6$addr216)
+	addi	[v]const.int(4)80, zero, 4
+	mv	a0, [v]const.int(4)80
+	call	malloc
+	mv	[v]j7$addr217, a0
+	sw	[v]j7183, 0([v]j7$addr217)
+	addi	[v]const.int(4)81, zero, 4
+	mv	a0, [v]const.int(4)81
+	call	malloc
+	mv	[v]j8$addr218, a0
+	sw	[v]j8184, 0([v]j8$addr218)
+	addi	[v]const.int(4)82, zero, 4
+	mv	a0, [v]const.int(4)82
+	call	malloc
+	mv	[v]j9$addr219, a0
+	sw	[v]j9185, 0([v]j9$addr219)
+	addi	[v]const.int(4)83, zero, 4
+	mv	a0, [v]const.int(4)83
+	call	malloc
+	mv	[v]j10$addr220, a0
+	sw	[v]j10186, 0([v]j10$addr220)
+	addi	[v]const.int(4)84, zero, 4
+	mv	a0, [v]const.int(4)84
+	call	malloc
+	mv	[v]j11$addr221, a0
+	sw	[v]j11187, 0([v]j11$addr221)
+	addi	[v]const.int(4)85, zero, 4
+	mv	a0, [v]const.int(4)85
+	call	malloc
+	mv	[v]j12$addr222, a0
+	sw	[v]j12188, 0([v]j12$addr222)
+	addi	[v]const.int(4)86, zero, 4
+	mv	a0, [v]const.int(4)86
+	call	malloc
+	mv	[v]j13$addr223, a0
+	sw	[v]j13189, 0([v]j13$addr223)
+	addi	[v]const.int(4)87, zero, 4
+	mv	a0, [v]const.int(4)87
+	call	malloc
+	mv	[v]j14$addr224, a0
+	sw	[v]j14190, 0([v]j14$addr224)
+	addi	[v]const.int(4)88, zero, 4
+	mv	a0, [v]const.int(4)88
+	call	malloc
+	mv	[v]j15$addr225, a0
+	sw	[v]j15191, 0([v]j15$addr225)
+	addi	[v]const.int(4)89, zero, 4
+	mv	a0, [v]const.int(4)89
+	call	malloc
+	mv	[v]j16$addr226, a0
+	sw	[v]j16192, 0([v]j16$addr226)
+	addi	[v]const.int(4)90, zero, 4
+	mv	a0, [v]const.int(4)90
+	call	malloc
+	mv	[v]j17$addr227, a0
+	sw	[v]j17193, 0([v]j17$addr227)
+	addi	[v]const.int(4)91, zero, 4
+	mv	a0, [v]const.int(4)91
+	call	malloc
+	mv	[v]j18$addr228, a0
+	sw	[v]j18194, 0([v]j18$addr228)
+	addi	[v]const.int(4)92, zero, 4
+	mv	a0, [v]const.int(4)92
+	call	malloc
+	mv	[v]j19$addr229, a0
+	sw	[v]j19195, 0([v]j19$addr229)
+	addi	[v]const.int(4)93, zero, 4
+	mv	a0, [v]const.int(4)93
+	call	malloc
+	mv	[v]j20$addr230, a0
+	sw	[v]j20196, 0([v]j20$addr230)
+	addi	[v]const.int(4)94, zero, 4
+	mv	a0, [v]const.int(4)94
+	call	malloc
+	mv	[v]j21$addr231, a0
+	sw	[v]j21197, 0([v]j21$addr231)
+	addi	[v]const.int(4)95, zero, 4
+	mv	a0, [v]const.int(4)95
+	call	malloc
+	mv	[v]j22$addr232, a0
+	sw	[v]j22198, 0([v]j22$addr232)
+	addi	[v]const.int(4)96, zero, 4
+	mv	a0, [v]const.int(4)96
+	call	malloc
+	mv	[v]j23$addr233, a0
+	sw	[v]j23199, 0([v]j23$addr233)
+	addi	[v]const.int(4)97, zero, 4
+	mv	a0, [v]const.int(4)97
+	call	malloc
+	mv	[v]j24$addr234, a0
+	sw	[v]j24200, 0([v]j24$addr234)
+	addi	[v]const.int(4)98, zero, 4
+	mv	a0, [v]const.int(4)98
+	call	malloc
+	mv	[v]j25$addr235, a0
+	sw	[v]j25201, 0([v]j25$addr235)
+	addi	[v]const.int(4)99, zero, 4
+	mv	a0, [v]const.int(4)99
+	call	malloc
+	mv	[v]j26$addr236, a0
+	sw	[v]j26202, 0([v]j26$addr236)
+	addi	[v]const.int(4)100, zero, 4
+	mv	a0, [v]const.int(4)100
+	call	malloc
+	mv	[v]j27$addr237, a0
+	sw	[v]j27203, 0([v]j27$addr237)
+	addi	[v]const.int(4)101, zero, 4
+	mv	a0, [v]const.int(4)101
+	call	malloc
+	mv	[v]j28$addr238, a0
+	sw	[v]j28204, 0([v]j28$addr238)
+	addi	[v]const.int(4)102, zero, 4
+	mv	a0, [v]const.int(4)102
+	call	malloc
+	mv	[v]j29$addr239, a0
+	sw	[v]j29205, 0([v]j29$addr239)
+	lw	[v]variable240, 0([v]j206)
+	lw	[v]variable241, 0([v]j0$addr210)
+	lw	[v]variable242, 0([v]j1$addr211)
+	add	[v]result243, [v]variable241, [v]variable242
+	lw	[v]variable244, 0([v]j2$addr212)
+	add	[v]result245, [v]result243, [v]variable244
+	lw	[v]variable246, 0([v]j3$addr213)
+	add	[v]result247, [v]result245, [v]variable246
+	lw	[v]variable248, 0([v]j4$addr214)
+	add	[v]result249, [v]result247, [v]variable248
+	lw	[v]variable250, 0([v]j5$addr215)
+	add	[v]result251, [v]result249, [v]variable250
+	lw	[v]variable252, 0([v]j6$addr216)
+	add	[v]result253, [v]result251, [v]variable252
+	lw	[v]variable254, 0([v]j7$addr217)
+	add	[v]result255, [v]result253, [v]variable254
+	lw	[v]variable256, 0([v]j8$addr218)
+	add	[v]result257, [v]result255, [v]variable256
+	lw	[v]variable258, 0([v]j9$addr219)
+	add	[v]result259, [v]result257, [v]variable258
+	lw	[v]variable260, 0([v]j10$addr220)
+	add	[v]result261, [v]result259, [v]variable260
+	lw	[v]variable262, 0([v]j11$addr221)
+	add	[v]result263, [v]result261, [v]variable262
+	lw	[v]variable264, 0([v]j12$addr222)
+	add	[v]result265, [v]result263, [v]variable264
+	lw	[v]variable266, 0([v]j13$addr223)
+	add	[v]result267, [v]result265, [v]variable266
+	lw	[v]variable268, 0([v]j14$addr224)
+	add	[v]result269, [v]result267, [v]variable268
+	lw	[v]variable270, 0([v]j15$addr225)
+	add	[v]result271, [v]result269, [v]variable270
+	lw	[v]variable272, 0([v]j16$addr226)
+	add	[v]result273, [v]result271, [v]variable272
+	lw	[v]variable274, 0([v]j17$addr227)
+	add	[v]result275, [v]result273, [v]variable274
+	lw	[v]variable276, 0([v]j18$addr228)
+	add	[v]result277, [v]result275, [v]variable276
+	lw	[v]variable278, 0([v]j19$addr229)
+	add	[v]result279, [v]result277, [v]variable278
+	lw	[v]variable280, 0([v]j20$addr230)
+	add	[v]result281, [v]result279, [v]variable280
+	lw	[v]variable282, 0([v]j21$addr231)
+	add	[v]result283, [v]result281, [v]variable282
+	lw	[v]variable284, 0([v]j22$addr232)
+	add	[v]result285, [v]result283, [v]variable284
+	lw	[v]variable286, 0([v]j23$addr233)
+	add	[v]result287, [v]result285, [v]variable286
+	lw	[v]variable288, 0([v]j24$addr234)
+	add	[v]result289, [v]result287, [v]variable288
+	lw	[v]variable290, 0([v]j25$addr235)
+	add	[v]result291, [v]result289, [v]variable290
+	lw	[v]variable292, 0([v]j26$addr236)
+	add	[v]result293, [v]result291, [v]variable292
+	lw	[v]variable294, 0([v]j27$addr237)
+	add	[v]result295, [v]result293, [v]variable294
+	lw	[v]variable296, 0([v]j28$addr238)
+	add	[v]result297, [v]result295, [v]variable296
+	lw	[v]variable298, 0([v]j29$addr239)
+	add	[v]result299, [v]result297, [v]variable298
+	addi	[v]const.int(100)103, zero, 100
+	rem	[v]result300, [v]result299, [v]const.int(100)103
+	sw	[v]result300, 0([v]j206)
+	lw	[v]variable301, 0([v]x$addr208)
+	lw	[v]variable302, 0([v]y$addr209)
+	rem	[v]result303, [v]variable301, [v]variable302
+	addi	[v]icmp, [v]result303, 0
+	seqz	[v]result304, [v]icmp
+	beqz	[v]result304, .L1_3
+	j	.L1_1
+.L1_1:
+	lw	[v]variable305, 0([v]y$addr209)
+	sw	[v]variable305, 0([v]returnValue$address207)
+	j	.L1_6
+.L1_2:
+	j	.L1_5
+.L1_3:
+	lw	[v]variable306, 0([v]y$addr209)
+	lw	[v]variable307, 0([v]x$addr208)
+	lw	[v]variable308, 0([v]y$addr209)
+	rem	[v]result309, [v]variable307, [v]variable308
+	lw	[v]variable310, 0([v]j206)
+	lw	[v]variable311, 0([v]j1$addr211)
+	lw	[v]variable312, 0([v]j2$addr212)
+	lw	[v]variable313, 0([v]j3$addr213)
+	lw	[v]variable314, 0([v]j4$addr214)
+	lw	[v]variable315, 0([v]j5$addr215)
+	lw	[v]variable316, 0([v]j6$addr216)
+	lw	[v]variable317, 0([v]j7$addr217)
+	lw	[v]variable318, 0([v]j8$addr218)
+	lw	[v]variable319, 0([v]j9$addr219)
+	lw	[v]variable320, 0([v]j10$addr220)
+	lw	[v]variable321, 0([v]j11$addr221)
+	lw	[v]variable322, 0([v]j12$addr222)
+	lw	[v]variable323, 0([v]j13$addr223)
+	lw	[v]variable324, 0([v]j14$addr224)
+	lw	[v]variable325, 0([v]j15$addr225)
+	lw	[v]variable326, 0([v]j16$addr226)
+	lw	[v]variable327, 0([v]j17$addr227)
+	lw	[v]variable328, 0([v]j18$addr228)
+	lw	[v]variable329, 0([v]j19$addr229)
+	lw	[v]variable330, 0([v]j20$addr230)
+	lw	[v]variable331, 0([v]j21$addr231)
+	lw	[v]variable332, 0([v]j22$addr232)
+	lw	[v]variable333, 0([v]j23$addr233)
+	lw	[v]variable334, 0([v]j24$addr234)
+	lw	[v]variable335, 0([v]j25$addr235)
+	lw	[v]variable336, 0([v]j26$addr236)
+	lw	[v]variable337, 0([v]j27$addr237)
+	lw	[v]variable338, 0([v]j28$addr238)
+	lw	[v]variable339, 0([v]j29$addr239)
+	mv	a0, [v]variable306
+	mv	a1, [v]result309
+	mv	a2, [v]variable310
+	mv	a3, [v]variable311
+	mv	a4, [v]variable312
+	mv	a5, [v]variable313
+	mv	a6, [v]variable314
+	mv	a7, [v]variable315
+	sw	[v]variable316, 0(sp)
+	sw	[v]variable317, 0(sp)
+	sw	[v]variable318, 0(sp)
+	sw	[v]variable319, 0(sp)
+	sw	[v]variable320, 0(sp)
+	sw	[v]variable321, 0(sp)
+	sw	[v]variable322, 0(sp)
+	sw	[v]variable323, 0(sp)
+	sw	[v]variable324, 0(sp)
+	sw	[v]variable325, 0(sp)
+	sw	[v]variable326, 0(sp)
+	sw	[v]variable327, 0(sp)
+	sw	[v]variable328, 0(sp)
+	sw	[v]variable329, 0(sp)
+	sw	[v]variable330, 0(sp)
+	sw	[v]variable331, 0(sp)
+	sw	[v]variable332, 0(sp)
+	sw	[v]variable333, 0(sp)
+	sw	[v]variable334, 0(sp)
+	sw	[v]variable335, 0(sp)
+	sw	[v]variable336, 0(sp)
+	sw	[v]variable337, 0(sp)
+	sw	[v]variable338, 0(sp)
+	sw	[v]variable339, 0(sp)
+	call	gcd2
+	mv	[v]result340, a0
+	sw	[v]result340, 0([v]returnValue$address207)
+	j	.L1_6
+.L1_4:
+	j	.L1_5
+.L1_5:
+	j	.L1_6
+.L1_6:
+	lw	[v]returnValue341, 0([v]returnValue$address207)
+	mv	a0, [v]returnValue341
+	mv	s11, [v]s11.copy
+	mv	s10, [v]s10.copy
+	mv	s0, [v]s0.copy
+	mv	s1, [v]s1.copy
+	mv	s2, [v]s2.copy
+	mv	s3, [v]s3.copy
+	mv	s4, [v]s4.copy
+	mv	s5, [v]s5.copy
+	mv	s6, [v]s6.copy
+	mv	s7, [v]s7.copy
+	mv	s8, [v]s8.copy
+	mv	s9, [v]s9.copy
+	mv	ra, [v]ra.copy
+	ret
+	.size	gcd1, .-gcd1
+	.globl	gcd2
+	.p2align	2
+	.type	gcd2,@function
+gcd2:
+.L2_0:
+	mv	[v]ra.copy, ra
+	mv	[v]s11.copy, s11
+	mv	[v]s10.copy, s10
+	mv	[v]s0.copy, s0
+	mv	[v]s1.copy, s1
+	mv	[v]s2.copy, s2
+	mv	[v]s3.copy, s3
+	mv	[v]s4.copy, s4
+	mv	[v]s5.copy, s5
+	mv	[v]s6.copy, s6
+	mv	[v]s7.copy, s7
+	mv	[v]s8.copy, s8
+	mv	[v]s9.copy, s9
+	mv	[v]x342, a0
+	mv	[v]y343, a1
+	mv	[v]j0344, a2
+	mv	[v]j1345, a3
+	mv	[v]j2346, a4
+	mv	[v]j3347, a5
+	mv	[v]j4348, a6
+	mv	[v]j5349, a7
+	lw	[v]j6350, 0(sp)
+	lw	[v]j7351, 0(sp)
+	lw	[v]j8352, 0(sp)
+	lw	[v]j9353, 0(sp)
+	lw	[v]j10354, 0(sp)
+	lw	[v]j11355, 0(sp)
+	lw	[v]j12356, 0(sp)
+	lw	[v]j13357, 0(sp)
+	lw	[v]j14358, 0(sp)
+	lw	[v]j15359, 0(sp)
+	lw	[v]j16360, 0(sp)
+	lw	[v]j17361, 0(sp)
+	lw	[v]j18362, 0(sp)
+	lw	[v]j19363, 0(sp)
+	lw	[v]j20364, 0(sp)
+	lw	[v]j21365, 0(sp)
+	lw	[v]j22366, 0(sp)
+	lw	[v]j23367, 0(sp)
+	lw	[v]j24368, 0(sp)
+	lw	[v]j25369, 0(sp)
+	lw	[v]j26370, 0(sp)
+	lw	[v]j27371, 0(sp)
+	lw	[v]j28372, 0(sp)
+	lw	[v]j29373, 0(sp)
+	addi	[v]const.int(4)104, zero, 4
+	mv	a0, [v]const.int(4)104
+	call	malloc
+	mv	[v]j374, a0
+	addi	[v]const.int(4)105, zero, 4
+	mv	a0, [v]const.int(4)105
+	call	malloc
+	mv	[v]returnValue$address375, a0
+	addi	[v]const.int(4)106, zero, 4
+	mv	a0, [v]const.int(4)106
+	call	malloc
+	mv	[v]x$addr376, a0
+	sw	[v]x342, 0([v]x$addr376)
+	addi	[v]const.int(4)107, zero, 4
+	mv	a0, [v]const.int(4)107
+	call	malloc
+	mv	[v]y$addr377, a0
+	sw	[v]y343, 0([v]y$addr377)
+	addi	[v]const.int(4)108, zero, 4
+	mv	a0, [v]const.int(4)108
+	call	malloc
+	mv	[v]j0$addr378, a0
+	sw	[v]j0344, 0([v]j0$addr378)
+	addi	[v]const.int(4)109, zero, 4
+	mv	a0, [v]const.int(4)109
+	call	malloc
+	mv	[v]j1$addr379, a0
+	sw	[v]j1345, 0([v]j1$addr379)
+	addi	[v]const.int(4)110, zero, 4
+	mv	a0, [v]const.int(4)110
+	call	malloc
+	mv	[v]j2$addr380, a0
+	sw	[v]j2346, 0([v]j2$addr380)
+	addi	[v]const.int(4)111, zero, 4
+	mv	a0, [v]const.int(4)111
+	call	malloc
+	mv	[v]j3$addr381, a0
+	sw	[v]j3347, 0([v]j3$addr381)
+	addi	[v]const.int(4)112, zero, 4
+	mv	a0, [v]const.int(4)112
+	call	malloc
+	mv	[v]j4$addr382, a0
+	sw	[v]j4348, 0([v]j4$addr382)
+	addi	[v]const.int(4)113, zero, 4
+	mv	a0, [v]const.int(4)113
+	call	malloc
+	mv	[v]j5$addr383, a0
+	sw	[v]j5349, 0([v]j5$addr383)
+	addi	[v]const.int(4)114, zero, 4
+	mv	a0, [v]const.int(4)114
+	call	malloc
+	mv	[v]j6$addr384, a0
+	sw	[v]j6350, 0([v]j6$addr384)
+	addi	[v]const.int(4)115, zero, 4
+	mv	a0, [v]const.int(4)115
+	call	malloc
+	mv	[v]j7$addr385, a0
+	sw	[v]j7351, 0([v]j7$addr385)
+	addi	[v]const.int(4)116, zero, 4
+	mv	a0, [v]const.int(4)116
+	call	malloc
+	mv	[v]j8$addr386, a0
+	sw	[v]j8352, 0([v]j8$addr386)
+	addi	[v]const.int(4)117, zero, 4
+	mv	a0, [v]const.int(4)117
+	call	malloc
+	mv	[v]j9$addr387, a0
+	sw	[v]j9353, 0([v]j9$addr387)
+	addi	[v]const.int(4)118, zero, 4
+	mv	a0, [v]const.int(4)118
+	call	malloc
+	mv	[v]j10$addr388, a0
+	sw	[v]j10354, 0([v]j10$addr388)
+	addi	[v]const.int(4)119, zero, 4
+	mv	a0, [v]const.int(4)119
+	call	malloc
+	mv	[v]j11$addr389, a0
+	sw	[v]j11355, 0([v]j11$addr389)
+	addi	[v]const.int(4)120, zero, 4
+	mv	a0, [v]const.int(4)120
+	call	malloc
+	mv	[v]j12$addr390, a0
+	sw	[v]j12356, 0([v]j12$addr390)
+	addi	[v]const.int(4)121, zero, 4
+	mv	a0, [v]const.int(4)121
+	call	malloc
+	mv	[v]j13$addr391, a0
+	sw	[v]j13357, 0([v]j13$addr391)
+	addi	[v]const.int(4)122, zero, 4
+	mv	a0, [v]const.int(4)122
+	call	malloc
+	mv	[v]j14$addr392, a0
+	sw	[v]j14358, 0([v]j14$addr392)
+	addi	[v]const.int(4)123, zero, 4
+	mv	a0, [v]const.int(4)123
+	call	malloc
+	mv	[v]j15$addr393, a0
+	sw	[v]j15359, 0([v]j15$addr393)
+	addi	[v]const.int(4)124, zero, 4
+	mv	a0, [v]const.int(4)124
+	call	malloc
+	mv	[v]j16$addr394, a0
+	sw	[v]j16360, 0([v]j16$addr394)
+	addi	[v]const.int(4)125, zero, 4
+	mv	a0, [v]const.int(4)125
+	call	malloc
+	mv	[v]j17$addr395, a0
+	sw	[v]j17361, 0([v]j17$addr395)
+	addi	[v]const.int(4)126, zero, 4
+	mv	a0, [v]const.int(4)126
+	call	malloc
+	mv	[v]j18$addr396, a0
+	sw	[v]j18362, 0([v]j18$addr396)
+	addi	[v]const.int(4)127, zero, 4
+	mv	a0, [v]const.int(4)127
+	call	malloc
+	mv	[v]j19$addr397, a0
+	sw	[v]j19363, 0([v]j19$addr397)
+	addi	[v]const.int(4)128, zero, 4
+	mv	a0, [v]const.int(4)128
+	call	malloc
+	mv	[v]j20$addr398, a0
+	sw	[v]j20364, 0([v]j20$addr398)
+	addi	[v]const.int(4)129, zero, 4
+	mv	a0, [v]const.int(4)129
+	call	malloc
+	mv	[v]j21$addr399, a0
+	sw	[v]j21365, 0([v]j21$addr399)
+	addi	[v]const.int(4)130, zero, 4
+	mv	a0, [v]const.int(4)130
+	call	malloc
+	mv	[v]j22$addr400, a0
+	sw	[v]j22366, 0([v]j22$addr400)
+	addi	[v]const.int(4)131, zero, 4
+	mv	a0, [v]const.int(4)131
+	call	malloc
+	mv	[v]j23$addr401, a0
+	sw	[v]j23367, 0([v]j23$addr401)
+	addi	[v]const.int(4)132, zero, 4
+	mv	a0, [v]const.int(4)132
+	call	malloc
+	mv	[v]j24$addr402, a0
+	sw	[v]j24368, 0([v]j24$addr402)
+	addi	[v]const.int(4)133, zero, 4
+	mv	a0, [v]const.int(4)133
+	call	malloc
+	mv	[v]j25$addr403, a0
+	sw	[v]j25369, 0([v]j25$addr403)
+	addi	[v]const.int(4)134, zero, 4
+	mv	a0, [v]const.int(4)134
+	call	malloc
+	mv	[v]j26$addr404, a0
+	sw	[v]j26370, 0([v]j26$addr404)
+	addi	[v]const.int(4)135, zero, 4
+	mv	a0, [v]const.int(4)135
+	call	malloc
+	mv	[v]j27$addr405, a0
+	sw	[v]j27371, 0([v]j27$addr405)
+	addi	[v]const.int(4)136, zero, 4
+	mv	a0, [v]const.int(4)136
+	call	malloc
+	mv	[v]j28$addr406, a0
+	sw	[v]j28372, 0([v]j28$addr406)
+	addi	[v]const.int(4)137, zero, 4
+	mv	a0, [v]const.int(4)137
+	call	malloc
+	mv	[v]j29$addr407, a0
+	sw	[v]j29373, 0([v]j29$addr407)
+	lw	[v]variable408, 0([v]j374)
+	lw	[v]variable409, 0([v]j0$addr378)
+	lw	[v]variable410, 0([v]j1$addr379)
+	add	[v]result411, [v]variable409, [v]variable410
+	lw	[v]variable412, 0([v]j2$addr380)
+	add	[v]result413, [v]result411, [v]variable412
+	lw	[v]variable414, 0([v]j3$addr381)
+	add	[v]result415, [v]result413, [v]variable414
+	lw	[v]variable416, 0([v]j4$addr382)
+	add	[v]result417, [v]result415, [v]variable416
+	lw	[v]variable418, 0([v]j5$addr383)
+	add	[v]result419, [v]result417, [v]variable418
+	lw	[v]variable420, 0([v]j6$addr384)
+	add	[v]result421, [v]result419, [v]variable420
+	lw	[v]variable422, 0([v]j7$addr385)
+	add	[v]result423, [v]result421, [v]variable422
+	lw	[v]variable424, 0([v]j8$addr386)
+	add	[v]result425, [v]result423, [v]variable424
+	lw	[v]variable426, 0([v]j9$addr387)
+	add	[v]result427, [v]result425, [v]variable426
+	lw	[v]variable428, 0([v]j10$addr388)
+	add	[v]result429, [v]result427, [v]variable428
+	lw	[v]variable430, 0([v]j11$addr389)
+	add	[v]result431, [v]result429, [v]variable430
+	lw	[v]variable432, 0([v]j12$addr390)
+	add	[v]result433, [v]result431, [v]variable432
+	lw	[v]variable434, 0([v]j13$addr391)
+	add	[v]result435, [v]result433, [v]variable434
+	lw	[v]variable436, 0([v]j14$addr392)
+	add	[v]result437, [v]result435, [v]variable436
+	lw	[v]variable438, 0([v]j15$addr393)
+	add	[v]result439, [v]result437, [v]variable438
+	lw	[v]variable440, 0([v]j16$addr394)
+	add	[v]result441, [v]result439, [v]variable440
+	lw	[v]variable442, 0([v]j17$addr395)
+	add	[v]result443, [v]result441, [v]variable442
+	lw	[v]variable444, 0([v]j18$addr396)
+	add	[v]result445, [v]result443, [v]variable444
+	lw	[v]variable446, 0([v]j19$addr397)
+	add	[v]result447, [v]result445, [v]variable446
+	lw	[v]variable448, 0([v]j20$addr398)
+	add	[v]result449, [v]result447, [v]variable448
+	lw	[v]variable450, 0([v]j21$addr399)
+	add	[v]result451, [v]result449, [v]variable450
+	lw	[v]variable452, 0([v]j22$addr400)
+	add	[v]result453, [v]result451, [v]variable452
+	lw	[v]variable454, 0([v]j23$addr401)
+	add	[v]result455, [v]result453, [v]variable454
+	lw	[v]variable456, 0([v]j24$addr402)
+	add	[v]result457, [v]result455, [v]variable456
+	lw	[v]variable458, 0([v]j25$addr403)
+	add	[v]result459, [v]result457, [v]variable458
+	lw	[v]variable460, 0([v]j26$addr404)
+	add	[v]result461, [v]result459, [v]variable460
+	lw	[v]variable462, 0([v]j27$addr405)
+	add	[v]result463, [v]result461, [v]variable462
+	lw	[v]variable464, 0([v]j28$addr406)
+	add	[v]result465, [v]result463, [v]variable464
+	lw	[v]variable466, 0([v]j29$addr407)
+	add	[v]result467, [v]result465, [v]variable466
+	addi	[v]const.int(100)138, zero, 100
+	rem	[v]result468, [v]result467, [v]const.int(100)138
+	sw	[v]result468, 0([v]j374)
+	lw	[v]variable469, 0([v]x$addr376)
+	lw	[v]variable470, 0([v]y$addr377)
+	rem	[v]result471, [v]variable469, [v]variable470
+	addi	[v]icmp, [v]result471, 0
+	seqz	[v]result472, [v]icmp
+	beqz	[v]result472, .L2_3
+	j	.L2_1
+.L2_1:
+	lw	[v]variable473, 0([v]y$addr377)
+	sw	[v]variable473, 0([v]returnValue$address375)
+	j	.L2_6
+.L2_2:
+	j	.L2_5
+.L2_3:
+	lw	[v]variable474, 0([v]y$addr377)
+	lw	[v]variable475, 0([v]x$addr376)
+	lw	[v]variable476, 0([v]y$addr377)
+	rem	[v]result477, [v]variable475, [v]variable476
+	lw	[v]variable478, 0([v]j0$addr378)
+	lw	[v]variable479, 0([v]j1$addr379)
+	lw	[v]variable480, 0([v]j2$addr380)
+	lw	[v]variable481, 0([v]j3$addr381)
+	lw	[v]variable482, 0([v]j4$addr382)
+	lw	[v]variable483, 0([v]j5$addr383)
+	lw	[v]variable484, 0([v]j6$addr384)
+	lw	[v]variable485, 0([v]j7$addr385)
+	lw	[v]variable486, 0([v]j8$addr386)
+	lw	[v]variable487, 0([v]j9$addr387)
+	lw	[v]variable488, 0([v]j10$addr388)
+	lw	[v]variable489, 0([v]j11$addr389)
+	lw	[v]variable490, 0([v]j12$addr390)
+	lw	[v]variable491, 0([v]j13$addr391)
+	lw	[v]variable492, 0([v]j14$addr392)
+	lw	[v]variable493, 0([v]j15$addr393)
+	lw	[v]variable494, 0([v]j16$addr394)
+	lw	[v]variable495, 0([v]j17$addr395)
+	lw	[v]variable496, 0([v]j18$addr396)
+	lw	[v]variable497, 0([v]j19$addr397)
+	lw	[v]variable498, 0([v]j20$addr398)
+	lw	[v]variable499, 0([v]j21$addr399)
+	lw	[v]variable500, 0([v]j22$addr400)
+	lw	[v]variable501, 0([v]j23$addr401)
+	lw	[v]variable502, 0([v]j24$addr402)
+	lw	[v]variable503, 0([v]j25$addr403)
+	lw	[v]variable504, 0([v]j26$addr404)
+	lw	[v]variable505, 0([v]j27$addr405)
+	lw	[v]variable506, 0([v]j28$addr406)
+	lw	[v]variable507, 0([v]j29$addr407)
+	mv	a0, [v]variable474
+	mv	a1, [v]result477
+	mv	a2, [v]variable478
+	mv	a3, [v]variable479
+	mv	a4, [v]variable480
+	mv	a5, [v]variable481
+	mv	a6, [v]variable482
+	mv	a7, [v]variable483
+	sw	[v]variable484, 0(sp)
+	sw	[v]variable485, 0(sp)
+	sw	[v]variable486, 0(sp)
+	sw	[v]variable487, 0(sp)
+	sw	[v]variable488, 0(sp)
+	sw	[v]variable489, 0(sp)
+	sw	[v]variable490, 0(sp)
+	sw	[v]variable491, 0(sp)
+	sw	[v]variable492, 0(sp)
+	sw	[v]variable493, 0(sp)
+	sw	[v]variable494, 0(sp)
+	sw	[v]variable495, 0(sp)
+	sw	[v]variable496, 0(sp)
+	sw	[v]variable497, 0(sp)
+	sw	[v]variable498, 0(sp)
+	sw	[v]variable499, 0(sp)
+	sw	[v]variable500, 0(sp)
+	sw	[v]variable501, 0(sp)
+	sw	[v]variable502, 0(sp)
+	sw	[v]variable503, 0(sp)
+	sw	[v]variable504, 0(sp)
+	sw	[v]variable505, 0(sp)
+	sw	[v]variable506, 0(sp)
+	sw	[v]variable507, 0(sp)
+	call	gcd
+	mv	[v]result508, a0
+	sw	[v]result508, 0([v]returnValue$address375)
+	j	.L2_6
+.L2_4:
+	j	.L2_5
+.L2_5:
+	j	.L2_6
+.L2_6:
+	lw	[v]returnValue509, 0([v]returnValue$address375)
+	mv	a0, [v]returnValue509
+	mv	s11, [v]s11.copy
+	mv	s10, [v]s10.copy
+	mv	s0, [v]s0.copy
+	mv	s1, [v]s1.copy
+	mv	s2, [v]s2.copy
+	mv	s3, [v]s3.copy
+	mv	s4, [v]s4.copy
+	mv	s5, [v]s5.copy
+	mv	s6, [v]s6.copy
+	mv	s7, [v]s7.copy
+	mv	s8, [v]s8.copy
+	mv	s9, [v]s9.copy
+	mv	ra, [v]ra.copy
+	ret
+	.size	gcd2, .-gcd2
+	.globl	main
+	.p2align	2
+	.type	main,@function
+main:
+.L3_0:
+	mv	[v]ra.copy, ra
+	mv	[v]s11.copy, s11
+	mv	[v]s10.copy, s10
+	mv	[v]s0.copy, s0
+	mv	[v]s1.copy, s1
+	mv	[v]s2.copy, s2
+	mv	[v]s3.copy, s3
+	mv	[v]s4.copy, s4
+	mv	[v]s5.copy, s5
+	mv	[v]s6.copy, s6
+	mv	[v]s7.copy, s7
+	mv	[v]s8.copy, s8
+	mv	[v]s9.copy, s9
+	call	mx__init
+	addi	[v]const.int(4)139, zero, 4
+	mv	a0, [v]const.int(4)139
+	call	malloc
+	mv	[v]returnValue$address510, a0
+	addi	[v]const.int(10)140, zero, 10
+	mv	a0, [v]const.int(10)140
+	addi	[v]const.int(1)141, zero, 1
+	mv	a1, [v]const.int(1)141
+	mv	a2, zero
+	addi	[v]const.int(2)142, zero, 2
+	mv	a3, [v]const.int(2)142
+	addi	[v]const.int(4)143, zero, 4
+	mv	a4, [v]const.int(4)143
+	addi	[v]const.int(6)144, zero, 6
+	mv	a5, [v]const.int(6)144
+	addi	[v]const.int(8)145, zero, 8
+	mv	a6, [v]const.int(8)145
+	addi	[v]const.int(10)146, zero, 10
+	mv	a7, [v]const.int(10)146
+	addi	[v]const.int(12)147, zero, 12
+	sw	[v]const.int(12)147, 0(sp)
+	addi	[v]const.int(14)148, zero, 14
+	sw	[v]const.int(14)148, 0(sp)
+	addi	[v]const.int(16)149, zero, 16
+	sw	[v]const.int(16)149, 0(sp)
+	addi	[v]const.int(18)150, zero, 18
+	sw	[v]const.int(18)150, 0(sp)
+	addi	[v]const.int(20)151, zero, 20
+	sw	[v]const.int(20)151, 0(sp)
+	addi	[v]const.int(22)152, zero, 22
+	sw	[v]const.int(22)152, 0(sp)
+	addi	[v]const.int(24)153, zero, 24
+	sw	[v]const.int(24)153, 0(sp)
+	addi	[v]const.int(26)154, zero, 26
+	sw	[v]const.int(26)154, 0(sp)
+	addi	[v]const.int(28)155, zero, 28
+	sw	[v]const.int(28)155, 0(sp)
+	addi	[v]const.int(30)156, zero, 30
+	sw	[v]const.int(30)156, 0(sp)
+	addi	[v]const.int(32)157, zero, 32
+	sw	[v]const.int(32)157, 0(sp)
+	addi	[v]const.int(34)158, zero, 34
+	sw	[v]const.int(34)158, 0(sp)
+	addi	[v]const.int(36)159, zero, 36
+	sw	[v]const.int(36)159, 0(sp)
+	addi	[v]const.int(38)160, zero, 38
+	sw	[v]const.int(38)160, 0(sp)
+	addi	[v]const.int(40)161, zero, 40
+	sw	[v]const.int(40)161, 0(sp)
+	addi	[v]const.int(42)162, zero, 42
+	sw	[v]const.int(42)162, 0(sp)
+	addi	[v]const.int(44)163, zero, 44
+	sw	[v]const.int(44)163, 0(sp)
+	addi	[v]const.int(46)164, zero, 46
+	sw	[v]const.int(46)164, 0(sp)
+	addi	[v]const.int(48)165, zero, 48
+	sw	[v]const.int(48)165, 0(sp)
+	addi	[v]const.int(50)166, zero, 50
+	sw	[v]const.int(50)166, 0(sp)
+	addi	[v]const.int(52)167, zero, 52
+	sw	[v]const.int(52)167, 0(sp)
+	addi	[v]const.int(54)168, zero, 54
+	sw	[v]const.int(54)168, 0(sp)
+	addi	[v]const.int(56)169, zero, 56
+	sw	[v]const.int(56)169, 0(sp)
+	addi	[v]const.int(58)170, zero, 58
+	sw	[v]const.int(58)170, 0(sp)
+	call	gcd
+	mv	[v]result511, a0
+	addi	[v]result512, [v]result511, 1024
+	mv	a0, [v]result512
+	call	mx__toString
+	mv	[v]result513, a0
+	mv	a0, [v]result513
+	call	mx__println
+	sw	zero, 0([v]returnValue$address510)
+	j	.L3_2
+.L3_1:
+	j	.L3_2
+.L3_2:
+	lw	[v]returnValue514, 0([v]returnValue$address510)
+	mv	a0, [v]returnValue514
 	mv	s11, [v]s11.copy
 	mv	s10, [v]s10.copy
 	mv	s0, [v]s0.copy
@@ -165,7 +1367,7 @@ main:
 	.p2align	2
 	.type	mx__init,@function
 mx__init:
-.L1_0:
+.L4_0:
 	mv	[v]ra.copy, ra
 	mv	[v]s11.copy, s11
 	mv	[v]s10.copy, s10
@@ -179,22 +1381,8 @@ mx__init:
 	mv	[v]s7.copy, s7
 	mv	[v]s8.copy, s8
 	mv	[v]s9.copy, s9
-	addi	[v]const.int(4)1, zero, 4
-	addi	[v]const.int(50)2, zero, 50
-	mul	[v]contentSize40, [v]const.int(4)1, [v]const.int(50)2
-	addi	[v]totalByte41, [v]contentSize40, 4
-	mv	a0, [v]totalByte41
-	call	malloc
-	mv	[v]mallocPointer42, a0
-	mv	[v]mallocInt43, [v]mallocPointer42
-	addi	[v]const.int(50)3, zero, 50
-	sw	[v]const.int(50)3, 0([v]mallocInt43)
-	addi	[v]arrayBeginInt44, [v]mallocInt43, 4
-	mv	[v]arrayBegin45, [v]arrayBeginInt44
-	lui	[v]lui, %hi(a)
-	sw	[v]arrayBegin45, %lo(a)([v]lui)
-	j	.L1_1
-.L1_1:
+	j	.L4_1
+.L4_1:
 	mv	s11, [v]s11.copy
 	mv	s10, [v]s10.copy
 	mv	s0, [v]s0.copy
@@ -212,19 +1400,3 @@ mx__init:
 	.size	mx__init, .-mx__init
 
 	.section	.sdata,"aw",@progbits
-	.global	a
-	.p2align	2
-	a:
-	.word	0                       # 0
-	.global	i
-	.p2align	2
-	i:
-	.word	0                       # 0
-	.global	k
-	.p2align	2
-	k:
-	.word	0                       # 0
-	.global	m
-	.p2align	2
-	m:
-	.word	0                       # 0

@@ -66,7 +66,7 @@ public class Mem2Reg extends Pass {
                 }
 
             assert onlyForLoadAndStore;
-
+            /*
             // If there is only one defining block for an alloca,
             // all loads which are dominated by the definition are replaced with the value.
             if (allocStore.size() == 1) {
@@ -76,8 +76,10 @@ public class Mem2Reg extends Pass {
                 Operand value = allocStore.get(0).getValue();
 
                 for (LoadInst loadInst : allocLoad) {
-                    loadInst.getBasicBlock().insertInstAfter(loadInst,
-                            new MoveInst(loadInst.getBasicBlock(), value, loadInst.getResult()));
+                    if (loadInst.getResult().getUse().size() > 0) {
+                        loadInst.getBasicBlock().insertInstAfter(loadInst,
+                                new MoveInst(loadInst.getBasicBlock(), value, loadInst.getResult()));
+                    }
                     loadInst.removeFromBlock();
                 }
                 storeInst.removeFromBlock();
@@ -85,8 +87,8 @@ public class Mem2Reg extends Pass {
 
                 continue;
             }
-
-
+            */
+        /*
             // allocas which are read and written only in a block can avoid traversing CFG,
             // and PHI-node insertion by simply inserting each load with the value from nearest store.
             boolean allInSameBlock = true;
@@ -118,6 +120,8 @@ public class Mem2Reg extends Pass {
                 continue;
             }
             // TODO: 2021/4/28
+*/
+
         }
 
         allocInstSet.clear();

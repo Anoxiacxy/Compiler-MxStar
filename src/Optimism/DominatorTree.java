@@ -39,6 +39,9 @@ public class DominatorTree extends Pass {
         }
     }
 
+    public BasicBlock lca(BasicBlock u, BasicBlock v) {
+        return null;
+    }
 
     private void tarjan(BasicBlock u) {
         dfn.put(u, order.size());
@@ -89,11 +92,6 @@ public class DominatorTree extends Pass {
             BasicBlock u = order.get(i);
             if (idom.get(u) != semi.get(u))
                 idom.replace(u, idom.get(idom.get(u)));
-        }
-
-        for (BasicBlock u : order) {
-            tree.get(u).clear();
-            tree.get(idom.get(u)).add(u);
         }
 
         for (BasicBlock b : order) {
