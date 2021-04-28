@@ -427,13 +427,13 @@ public class SemanticChecker implements ASTVisitor {
             scope.getFuncSymbol(node.getName(), node.getPosition()).getParameter().forEach(x->
                     scope.newVarSymbol(x.getName(), x, node.getPosition()));
             scope.setFuncSymbol(scope.getFuncSymbol(node.getName(), node.getPosition()));
+            node.setFuncSymbol(scope.getFuncSymbol());
             node.getBody().accept(this);
-            if (node.getName().equals("main"))
-                scope.getFuncSymbol().setReturned(true);
 
             if (!scope.getFuncSymbol().getType().isNull()
                     && !scope.getFuncSymbol().getType().isVoid()
-                    && !scope.getFuncSymbol().isReturned())
+                    && !scope.getFuncSymbol().isReturned()
+                    && !node.getName().equals("main"))
                 throw new SemanticError("no return", node.getPosition());
         }
         scope = parentScope;

@@ -6,6 +6,7 @@ import AST.DefNode;
 import AST.Stmt.VarDefStmtNode;
 import AST.TypeNode;
 import Util.Position;
+import Util.Type.FuncSymbol;
 
 import java.util.ArrayList;
 
@@ -14,6 +15,15 @@ public class FuncDefNode extends DefNode {
     private TypeNode returnType;
     private ArrayList<VarDefStmtNode> parameterList;
     private BlockNode body;
+    private FuncSymbol funcSymbol;
+
+    public FuncSymbol getFuncSymbol() {
+        return funcSymbol;
+    }
+
+    public void setFuncSymbol(FuncSymbol funcSymbol) {
+        this.funcSymbol = funcSymbol;
+    }
 
     public String getName() {
         return name;

@@ -870,6 +870,15 @@ public class IRBuilder extends IRObject implements ASTVisitor {
 
         node.getBody().accept(this);
 
+        if (!node.getFuncSymbol().getType().isVoid()
+                && !node.getFuncSymbol().getType().isNull()
+                && !node.getFuncSymbol().isReturned()
+        ) {
+            assert curFunction.getName().equals("main");
+            curBasicBlock.appendInstBack(new StoreInst(curBasicBlock,
+                    new ConstInt(int_t, 0), curFunction.getReturnValueAddress()));
+        }
+
         curFunction.finish();
         if (curFunction.getName().equals("main")) {
             Function init = module.getFunctionMap().get("mx__init");
