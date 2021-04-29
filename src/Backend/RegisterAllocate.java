@@ -1,6 +1,5 @@
 package Backend;
 
-import AST.ProgramNode;
 import Optimism.LoopAnalysis;
 import RISCV.*;
 import RISCV.Instruction.*;
@@ -10,10 +9,6 @@ import RISCV.Operand.Register.PhysicalRegister;
 import RISCV.Operand.Register.VirtualRegister;
 import org.antlr.v4.runtime.misc.Pair;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.util.*;
 
 
@@ -463,6 +458,7 @@ public class RegisterAllocate implements ASMPass {
             n.setPhysicalRegister(getAlias(n).getPhysicalRegister());
     }
 
+    //private int deep = 0;
     private void rewriteProgram(ASMFunction function) {
         for (VirtualRegister v : spilledNodes) {
 
@@ -487,7 +483,7 @@ public class RegisterAllocate implements ASMPass {
                 block.insertASMInstBefore(inst, new Lw(block, spilledVR, address));
             }
         }
-
+        //new CodeEmitter("lab/test.ir" + deep++).visit(module);
     }
 
     private void init(ASMFunction function) {
@@ -527,13 +523,14 @@ public class RegisterAllocate implements ASMPass {
             adjList.put(v, new HashSet<>());
             moveList.put(v, new HashSet<>());
             alias.put(v, null);
-            degree.put(v, 0);
+            spillCost.put(v, (double) 0);
 
             if (!preColored.contains(v)) {
-                spillCost.put(v, (double) 0);
+
                 v.setPhysicalRegister(null);
+                degree.put(v, 0);
             } else {
-                spillCost.put(v, (double) 1000000000);
+                degree.put(v,  1000000000);
             }
         }
 
@@ -579,7 +576,7 @@ public class RegisterAllocate implements ASMPass {
             for (ASMBlock block : function.getDfsOrder())
                 for (ASMInst inst = block.getInstBegin(); inst != null; inst = inst.getNextInst())
                     if (inst instanceof Mv && ((Mv) inst).getRd().getPhysicalRegister() == ((Mv) inst).getRs().getPhysicalRegister())
-                        ((Mv) inst).removeFromBlock();
+                        inst.removeFromBlock();
 
 
             function.getStackFrame().calcFrameSize();

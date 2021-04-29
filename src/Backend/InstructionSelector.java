@@ -138,6 +138,8 @@ public class InstructionSelector implements IRVisitor {
         // TODO: 2021/4/5
         for (BasicBlock block = function.getEntryBlock(); block != null; block = block.getNextBlock())
             block.accept(this);
+
+        curAsmFunction.getStackFrame().calcFrameSize();
     }
 
     @Override
