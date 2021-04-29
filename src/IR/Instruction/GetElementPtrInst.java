@@ -18,6 +18,10 @@ public class GetElementPtrInst extends IRInst {
         this.result = result;
         this.index = index;
         this.address = address;
+
+        address.addUse(this);
+        addUse(address);
+
         result.addDef(this);
         addDef(result);
         for (Operand operand : index) {
@@ -37,6 +41,9 @@ public class GetElementPtrInst extends IRInst {
         index.addUse(this);
         addDef(result);
         addUse(index);
+
+        address.addUse(this);
+        addUse(address);
     }
 
     @Override
@@ -49,6 +56,11 @@ public class GetElementPtrInst extends IRInst {
                 index.set(i, newOperand);
                 newOperand.addUse(this);
             }
+        }
+        if (oldOperand == address) {
+            oldOperand.removeUse(this);
+            address = newOperand;
+            newOperand.addUse(this);
         }
     }
 
