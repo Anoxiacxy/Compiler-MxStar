@@ -900,11 +900,15 @@ public class IRBuilder extends IRObject implements ASTVisitor {
             IRInst inst = new AllocaInst(curFunction.getEntryBlock(), address, irType);
             curFunction.getEntryBlock().appendInstFront(inst);
             address.setDefinition(inst);
+            Operand value;
             if (node.getExpression() != null) {
                 node.getExpression().accept(this);
-                Operand value = nodeOperandResult.get(node.getExpression());
-                curBasicBlock.appendInstBack(new StoreInst(curBasicBlock, value, address));
-            }
+                value = nodeOperandResult.get(node.getExpression());
+            } else
+                value = irType.getDefaultValue();
+
+            curBasicBlock.appendInstBack(new StoreInst(curBasicBlock, value, address));
+
             VarSymbol varSymbol = node.getBelongScope().getVarSymbol(node.getName(), node.getPosition());
             //System.out.println("Def: " + varSymbol);
             assert varSymbol.getAllocAddr() == null;

@@ -1,9 +1,6 @@
 package IR;
 
-import IR.Instruction.AllocaInst;
-import IR.Instruction.BrInst;
-import IR.Instruction.LoadInst;
-import IR.Instruction.RetInst;
+import IR.Instruction.*;
 import IR.Operand.LocalRegister;
 import IR.Operand.Parameter;
 import IR.Operand.Register;
@@ -53,6 +50,7 @@ public class Function extends IRObject {
             } else {
                 returnValueAddress = new LocalRegister(new PointerIRT(this.funcType.getReturnType()), "returnValue$address");
                 entryBlock.appendInstBack(new AllocaInst(entryBlock, returnValueAddress, this.funcType.getReturnType()));
+                entryBlock.appendInstBack(new StoreInst(entryBlock, this.funcType.getReturnType().getDefaultValue(), returnValueAddress));
                 Register returnValue = new LocalRegister(this.funcType.getReturnType(), "returnValue");
                 returnBlock.appendInstBack(new LoadInst(returnBlock, this.funcType.getReturnType(), returnValueAddress, returnValue));
                 returnBlock.appendInstBack(new RetInst(returnBlock, this.funcType.getReturnType(), returnValue));
