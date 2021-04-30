@@ -105,9 +105,11 @@ public class Mem2Reg extends Pass {
                     assert curValue != null;
                     //block.insertInstAfter(inst, new MoveInst(block, curValue, ((LoadInst) inst).getResult()));
                     Operand finalCurValue = curValue;
-                    ((LoadInst) inst).getResult().getUse().forEach((irInst, integer) -> {
-                        irInst.replaceUse(((LoadInst) inst).getResult(), finalCurValue);
-                    });
+                    Operand oldOperand = ((LoadInst) inst).getResult();
+                    ArrayList<IRInst> irInsts = new ArrayList<>(((LoadInst) inst).getResult().getUse().keySet());
+                    for (IRInst irInst : irInsts)
+                        irInst.replaceUse(oldOperand, curValue);
+
                     inst.removeFromBlock();
                 }
                 if (inst instanceof StoreInst && ((StoreInst) inst).getAddress() == address) {
