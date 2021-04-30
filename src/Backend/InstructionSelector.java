@@ -23,7 +23,6 @@ import Util.Error.ComplicationError;
 import Util.Position;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -136,7 +135,7 @@ public class InstructionSelector implements IRVisitor {
             curAsmBlock.appendASMInstBack(new Lw(curAsmBlock, vr, address));
         }
 
-        // TODO: 2021/4/5
+
         for (BasicBlock block = function.getEntryBlock(); block != null; block = block.getNextBlock())
             block.accept(this);
 
@@ -240,14 +239,14 @@ public class InstructionSelector implements IRVisitor {
     @Override
     public void visit(BrInst inst) {
         // TODO: 2021/4/6
-        if (inst.getCond() == null)
-            curAsmBlock.appendASMInstBack(new J(curAsmBlock, curAsmFunction.getAsmBlockMap().get(inst.getThemBlock())));
+        if (inst.getCond() == null) {
+        }
         else {
             curAsmBlock.appendASMInstBack(new Beqz(curAsmBlock,
                     getVirtualRegisterOfOperand(inst.getCond()),
                     curAsmFunction.getAsmBlockMap().get(inst.getElseBlock())));
-            curAsmBlock.appendASMInstBack(new J(curAsmBlock, curAsmFunction.getAsmBlockMap().get(inst.getThemBlock())));
         }
+        curAsmBlock.appendASMInstBack(new J(curAsmBlock, curAsmFunction.getAsmBlockMap().get(inst.getThemBlock())));
     }
 
     @Override

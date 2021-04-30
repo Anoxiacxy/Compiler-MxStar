@@ -18,8 +18,6 @@ public class RegisterAllocate implements ASMPass {
         this.module = module;
     }
 
-    // TODO: 2021/4/7 stackFrame in every function
-
     public void piss() {
         module.getFunctionMap().values().forEach(asmFunction -> {
             HashMap<VirtualRegister, Address> addressHashMap = new LinkedHashMap<>();

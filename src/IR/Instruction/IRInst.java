@@ -44,6 +44,7 @@ abstract public class IRInst {
     public void replaceUse(Operand oldOperand, Operand newOperand) {
         int oldCnt = use.getOrDefault(oldOperand, 0);
         int newCnt = use.getOrDefault(newOperand, 0);
+
         if (oldCnt != 0) {
             use.remove(oldOperand);
             if (newCnt != 0)

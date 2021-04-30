@@ -55,7 +55,7 @@ public class IRPrinter implements IRVisitor {
         println("; ModuleID = 'test.cpp'");
         println("source_filename = \"test.cpp\"");
         println("");
-        // TODO: 2021/4/2
+
 
         if (module.getClassIRTMap().size() > 0) {
             for (ClassIRT classIRT : module.getClassIRTMap().values())

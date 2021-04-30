@@ -59,7 +59,7 @@ public class Module extends IRObject {
             ConstStr constStr = new ConstStr(new ArrayIRT(char_t, str.length()), str);
             GlobalRegister globalRegister = new GlobalRegister(irType,
                     ".str." + constantStringMap.size(), constStr);
-            // TODO: 2021/3/27
+
             constantStringMap.put(str, globalRegister);
             globalVariableMap.put(globalRegister.getName(), globalRegister);
             return globalRegister;

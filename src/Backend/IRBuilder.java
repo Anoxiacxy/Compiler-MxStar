@@ -716,7 +716,7 @@ public class IRBuilder extends IRObject implements ASTVisitor {
         if (node.getExpressions() != null && node.getExpressions().size() != 0) {
             // array
             Type type = node.getType();
-            // TODO: 2021/4/2
+
             ArrayList<Operand> arraySizeList = new ArrayList<>();
             node.getExpressions().forEach(exprNode -> {
                 exprNode.accept(this);
@@ -919,7 +919,7 @@ public class IRBuilder extends IRObject implements ASTVisitor {
             varSymbol.setAllocAddr(address);
             //System.out.println("Def: " + varSymbol);
         } else if (node.getBelongScope().getClassDefType() != null) {
-            // TODO: 2021/4/2
+
         } else {
             GlobalRegister address = new GlobalRegister(new PointerIRT(irType), node.getName(), null);
             Operand value = irType.getDefaultValue();
@@ -991,7 +991,7 @@ public class IRBuilder extends IRObject implements ASTVisitor {
 
     @Override
     public void visit(LiteralExprNode node) {
-        // TODO: 2021/4/2 nothing
+
     }
 
     @Override

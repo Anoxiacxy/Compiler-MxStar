@@ -76,8 +76,11 @@ public class Mem2Reg extends Pass {
                 if (loadInst.getResult().getUse().size() > 0) {
                     Operand oldOperand = ((LoadInst) loadInst).getResult();
                     ArrayList<IRInst> irInsts = new ArrayList<>(oldOperand.getUse().keySet());
-                    for (IRInst irInst : irInsts)
+                    for (IRInst irInst : irInsts) {
+                        oldOperand.removeUse(irInst);
                         irInst.replaceUse(oldOperand, value);
+                        value.addUse(irInst);
+                    }
 
                     //loadInst.getBasicBlock().insertInstAfter(loadInst,
                     //        new MoveInst(loadInst.getBasicBlock(), value, loadInst.getResult()));
@@ -113,8 +116,11 @@ public class Mem2Reg extends Pass {
 
                     Operand oldOperand = ((LoadInst) inst).getResult();
                     ArrayList<IRInst> irInsts = new ArrayList<>(((LoadInst) inst).getResult().getUse().keySet());
-                    for (IRInst irInst : irInsts)
+                    for (IRInst irInst : irInsts) {
+                        oldOperand.removeUse(irInst);
                         irInst.replaceUse(oldOperand, curValue);
+                        curValue.addUse(irInst);
+                    }
 
                     inst.removeFromBlock();
                 }
@@ -154,6 +160,7 @@ public class Mem2Reg extends Pass {
             }
         });
 
+
         if (allocInstSet.isEmpty()) return;
 
         dominatorTree = new DominatorTree(function);
@@ -170,7 +177,6 @@ public class Mem2Reg extends Pass {
         });
 
         rename(function, allocInstSet);
-
 
     }
 
@@ -210,8 +216,11 @@ public class Mem2Reg extends Pass {
                     Operand newOperand = renameTable.get(block).get(allocaInst);
                     Operand oldOperand = ((LoadInst) irInst).getResult();
                     ArrayList<IRInst> irInsts = new ArrayList<>(oldOperand.getUse().keySet());
-                    for (IRInst inst : irInsts)
+                    for (IRInst inst : irInsts) {
+                        oldOperand.removeUse(inst);
                         inst.replaceUse(oldOperand, newOperand);
+                        newOperand.addUse(inst);
+                    }
                     irInst.removeFromBlock();
                 } else if (irInst instanceof StoreInst && storeInstAllocaInstMap.containsKey(irInst)) {
                     AllocaInst allocaInst = storeInstAllocaInstMap.get(irInst);
@@ -227,7 +236,6 @@ public class Mem2Reg extends Pass {
             //blockStack.addAll(block.getSuccessors());
             for (BasicBlock basicBlock : block.getSuccessors())
                 blockStack.push(new Pair<>(basicBlock, block));
-
             for (PhiInst phiInst : curPhiMap.values())
                 block.appendInstFront(phiInst);
 
@@ -237,6 +245,7 @@ public class Mem2Reg extends Pass {
     private void placingPhi(AllocaInst allocaInst) {
         Queue<BasicBlock> blockQueue = new ArrayDeque<>();
         Set<BasicBlock> visited = new LinkedHashSet<>();
+        Set<BasicBlock> phiSet = new LinkedHashSet<>();
 
         Operand address = allocaInst.getResult();
         ArrayList<IRInst> useInstList = new ArrayList<>(address.getUse().keySet());
@@ -258,12 +267,15 @@ public class Mem2Reg extends Pass {
             BasicBlock block = blockQueue.poll();
 
             for (BasicBlock dom : dominatorTree.getDomFrontier(block)) {
-                if (!visited.contains(dom)) {
+                if (!phiSet.contains(dom)) {
                     PhiInst phiInst = new PhiInst(dom, new LinkedHashMap<>(),
                             new LocalRegister(allocaInst.getType(), allocaInst.getResult().getName() + ".phi"));
                     phiMap.get(dom).put(allocaInst, phiInst);
-                    visited.add(dom);
-                    blockQueue.offer(dom);
+                    phiSet.add(dom);
+                    if (!visited.contains(dom)) {
+                        visited.add(dom);
+                        blockQueue.offer(dom);
+                    }
                 }
             }
         }
