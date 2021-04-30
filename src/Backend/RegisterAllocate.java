@@ -105,8 +105,10 @@ public class RegisterAllocate implements ASMPass {
     private final int K = PhysicalRegister.getAllocatableRegisters().size();
 
     private Map<VirtualRegister, VirtualRegister> alias;
+    private ASMFunction function;
 
     private void livenessAnalysis(ASMFunction function) {
+        this.function = function;
         liveIn = new LinkedHashMap<>();
         liveOut = new LinkedHashMap<>();
         Map<ASMBlock, Set<VirtualRegister>> def = new LinkedHashMap<>();
@@ -197,6 +199,7 @@ public class RegisterAllocate implements ASMPass {
                     workListMoves.add((Mv) inst);
                 }
                 live.addAll(inst.getDef().keySet());
+                live.add(PhysicalRegister.getv("zero"));
                 for (VirtualRegister d : inst.getDef().keySet())
                     for (VirtualRegister l : live)
                         addEdge(l, d);
@@ -257,6 +260,7 @@ public class RegisterAllocate implements ASMPass {
     }
 
     private void decrementDegree(VirtualRegister m) {
+        //System.out.println(function.toString() + " " + PhysicalRegister.getv("zero") + " degree = " + degree.get(PhysicalRegister.getv("zero")));
         int d = degree.get(m);
         degree.replace(m, d - 1);
         if (d == K) {
@@ -517,6 +521,8 @@ public class RegisterAllocate implements ASMPass {
             }
 
         preColored.addAll(PhysicalRegister.virtualRegisters.values());
+
+        initial.addAll(preColored);
 
         for (VirtualRegister v : initial) {
 

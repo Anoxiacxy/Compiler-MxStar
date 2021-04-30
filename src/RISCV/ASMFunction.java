@@ -124,21 +124,28 @@ public class ASMFunction extends ASMObject {
         visitor.visit(this);
     }
 
-
+    private ArrayList<ASMBlock> dfsOrder;
     private Set<ASMBlock> visited;
-    private void dfs(ASMBlock block, ArrayList<ASMBlock> blocks) {
-        blocks.add(block);
+    private void dfs(ASMBlock block) {
+        dfsOrder.add(block);
         for (ASMBlock next : block.getSuccessors())
             if (!visited.contains(next)) {
                 visited.add(next);
-                dfs(next, blocks);
+                dfs(next);
             }
     }
 
     public ArrayList<ASMBlock> getDfsOrder() {
         visited = new LinkedHashSet<>();
-        ArrayList<ASMBlock> blocks = new ArrayList<>();
-        dfs(getEntryBlock(), blocks);
-        return blocks;
+        dfsOrder = new ArrayList<>();
+        dfs(getEntryBlock());
+        return dfsOrder;
+    }
+
+    @Override
+    public String toString() {
+        return "ASMFunction{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }
