@@ -19,260 +19,217 @@ main:
 	mv	[v]s8.copy, s8
 	mv	[v]s9.copy, s9
 	call	mx__init
-	addi	[v]const.int(4)1, zero, 4
-	mv	a0, [v]const.int(4)1
-	call	malloc
-	mv	[v]i0, a0
-	addi	[v]const.int(4)2, zero, 4
-	mv	a0, [v]const.int(4)2
-	call	malloc
-	mv	[v]i1, a0
-	addi	[v]const.int(4)3, zero, 4
-	mv	a0, [v]const.int(4)3
-	call	malloc
-	mv	[v]returnValue$address2, a0
-	sw	zero, 0([v]returnValue$address2)
-	lui	[v]lui, %hi(N)
-	lw	[v]variable3, %lo(N)([v]lui)
 	call	mx__getInt
-	mv	[v]result4, a0
+	mv	[v]result0, a0
 	lui	[v]lui, %hi(N)
-	sw	[v]result4, %lo(N)([v]lui)
-	lui	[v]lui, %hi(check)
-	lw	[v]variable5, %lo(check)([v]lui)
+	sw	[v]result0, %lo(N)([v]lui)
 	lui	[v]lui, %hi(N)
-	lw	[v]variable6, %lo(N)([v]lui)
-	addi	[v]result7, [v]variable6, 5
-	addi	[v]const.int(4)4, zero, 4
-	mul	[v]contentSize8, [v]result7, [v]const.int(4)4
-	addi	[v]totalByte9, [v]contentSize8, 4
-	mv	a0, [v]totalByte9
+	lw	[v]variable1, %lo(N)([v]lui)
+	addi	[v]result2, [v]variable1, 5
+	addi	[v]const.int(4)1, zero, 4
+	mul	[v]contentSize3, [v]result2, [v]const.int(4)1
+	addi	[v]totalByte4, [v]contentSize3, 4
+	mv	a0, [v]totalByte4
 	call	malloc
-	mv	[v]mallocPointer10, a0
-	mv	[v]mallocInt11, [v]mallocPointer10
-	sw	[v]result7, 0([v]mallocInt11)
-	addi	[v]arrayBeginInt12, [v]mallocInt11, 4
-	mv	[v]arrayBegin13, [v]arrayBeginInt12
+	mv	[v]mallocPointer5, a0
+	mv	[v]mallocInt6, [v]mallocPointer5
+	sw	[v]result2, 0([v]mallocInt6)
+	addi	[v]arrayBeginInt7, [v]mallocInt6, 4
+	mv	[v]arrayBegin8, [v]arrayBeginInt7
 	lui	[v]lui, %hi(check)
-	sw	[v]arrayBegin13, %lo(check)([v]lui)
-	sw	zero, 0([v]i1)
+	sw	[v]arrayBegin8, %lo(check)([v]lui)
+	addi	[v]i.phi9, zero, 0
 	j	.L0_1
 .L0_1:
-	lw	[v]variable14, 0([v]i1)
 	lui	[v]lui, %hi(N)
-	lw	[v]variable15, %lo(N)([v]lui)
-	slt	[v]icmp, [v]variable15, [v]variable14
-	xori	[v]result16, [v]icmp, 1
-	beqz	[v]result16, .L0_3
+	lw	[v]variable10, %lo(N)([v]lui)
+	slt	[v]icmp, [v]variable10, [v]i.phi9
+	xori	[v]result11, [v]icmp, 1
+	beqz	[v]result11, .L0_3
 	j	.L0_2
 .L0_2:
 	lui	[v]lui, %hi(check)
-	lw	[v]variable17, %lo(check)([v]lui)
-	lw	[v]variable18, 0([v]i1)
-	addi	[v]result19, [v]variable18, 1
-	sw	[v]result19, 0([v]i1)
-	slli	[v]array_offset, [v]variable18, 2
-	add	[v]element$addr20, [v]variable17, [v]array_offset
-	lb	[v]element21, 0([v]element$addr20)
-	addi	[v]const.bool(true)5, zero, 1
-	sb	[v]const.bool(true)5, 0([v]element$addr20)
+	lw	[v]variable12, %lo(check)([v]lui)
+	addi	[v]result13, [v]i.phi9, 1
+	slli	[v]array_offset, [v]i.phi9, 2
+	add	[v]element$addr14, [v]variable12, [v]array_offset
+	addi	[v]const.bool(true)2, zero, 1
+	sb	[v]const.bool(true)2, 0([v]element$addr14)
+	mv	[v]i.phi9, [v]result13
 	j	.L0_1
 .L0_3:
 	lui	[v]lui, %hi(N)
-	lw	[v]variable22, %lo(N)([v]lui)
-	addi	[v]result23, [v]variable22, 5
-	addi	[v]const.int(4)6, zero, 4
-	mul	[v]contentSize24, [v]result23, [v]const.int(4)6
-	addi	[v]totalByte25, [v]contentSize24, 4
-	mv	a0, [v]totalByte25
+	lw	[v]variable15, %lo(N)([v]lui)
+	addi	[v]result16, [v]variable15, 5
+	addi	[v]const.int(4)3, zero, 4
+	mul	[v]contentSize17, [v]result16, [v]const.int(4)3
+	addi	[v]totalByte18, [v]contentSize17, 4
+	mv	a0, [v]totalByte18
 	call	malloc
-	mv	[v]mallocPointer26, a0
-	mv	[v]mallocInt27, [v]mallocPointer26
-	sw	[v]result23, 0([v]mallocInt27)
-	addi	[v]arrayBeginInt28, [v]mallocInt27, 4
-	mv	[v]arrayBegin29, [v]arrayBeginInt28
+	mv	[v]mallocPointer19, a0
+	mv	[v]mallocInt20, [v]mallocPointer19
+	sw	[v]result16, 0([v]mallocInt20)
+	addi	[v]arrayBeginInt21, [v]mallocInt20, 4
+	mv	[v]arrayBegin22, [v]arrayBeginInt21
 	lui	[v]lui, %hi(N)
-	lw	[v]variable30, %lo(N)([v]lui)
-	addi	[v]result31, [v]variable30, 5
-	addi	[v]const.int(4)7, zero, 4
-	mul	[v]contentSize32, [v]result31, [v]const.int(4)7
-	addi	[v]totalByte33, [v]contentSize32, 4
-	mv	a0, [v]totalByte33
+	lw	[v]variable23, %lo(N)([v]lui)
+	addi	[v]result24, [v]variable23, 5
+	addi	[v]const.int(4)4, zero, 4
+	mul	[v]contentSize25, [v]result24, [v]const.int(4)4
+	addi	[v]totalByte26, [v]contentSize25, 4
+	mv	a0, [v]totalByte26
 	call	malloc
-	mv	[v]mallocPointer34, a0
-	mv	[v]mallocInt35, [v]mallocPointer34
-	sw	[v]result31, 0([v]mallocInt35)
-	addi	[v]arrayBeginInt36, [v]mallocInt35, 4
-	mv	[v]arrayBegin37, [v]arrayBeginInt36
-	addi	[v]element$addr38, [v]arrayBegin29, 4
-	lw	[v]element39, 0([v]element$addr38)
-	addi	[v]const.int(1)8, zero, 1
-	sw	[v]const.int(1)8, 0([v]element$addr38)
-	lw	[v]variable40, 0([v]i1)
-	addi	[v]const.int(2)9, zero, 2
-	sw	[v]const.int(2)9, 0([v]i1)
+	mv	[v]mallocPointer27, a0
+	mv	[v]mallocInt28, [v]mallocPointer27
+	sw	[v]result24, 0([v]mallocInt28)
+	addi	[v]arrayBeginInt29, [v]mallocInt28, 4
+	mv	[v]arrayBegin30, [v]arrayBeginInt29
+	addi	[v]element$addr31, [v]arrayBegin22, 4
+	addi	[v]const.int(1)5, zero, 1
+	sw	[v]const.int(1)5, 0([v]element$addr31)
+	addi	[v]i.phi32, zero, 2
+	addi	[v]i.phi33, zero, 0
 	j	.L0_4
 .L0_4:
-	addi	[v]const.bool(true)10, zero, 1
-	beqz	[v]const.bool(true)10, .L0_22
+	addi	[v]const.bool(true)6, zero, 1
+	beqz	[v]const.bool(true)6, .L0_22
 	j	.L0_5
 .L0_5:
-	lw	[v]variable41, 0([v]i1)
 	lui	[v]lui, %hi(N)
-	lw	[v]variable42, %lo(N)([v]lui)
-	slt	[v]result43, [v]variable42, [v]variable41
-	beqz	[v]result43, .L0_7
+	lw	[v]variable34, %lo(N)([v]lui)
+	slt	[v]result35, [v]variable34, [v]i.phi32
+	beqz	[v]result35, .L0_7
 	j	.L0_6
 .L0_6:
 	j	.L0_22
 .L0_7:
 	lui	[v]lui, %hi(check)
-	lw	[v]variable44, %lo(check)([v]lui)
-	lw	[v]variable45, 0([v]i1)
-	slli	[v]array_offset, [v]variable45, 2
-	add	[v]element$addr46, [v]variable44, [v]array_offset
-	lb	[v]element47, 0([v]element$addr46)
-	beqz	[v]element47, .L0_9
+	lw	[v]variable36, %lo(check)([v]lui)
+	slli	[v]array_offset, [v]i.phi32, 2
+	add	[v]element$addr37, [v]variable36, [v]array_offset
+	lb	[v]element38, 0([v]element$addr37)
+	beqz	[v]element38, .L0_9
 	j	.L0_8
 .L0_8:
 	lui	[v]lui, %hi(M)
-	lw	[v]variable48, %lo(M)([v]lui)
-	addi	[v]result49, [v]variable48, 1
+	lw	[v]variable39, %lo(M)([v]lui)
+	addi	[v]result40, [v]variable39, 1
 	lui	[v]lui, %hi(M)
-	sw	[v]result49, %lo(M)([v]lui)
-	slli	[v]array_offset, [v]result49, 2
-	add	[v]element$addr50, [v]arrayBegin37, [v]array_offset
-	lw	[v]element51, 0([v]element$addr50)
-	lw	[v]variable52, 0([v]i1)
-	sw	[v]variable52, 0([v]element$addr50)
-	lw	[v]variable53, 0([v]i1)
-	slli	[v]array_offset, [v]variable53, 2
-	add	[v]element$addr54, [v]arrayBegin29, [v]array_offset
-	lw	[v]element55, 0([v]element$addr54)
-	lw	[v]variable56, 0([v]i1)
-	addi	[v]result57, [v]variable56, -1
-	sw	[v]result57, 0([v]element$addr54)
+	sw	[v]result40, %lo(M)([v]lui)
+	slli	[v]array_offset, [v]result40, 2
+	add	[v]element$addr41, [v]arrayBegin30, [v]array_offset
+	sw	[v]i.phi32, 0([v]element$addr41)
+	slli	[v]array_offset, [v]i.phi32, 2
+	add	[v]element$addr42, [v]arrayBegin22, [v]array_offset
+	addi	[v]result43, [v]i.phi32, -1
+	sw	[v]result43, 0([v]element$addr42)
 	j	.L0_10
 .L0_9:
 	j	.L0_10
 .L0_10:
-	lw	[v]variable58, 0([v]i1)
-	sw	zero, 0([v]i0)
-	lw	[v]variable59, 0([v]i0)
-	addi	[v]const.int(1)11, zero, 1
-	sw	[v]const.int(1)11, 0([v]i0)
+	addi	[v]i.phi44, zero, 1
 	j	.L0_11
 .L0_11:
-	lw	[v]variable60, 0([v]i0)
 	lui	[v]lui, %hi(M)
-	lw	[v]variable61, %lo(M)([v]lui)
-	slt	[v]icmp, [v]variable61, [v]variable60
-	xori	[v]result62, [v]icmp, 1
-	beqz	[v]result62, .L0_12
+	lw	[v]variable45, %lo(M)([v]lui)
+	slt	[v]icmp, [v]variable45, [v]i.phi44
+	xori	[v]result46, [v]icmp, 1
+	beqz	[v]result46, .L0_12
 	j	.L0_13
 .L0_12:
-	addi	[v]result63, zero, 0
+	addi	[v]result47, zero, 0
 	j	.L0_14
 .L0_13:
-	lw	[v]variable64, 0([v]i0)
-	slli	[v]array_offset, [v]variable64, 2
-	add	[v]element$addr65, [v]arrayBegin37, [v]array_offset
-	lw	[v]element66, 0([v]element$addr65)
-	mul	[v]result67, [v]variable58, [v]element66
+	slli	[v]array_offset, [v]i.phi44, 2
+	add	[v]element$addr48, [v]arrayBegin30, [v]array_offset
+	lw	[v]element49, 0([v]element$addr48)
+	mul	[v]result50, [v]i.phi32, [v]element49
 	lui	[v]lui, %hi(N)
-	lw	[v]variable68, %lo(N)([v]lui)
-	slt	[v]icmp, [v]variable68, [v]result67
-	xori	[v]result69, [v]icmp, 1
-	mv	[v]result63, [v]result69
+	lw	[v]variable51, %lo(N)([v]lui)
+	slt	[v]icmp, [v]variable51, [v]result50
+	xori	[v]result52, [v]icmp, 1
+	mv	[v]result47, [v]result52
 	j	.L0_14
 .L0_14:
-	beqz	[v]result63, .L0_21
+	beqz	[v]result47, .L0_21
 	j	.L0_15
 .L0_15:
-	lw	[v]variable70, 0([v]i0)
-	slli	[v]array_offset, [v]variable70, 2
-	add	[v]element$addr71, [v]arrayBegin37, [v]array_offset
-	lw	[v]element72, 0([v]element$addr71)
-	mul	[v]result73, [v]variable58, [v]element72
+	slli	[v]array_offset, [v]i.phi44, 2
+	add	[v]element$addr53, [v]arrayBegin30, [v]array_offset
+	lw	[v]element54, 0([v]element$addr53)
+	mul	[v]result55, [v]i.phi32, [v]element54
 	lui	[v]lui, %hi(N)
-	lw	[v]variable74, %lo(N)([v]lui)
-	slt	[v]result75, [v]variable74, [v]result73
-	beqz	[v]result75, .L0_17
+	lw	[v]variable56, %lo(N)([v]lui)
+	slt	[v]result57, [v]variable56, [v]result55
+	beqz	[v]result57, .L0_17
 	j	.L0_16
 .L0_16:
 	j	.L0_20
 .L0_17:
 	lui	[v]lui, %hi(check)
-	lw	[v]variable76, %lo(check)([v]lui)
-	slli	[v]array_offset, [v]result73, 2
-	add	[v]element$addr77, [v]variable76, [v]array_offset
-	lb	[v]element78, 0([v]element$addr77)
-	sb	zero, 0([v]element$addr77)
-	lw	[v]variable79, 0([v]i0)
-	slli	[v]array_offset, [v]variable79, 2
-	add	[v]element$addr80, [v]arrayBegin37, [v]array_offset
-	lw	[v]element81, 0([v]element$addr80)
-	rem	[v]result82, [v]variable58, [v]element81
-	addi	[v]icmp, [v]result82, 0
-	seqz	[v]result83, [v]icmp
-	beqz	[v]result83, .L0_19
+	lw	[v]variable58, %lo(check)([v]lui)
+	slli	[v]array_offset, [v]result55, 2
+	add	[v]element$addr59, [v]variable58, [v]array_offset
+	sb	zero, 0([v]element$addr59)
+	slli	[v]array_offset, [v]i.phi44, 2
+	add	[v]element$addr60, [v]arrayBegin30, [v]array_offset
+	lw	[v]element61, 0([v]element$addr60)
+	rem	[v]result62, [v]i.phi32, [v]element61
+	addi	[v]icmp, [v]result62, 0
+	seqz	[v]result63, [v]icmp
+	beqz	[v]result63, .L0_19
 	j	.L0_18
 .L0_18:
-	slli	[v]array_offset, [v]result73, 2
-	add	[v]element$addr84, [v]arrayBegin29, [v]array_offset
-	lw	[v]element85, 0([v]element$addr84)
-	slli	[v]array_offset, [v]variable58, 2
-	add	[v]element$addr86, [v]arrayBegin29, [v]array_offset
-	lw	[v]element87, 0([v]element$addr86)
-	lw	[v]variable88, 0([v]i0)
-	slli	[v]array_offset, [v]variable88, 2
-	add	[v]element$addr89, [v]arrayBegin37, [v]array_offset
-	lw	[v]element90, 0([v]element$addr89)
-	mul	[v]result91, [v]element87, [v]element90
-	sw	[v]result91, 0([v]element$addr84)
+	slli	[v]array_offset, [v]result55, 2
+	add	[v]element$addr64, [v]arrayBegin22, [v]array_offset
+	slli	[v]array_offset, [v]i.phi32, 2
+	add	[v]element$addr65, [v]arrayBegin22, [v]array_offset
+	lw	[v]element66, 0([v]element$addr65)
+	slli	[v]array_offset, [v]i.phi44, 2
+	add	[v]element$addr67, [v]arrayBegin30, [v]array_offset
+	lw	[v]element68, 0([v]element$addr67)
+	mul	[v]result69, [v]element66, [v]element68
+	sw	[v]result69, 0([v]element$addr64)
 	j	.L0_21
 .L0_19:
-	lw	[v]variable92, 0([v]i0)
-	slli	[v]array_offset, [v]variable92, 2
-	add	[v]element$addr93, [v]arrayBegin37, [v]array_offset
-	lw	[v]element94, 0([v]element$addr93)
-	mul	[v]result95, [v]variable58, [v]element94
-	slli	[v]array_offset, [v]result95, 2
-	add	[v]element$addr96, [v]arrayBegin29, [v]array_offset
-	lw	[v]element97, 0([v]element$addr96)
-	slli	[v]array_offset, [v]variable58, 2
-	add	[v]element$addr98, [v]arrayBegin29, [v]array_offset
-	lw	[v]element99, 0([v]element$addr98)
-	lw	[v]variable100, 0([v]i0)
-	slli	[v]array_offset, [v]variable100, 2
-	add	[v]element$addr101, [v]arrayBegin37, [v]array_offset
-	lw	[v]element102, 0([v]element$addr101)
-	addi	[v]result103, [v]element102, -1
-	mul	[v]result104, [v]element99, [v]result103
-	sw	[v]result104, 0([v]element$addr96)
+	slli	[v]array_offset, [v]i.phi44, 2
+	add	[v]element$addr70, [v]arrayBegin30, [v]array_offset
+	lw	[v]element71, 0([v]element$addr70)
+	mul	[v]result72, [v]i.phi32, [v]element71
+	slli	[v]array_offset, [v]result72, 2
+	add	[v]element$addr73, [v]arrayBegin22, [v]array_offset
+	slli	[v]array_offset, [v]i.phi32, 2
+	add	[v]element$addr74, [v]arrayBegin22, [v]array_offset
+	lw	[v]element75, 0([v]element$addr74)
+	slli	[v]array_offset, [v]i.phi44, 2
+	add	[v]element$addr76, [v]arrayBegin30, [v]array_offset
+	lw	[v]element77, 0([v]element$addr76)
+	addi	[v]result78, [v]element77, -1
+	mul	[v]result79, [v]element75, [v]result78
+	sw	[v]result79, 0([v]element$addr73)
 	j	.L0_20
 .L0_20:
-	lw	[v]variable105, 0([v]i0)
-	addi	[v]result106, [v]variable105, 1
-	sw	[v]result106, 0([v]i0)
+	addi	[v]result80, [v]i.phi44, 1
+	mv	[v]i.phi44, [v]result80
+	mv	[v]i.phi44, [v]result80
 	j	.L0_11
 .L0_21:
-	slli	[v]array_offset, [v]variable58, 2
-	add	[v]element$addr107, [v]arrayBegin29, [v]array_offset
-	lw	[v]element108, 0([v]element$addr107)
-	mv	a0, [v]element108
+	slli	[v]array_offset, [v]i.phi32, 2
+	add	[v]element$addr81, [v]arrayBegin22, [v]array_offset
+	lw	[v]element82, 0([v]element$addr81)
+	mv	a0, [v]element82
 	call	mx__toString
-	mv	[v]result109, a0
-	mv	a0, [v]result109
+	mv	[v]result83, a0
+	mv	a0, [v]result83
 	call	mx__println
-	lw	[v]variable110, 0([v]i1)
-	addi	[v]result111, [v]variable110, 1
-	sw	[v]result111, 0([v]i1)
+	addi	[v]result84, [v]i.phi32, 1
+	mv	[v]i.phi32, [v]result84
+	mv	[v]i.phi33, [v]i.phi44
+	mv	[v]i.phi32, [v]result84
+	mv	[v]i.phi33, [v]i.phi44
 	j	.L0_4
 .L0_22:
-	sw	zero, 0([v]returnValue$address2)
-	lw	[v]returnValue112, 0([v]returnValue$address2)
-	mv	a0, [v]returnValue112
+	mv	a0, zero
 	mv	s11, [v]s11.copy
 	mv	s10, [v]s10.copy
 	mv	s0, [v]s0.copy

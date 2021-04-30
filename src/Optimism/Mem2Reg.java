@@ -153,7 +153,7 @@ public class Mem2Reg extends Pass {
                     allocInstSet.add((AllocaInst) inst);
             }
         });
-/*
+
         if (allocInstSet.isEmpty()) return;
 
         dominatorTree = new DominatorTree(function);
@@ -170,7 +170,7 @@ public class Mem2Reg extends Pass {
         });
 
         rename(function, allocInstSet);
-*/
+
 
     }
 
@@ -187,6 +187,8 @@ public class Mem2Reg extends Pass {
                 PhiInst phiInst = curPhiMap.get(allocaInst);
                 Operand operand = renameTable.get(data.b)
                         .getOrDefault(allocaInst, allocaInst.getType().getDefaultValue());
+                if (operand == null)
+                    operand = allocaInst.getType().getDefaultValue();
                 phiInst.appendBranch(operand, data.b);
             }
 

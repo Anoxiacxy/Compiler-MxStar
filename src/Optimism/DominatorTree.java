@@ -77,7 +77,7 @@ public class DominatorTree extends Pass {
                 assert dfn.containsKey(v);
                 aliasQuery(v);
                 if (dfn.get(semi.get(u)) > dfn.get(semi.get(mn.get(v))))
-                    semi.replace(u, mn.get(v));
+                    semi.replace(u, semi.get(mn.get(v)));
             }
             alias.replace(u, father.get(u));
             tree.get(semi.get(u)).add(u);

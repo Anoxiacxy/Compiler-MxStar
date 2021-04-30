@@ -5,47 +5,31 @@
 	.type	main,@function
 main:
 .L0_0:
-	addi	sp, sp, -28
-	sw	ra, 20(sp)
-	sw	s11, 24(sp)
-	sw	s10, 0(sp)
-	sw	s2, 8(sp)
-	sw	s3, 16(sp)
-	sw	s4, 12(sp)
-	sw	s6, 4(sp)
+	addi	sp, sp, -24
+	sw	ra, 0(sp)
+	sw	s10, 20(sp)
+	sw	s0, 12(sp)
+	sw	s1, 8(sp)
+	sw	s4, 4(sp)
+	sw	s5, 16(sp)
 	call	mx__init
-	addi	a0, zero, 4
-	call	malloc
-	mv	s2, a0
-	addi	a0, zero, 4
-	call	malloc
-	mv	s10, a0
-	addi	a0, zero, 4
-	call	malloc
-	mv	s11, a0
-	sw	zero, 0(s11)
-	lui	t4, %hi(N)
-	lw	t4, %lo(N)(t4)
 	call	mx__getInt
 	lui	t4, %hi(N)
 	sw	a0, %lo(N)(t4)
-	lui	t4, %hi(check)
-	lw	t4, %lo(check)(t4)
 	lui	t4, %hi(N)
 	lw	t4, %lo(N)(t4)
-	addi	s3, t4, 5
+	addi	s10, t4, 5
 	addi	t4, zero, 4
-	mul	t4, s3, t4
+	mul	t4, s10, t4
 	addi	a0, t4, 4
 	call	malloc
-	sw	s3, 0(a0)
+	sw	s10, 0(a0)
 	addi	t4, a0, 4
 	lui	t5, %hi(check)
 	sw	t4, %lo(check)(t5)
-	sw	zero, 0(s10)
+	addi	t5, zero, 0
 	j	.L0_1
 .L0_1:
-	lw	t5, 0(s10)
 	lui	t4, %hi(N)
 	lw	t4, %lo(N)(t4)
 	slt	t4, t4, t5
@@ -55,63 +39,57 @@ main:
 .L0_2:
 	lui	t4, %hi(check)
 	lw	t6, %lo(check)(t4)
-	lw	t5, 0(s10)
 	addi	t4, t5, 1
-	sw	t4, 0(s10)
-	slli	t4, t5, 2
-	add	t5, t6, t4
-	lb	t4, 0(t5)
-	addi	t4, zero, 1
-	sb	t4, 0(t5)
+	slli	t5, t5, 2
+	add	t6, t6, t5
+	addi	t5, zero, 1
+	sb	t5, 0(t6)
+	mv	t5, t4
 	j	.L0_1
 .L0_3:
 	lui	t4, %hi(N)
 	lw	t4, %lo(N)(t4)
-	addi	s3, t4, 5
+	addi	s10, t4, 5
 	addi	t4, zero, 4
-	mul	t4, s3, t4
+	mul	t4, s10, t4
 	addi	a0, t4, 4
 	call	malloc
-	sw	s3, 0(a0)
+	sw	s10, 0(a0)
 	addi	t4, a0, 4
-	mv	s3, t4
+	mv	s1, t4
 	lui	t4, %hi(N)
 	lw	t4, %lo(N)(t4)
-	addi	s4, t4, 5
+	addi	s10, t4, 5
 	addi	t4, zero, 4
-	mul	t4, s4, t4
+	mul	t4, s10, t4
 	addi	a0, t4, 4
 	call	malloc
-	sw	s4, 0(a0)
+	sw	s10, 0(a0)
 	addi	t4, a0, 4
 	mv	s4, t4
-	addi	t5, s3, 4
-	lw	t4, 0(t5)
+	addi	t5, s1, 4
 	addi	t4, zero, 1
 	sw	t4, 0(t5)
-	lw	t4, 0(s10)
-	addi	t4, zero, 2
-	sw	t4, 0(s10)
+	addi	s0, zero, 2
+	addi	t5, zero, 0
 	j	.L0_4
 .L0_4:
 	addi	t4, zero, 1
 	beqz	t4, .L0_22
 	j	.L0_5
 .L0_5:
-	lw	t5, 0(s10)
 	lui	t4, %hi(N)
 	lw	t4, %lo(N)(t4)
-	slt	t4, t4, t5
+	slt	t4, t4, s0
 	beqz	t4, .L0_7
 	j	.L0_6
 .L0_6:
 	j	.L0_22
 .L0_7:
 	lui	t4, %hi(check)
-	lw	t5, %lo(check)(t4)
-	lw	t4, 0(s10)
-	slli	t4, t4, 2
-	add	t4, t5, t4
+	lw	t4, %lo(check)(t4)
+	slli	t5, s0, 2
+	add	t4, t4, t5
 	lb	t4, 0(t4)
 	beqz	t4, .L0_9
 	j	.L0_8
@@ -122,32 +100,22 @@ main:
 	lui	t4, %hi(M)
 	sw	t5, %lo(M)(t4)
 	slli	t4, t5, 2
-	add	t5, s4, t4
-	lw	t4, 0(t5)
-	lw	t4, 0(s10)
+	add	t4, s4, t4
+	sw	s0, 0(t4)
+	slli	t4, s0, 2
+	add	t5, s1, t4
+	addi	t4, s0, -1
 	sw	t4, 0(t5)
-	lw	t4, 0(s10)
-	slli	t4, t4, 2
-	add	t4, s3, t4
-	lw	t5, 0(t4)
-	lw	t5, 0(s10)
-	addi	t5, t5, -1
-	sw	t5, 0(t4)
 	j	.L0_10
 .L0_9:
 	j	.L0_10
 .L0_10:
-	lw	t5, 0(s10)
-	sw	zero, 0(s2)
-	lw	t4, 0(s2)
-	addi	t4, zero, 1
-	sw	t4, 0(s2)
+	addi	s10, zero, 1
 	j	.L0_11
 .L0_11:
-	lw	t6, 0(s2)
 	lui	t4, %hi(M)
 	lw	t4, %lo(M)(t4)
-	slt	t4, t4, t6
+	slt	t4, t4, s10
 	xori	t4, t4, 1
 	beqz	t4, .L0_12
 	j	.L0_13
@@ -155,108 +123,99 @@ main:
 	addi	t4, zero, 0
 	j	.L0_14
 .L0_13:
-	lw	t4, 0(s2)
-	slli	t4, t4, 2
+	slli	t4, s10, 2
 	add	t4, s4, t4
 	lw	t4, 0(t4)
-	mul	t6, t5, t4
+	mul	t5, s0, t4
 	lui	t4, %hi(N)
 	lw	t4, %lo(N)(t4)
-	slt	t4, t4, t6
+	slt	t4, t4, t5
 	xori	t4, t4, 1
 	j	.L0_14
 .L0_14:
 	beqz	t4, .L0_21
 	j	.L0_15
 .L0_15:
-	lw	t4, 0(s2)
-	slli	t4, t4, 2
+	slli	t4, s10, 2
 	add	t4, s4, t4
 	lw	t4, 0(t4)
-	mul	t4, t5, t4
-	lui	t6, %hi(N)
-	lw	t6, %lo(N)(t6)
-	slt	t6, t6, t4
-	beqz	t6, .L0_17
+	mul	t6, s0, t4
+	lui	t4, %hi(N)
+	lw	t4, %lo(N)(t4)
+	slt	t4, t4, t6
+	beqz	t4, .L0_17
 	j	.L0_16
 .L0_16:
 	j	.L0_20
 .L0_17:
-	lui	t6, %hi(check)
-	lw	ra, %lo(check)(t6)
-	slli	t6, t4, 2
-	add	ra, ra, t6
-	lb	t6, 0(ra)
-	sb	zero, 0(ra)
-	lw	t6, 0(s2)
-	slli	t6, t6, 2
-	add	t6, s4, t6
-	lw	t6, 0(t6)
-	rem	t6, t5, t6
-	addi	t6, t6, 0
-	seqz	t6, t6
-	beqz	t6, .L0_19
+	lui	t4, %hi(check)
+	lw	t5, %lo(check)(t4)
+	slli	t4, t6, 2
+	add	t4, t5, t4
+	sb	zero, 0(t4)
+	slli	t4, s10, 2
+	add	t4, s4, t4
+	lw	t4, 0(t4)
+	rem	t4, s0, t4
+	addi	t4, t4, 0
+	seqz	t4, t4
+	beqz	t4, .L0_19
 	j	.L0_18
 .L0_18:
-	slli	t4, t4, 2
-	add	t6, s3, t4
-	lw	t4, 0(t6)
-	slli	t4, t5, 2
-	add	t4, s3, t4
-	lw	ra, 0(t4)
-	lw	t4, 0(s2)
-	slli	t4, t4, 2
-	add	t4, s4, t4
+	slli	t4, t6, 2
+	add	t5, s1, t4
+	slli	t4, s0, 2
+	add	t4, s1, t4
 	lw	t4, 0(t4)
-	mul	t4, ra, t4
-	sw	t4, 0(t6)
+	slli	t6, s10, 2
+	add	t6, s4, t6
+	lw	t6, 0(t6)
+	mul	t4, t4, t6
+	sw	t4, 0(t5)
 	j	.L0_21
 .L0_19:
-	lw	t4, 0(s2)
-	slli	t4, t4, 2
+	slli	t4, s10, 2
 	add	t4, s4, t4
 	lw	t4, 0(t4)
-	mul	t4, t5, t4
+	mul	t4, s0, t4
 	slli	t4, t4, 2
-	add	ra, s3, t4
-	lw	t4, 0(ra)
-	slli	t4, t5, 2
-	add	t4, s3, t4
-	lw	t6, 0(t4)
-	lw	t4, 0(s2)
-	slli	t4, t4, 2
+	add	t6, s1, t4
+	slli	t4, s0, 2
+	add	t4, s1, t4
+	lw	t5, 0(t4)
+	slli	t4, s10, 2
 	add	t4, s4, t4
 	lw	t4, 0(t4)
 	addi	t4, t4, -1
-	mul	t4, t6, t4
-	sw	t4, 0(ra)
+	mul	t4, t5, t4
+	sw	t4, 0(t6)
 	j	.L0_20
 .L0_20:
-	lw	t4, 0(s2)
-	addi	t4, t4, 1
-	sw	t4, 0(s2)
+	addi	t4, s10, 1
+	mv	s10, t4
+	mv	s10, t4
 	j	.L0_11
 .L0_21:
-	slli	t4, t5, 2
-	add	t4, s3, t4
+	slli	t4, s0, 2
+	add	t4, s1, t4
 	lw	a0, 0(t4)
 	call	mx__toString
 	call	mx__println
-	lw	t4, 0(s10)
-	addi	t4, t4, 1
-	sw	t4, 0(s10)
+	addi	t4, s0, 1
+	mv	s0, t4
+	mv	t5, s10
+	mv	s0, t4
+	mv	t5, s10
 	j	.L0_4
 .L0_22:
-	sw	zero, 0(s11)
-	lw	a0, 0(s11)
-	lw	s11, 24(sp)
-	lw	s10, 0(sp)
-	lw	s2, 8(sp)
-	lw	s3, 16(sp)
-	lw	s4, 12(sp)
-	lw	s6, 4(sp)
-	lw	ra, 20(sp)
-	addi	sp, sp, 28
+	mv	a0, zero
+	lw	s10, 20(sp)
+	lw	s0, 12(sp)
+	lw	s1, 8(sp)
+	lw	s4, 4(sp)
+	lw	s5, 16(sp)
+	lw	ra, 0(sp)
+	addi	sp, sp, 24
 	ret
 	.size	main, .-main
 	.globl	mx__init
