@@ -1,9 +1,9 @@
 	.text
 
-	.globl	main
+	.globl	abs
 	.p2align	2
-	.type	main,@function
-main:
+	.type	abs,@function
+abs:
 .L0_0:
 	mv	[v]ra.copy, ra
 	mv	[v]s11.copy, s11
@@ -18,28 +18,154 @@ main:
 	mv	[v]s7.copy, s7
 	mv	[v]s8.copy, s8
 	mv	[v]s9.copy, s9
-	call	mx__init
-	call	mx__getInt
-	mv	[v]result0, a0
-	call	mx__getInt
-	mv	[v]result1, a0
-	call	mx__getInt
-	mv	[v]result2, a0
-	mv	a0, [v]result0
-	mv	a1, [v]result1
-	mv	a2, [v]result2
-	call	tak
-	mv	[v]result3, a0
-	mv	a0, [v]result3
-	call	mx__toString
-	mv	[v]result4, a0
-	mv	a0, [v]result4
-	call	mx__println
-	j	.L0_2
+	mv	[v]c0, a0
+	addi	[v]const.int(4)1, zero, 4
+	mv	a0, [v]const.int(4)1
+	call	malloc
+	mv	[v]returnValue$address1, a0
+	sw	zero, 0([v]returnValue$address1)
+	slt	[v]result2, zero, [v]c0
+	beqz	[v]result2, .L0_2
+	j	.L0_1
 .L0_1:
-	j	.L0_2
+	sw	[v]c0, 0([v]returnValue$address1)
+	j	.L0_3
 .L0_2:
-	mv	a0, zero
+	lw	[v]variable3, 0([v]c$addr4)
+	sub	[v]result5, zero, [v]c0
+	sw	[v]result5, 0([v]returnValue$address1)
+	j	.L0_3
+.L0_3:
+	lw	[v]returnValue6, 0([v]returnValue$address1)
+	mv	a0, [v]returnValue6
+	mv	s11, [v]s11.copy
+	mv	s10, [v]s10.copy
+	mv	s0, [v]s0.copy
+	mv	s1, [v]s1.copy
+	mv	s2, [v]s2.copy
+	mv	s3, [v]s3.copy
+	mv	s4, [v]s4.copy
+	mv	s5, [v]s5.copy
+	mv	s6, [v]s6.copy
+	mv	s7, [v]s7.copy
+	mv	s8, [v]s8.copy
+	mv	s9, [v]s9.copy
+	mv	ra, [v]ra.copy
+	ret
+	.size	abs, .-abs
+	.globl	main
+	.p2align	2
+	.type	main,@function
+main:
+.L1_0:
+	mv	[v]ra.copy, ra
+	mv	[v]s11.copy, s11
+	mv	[v]s10.copy, s10
+	mv	[v]s0.copy, s0
+	mv	[v]s1.copy, s1
+	mv	[v]s2.copy, s2
+	mv	[v]s3.copy, s3
+	mv	[v]s4.copy, s4
+	mv	[v]s5.copy, s5
+	mv	[v]s6.copy, s6
+	mv	[v]s7.copy, s7
+	mv	[v]s8.copy, s8
+	mv	[v]s9.copy, s9
+	call	mx__init
+	addi	[v]const.int(4)2, zero, 4
+	mv	a0, [v]const.int(4)2
+	call	malloc
+	mv	[v]returnValue$address7, a0
+	sw	zero, 0([v]returnValue$address7)
+	lui	[v]lui, %hi(i)
+	lw	[v]variable8, %lo(i)([v]lui)
+	lui	[v]lui, %hi(i)
+	sw	zero, %lo(i)([v]lui)
+	j	.L1_1
+.L1_1:
+	lui	[v]lui, %hi(i)
+	lw	[v]variable9, %lo(i)([v]lui)
+	addi	[v]const.int(5)3, zero, 5
+	slt	[v]result10, [v]variable9, [v]const.int(5)3
+	beqz	[v]result10, .L1_9
+	j	.L1_2
+.L1_2:
+	lui	[v]lui, %hi(j)
+	lw	[v]variable11, %lo(j)([v]lui)
+	lui	[v]lui, %hi(j)
+	sw	zero, %lo(j)([v]lui)
+	j	.L1_3
+.L1_3:
+	lui	[v]lui, %hi(j)
+	lw	[v]variable12, %lo(j)([v]lui)
+	addi	[v]const.int(5)4, zero, 5
+	slt	[v]result13, [v]variable12, [v]const.int(5)4
+	beqz	[v]result13, .L1_8
+	j	.L1_4
+.L1_4:
+	lui	[v]lui, %hi(n)
+	lw	[v]variable14, %lo(n)([v]lui)
+	call	mx__getInt
+	mv	[v]result15, a0
+	lui	[v]lui, %hi(n)
+	sw	[v]result15, %lo(n)([v]lui)
+	lui	[v]lui, %hi(n)
+	lw	[v]variable16, %lo(n)([v]lui)
+	addi	[v]icmp, [v]variable16, -1
+	seqz	[v]result17, [v]icmp
+	beqz	[v]result17, .L1_6
+	j	.L1_5
+.L1_5:
+	lui	[v]lui, %hi(r)
+	lw	[v]variable18, %lo(r)([v]lui)
+	lui	[v]lui, %hi(i)
+	lw	[v]variable19, %lo(i)([v]lui)
+	lui	[v]lui, %hi(r)
+	sw	[v]variable19, %lo(r)([v]lui)
+	lui	[v]lui, %hi(c)
+	lw	[v]variable20, %lo(c)([v]lui)
+	lui	[v]lui, %hi(j)
+	lw	[v]variable21, %lo(j)([v]lui)
+	lui	[v]lui, %hi(c)
+	sw	[v]variable21, %lo(c)([v]lui)
+	j	.L1_7
+.L1_6:
+	j	.L1_7
+.L1_7:
+	lui	[v]lui, %hi(j)
+	lw	[v]variable22, %lo(j)([v]lui)
+	addi	[v]result23, [v]variable22, 1
+	lui	[v]lui, %hi(j)
+	sw	[v]result23, %lo(j)([v]lui)
+	j	.L1_3
+.L1_8:
+	lui	[v]lui, %hi(i)
+	lw	[v]variable24, %lo(i)([v]lui)
+	addi	[v]result25, [v]variable24, 1
+	lui	[v]lui, %hi(i)
+	sw	[v]result25, %lo(i)([v]lui)
+	j	.L1_1
+.L1_9:
+	lui	[v]lui, %hi(r)
+	lw	[v]variable26, %lo(r)([v]lui)
+	addi	[v]const.int(2)5, zero, 2
+	sub	[v]result27, [v]const.int(2)5, [v]variable26
+	mv	a0, [v]result27
+	call	abs
+	mv	[v]result28, a0
+	lui	[v]lui, %hi(c)
+	lw	[v]variable29, %lo(c)([v]lui)
+	addi	[v]const.int(2)6, zero, 2
+	sub	[v]result30, [v]const.int(2)6, [v]variable29
+	mv	a0, [v]result30
+	call	abs
+	mv	[v]result31, a0
+	add	[v]result32, [v]result28, [v]result31
+	mv	a0, [v]result32
+	call	mx__printInt
+	sw	zero, 0([v]returnValue$address7)
+	lw	[v]returnValue33, 0([v]returnValue$address7)
+	mv	a0, [v]returnValue33
 	mv	s11, [v]s11.copy
 	mv	s10, [v]s10.copy
 	mv	s0, [v]s0.copy
@@ -59,7 +185,7 @@ main:
 	.p2align	2
 	.type	mx__init,@function
 mx__init:
-.L1_0:
+.L2_0:
 	mv	[v]ra.copy, ra
 	mv	[v]s11.copy, s11
 	mv	[v]s10.copy, s10
@@ -73,8 +199,6 @@ mx__init:
 	mv	[v]s7.copy, s7
 	mv	[v]s8.copy, s8
 	mv	[v]s9.copy, s9
-	j	.L1_1
-.L1_1:
 	mv	s11, [v]s11.copy
 	mv	s10, [v]s10.copy
 	mv	s0, [v]s0.copy
@@ -90,88 +214,25 @@ mx__init:
 	mv	ra, [v]ra.copy
 	ret
 	.size	mx__init, .-mx__init
-	.globl	tak
-	.p2align	2
-	.type	tak,@function
-tak:
-.L2_0:
-	mv	[v]ra.copy, ra
-	mv	[v]s11.copy, s11
-	mv	[v]s10.copy, s10
-	mv	[v]s0.copy, s0
-	mv	[v]s1.copy, s1
-	mv	[v]s2.copy, s2
-	mv	[v]s3.copy, s3
-	mv	[v]s4.copy, s4
-	mv	[v]s5.copy, s5
-	mv	[v]s6.copy, s6
-	mv	[v]s7.copy, s7
-	mv	[v]s8.copy, s8
-	mv	[v]s9.copy, s9
-	mv	[v]x5, a0
-	mv	[v]y6, a1
-	mv	[v]z7, a2
-	slt	[v]result8, [v]y6, [v]x5
-	beqz	[v]result8, .L2_3
-	j	.L2_1
-.L2_1:
-	addi	[v]result9, [v]x5, -1
-	mv	a0, [v]result9
-	mv	a1, [v]y6
-	mv	a2, [v]z7
-	call	tak
-	mv	[v]result10, a0
-	addi	[v]result11, [v]y6, -1
-	mv	a0, [v]result11
-	mv	a1, [v]z7
-	mv	a2, [v]x5
-	call	tak
-	mv	[v]result12, a0
-	addi	[v]result13, [v]z7, -1
-	mv	a0, [v]result13
-	mv	a1, [v]x5
-	mv	a2, [v]y6
-	call	tak
-	mv	[v]result14, a0
-	mv	a0, [v]result10
-	mv	a1, [v]result12
-	mv	a2, [v]result14
-	call	tak
-	mv	[v]result15, a0
-	addi	[v]result16, [v]result15, 1
-	mv	[v]returnValue$address.phi17, [v]result16
-	mv	[v]returnValue$address.phi17, [v]result16
-	mv	[v]returnValue$address.phi17, [v]result16
-	mv	[v]returnValue$address.phi17, [v]result16
-	j	.L2_6
-.L2_2:
-	j	.L2_5
-.L2_3:
-	mv	[v]returnValue$address.phi17, [v]z7
-	mv	[v]returnValue$address.phi17, [v]z7
-	mv	[v]returnValue$address.phi17, [v]z7
-	mv	[v]returnValue$address.phi17, [v]z7
-	j	.L2_6
-.L2_4:
-	j	.L2_5
-.L2_5:
-	j	.L2_6
-.L2_6:
-	mv	a0, [v]returnValue$address.phi17
-	mv	s11, [v]s11.copy
-	mv	s10, [v]s10.copy
-	mv	s0, [v]s0.copy
-	mv	s1, [v]s1.copy
-	mv	s2, [v]s2.copy
-	mv	s3, [v]s3.copy
-	mv	s4, [v]s4.copy
-	mv	s5, [v]s5.copy
-	mv	s6, [v]s6.copy
-	mv	s7, [v]s7.copy
-	mv	s8, [v]s8.copy
-	mv	s9, [v]s9.copy
-	mv	ra, [v]ra.copy
-	ret
-	.size	tak, .-tak
 
 	.section	.sdata,"aw",@progbits
+	.global	r
+	.p2align	2
+	r:
+	.word	0                       # 0
+	.global	c
+	.p2align	2
+	c:
+	.word	0                       # 0
+	.global	i
+	.p2align	2
+	i:
+	.word	0                       # 0
+	.global	j
+	.p2align	2
+	j:
+	.word	0                       # 0
+	.global	n
+	.p2align	2
+	n:
+	.word	0                       # 0

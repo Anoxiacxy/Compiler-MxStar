@@ -1,5 +1,6 @@
 package IR;
 
+import AST.Stmt.ForStmtNode;
 import IR.Instruction.BrInst;
 import IR.Instruction.IRInst;
 import IR.Instruction.RetInst;
@@ -10,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class BasicBlock extends IRObject {
+    private static Integer blockCounter = 0;
     private Function function;
     private BasicBlock nextBlock, prevBlock;
     private IRInst instBegin, instEnd;
@@ -17,9 +19,46 @@ public class BasicBlock extends IRObject {
 
     private BasicBlock dfsFather;
 
-
-
     private ArrayList<BasicBlock> successors, predecessors;
+
+
+    public void mergeTo(BasicBlock block) {
+        assert predecessors.size() == 1;
+        assert predecessors.get(0) == block;
+        assert block.getSuccessors().size() == 1;
+        assert block.getSuccessors().get(0) == this;
+
+        block.getSuccessors().clear();
+        block.getSuccessors().addAll(successors);
+
+        IRInst instEnd = block.getInstEnd();
+        block.getInstEnd().setNextInst(getInstBegin());
+        instEnd.removeFromBlock();
+
+        block.setInstEnd(getInstEnd());
+
+        setInstBegin(null);
+        setInstEnd(null);
+
+        removeFromFunction();
+    }
+
+    public void removeFromFunction() {
+        for (IRInst inst = getInstBegin(); inst != null; inst = inst.getNextInst())
+            inst.removeFromBlock();
+
+        assert isEmpty();
+
+        if (getPrevBlock() == null)
+            function.setEntryBlock(getNextBlock());
+        else
+            getPrevBlock().setNextBlock(getNextBlock());
+
+        if (getNextBlock() == null)
+            function.setExitBlock(getPrevBlock());
+        else
+            getNextBlock().setPrevBlock(getPrevBlock());
+    }
 
     public void insertInstAfter(IRInst index, IRInst newInst) {
         if (index == instEnd) {
@@ -46,7 +85,7 @@ public class BasicBlock extends IRObject {
 
     public BasicBlock(Function function, String name) {
         this.function = function;
-        this.name = name;
+        this.name = name + ++blockCounter;
 
         instBegin = null;
         instEnd = null;

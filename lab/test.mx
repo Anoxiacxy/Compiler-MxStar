@@ -1,34 +1,44 @@
 /*
 Test Package: Codegen
-Author: 09' Xiao Jia
-Time: 2020-02-02
+Author: Pikachu
+Time: 2020-02-03
 Input:
 === input ===
-18
-12
-6
+0 0 0 0 0
+0 0 0 0 0
+0 1 0 0 0
+0 0 0 0 0
+0 0 0 0 0
 === end ===
 Output:
 === output ===
-13
+1
 === end ===
 ExitCode: 0
 InstLimit: -1
-Origin Package: Codegen Pretest-568
+Origin Package: Codeforces 263A #48540584
 */
-
-int tak(int x, int y, int z) {
-	if ( y < x ) return 1 + tak( tak(x-1, y, z), tak(y-1, z, x), tak(z-1, x, y) );
-	else return z;
+int n;
+int r;
+int c;
+int i;
+int j;
+int abs(int c){
+    if(c>0) return c;
+    return -c;
 }
 
-int main(){
-	int a;
-	int b;
-	int c;
-	a=getInt();
-	b=getInt();
-	c=getInt();
-	println(toString(tak(a,b,c)));
+int main()
+{
+	// int n,r,c,i,j;
+	for (i=0;i<5;i++)
+		for (j=0;j<5;j++)
+		{
+            n = getInt();
+		//scanf("%d", &n);
+		if (n==1)
+		{r=i;c=j;}}
+    printInt(abs(2-r) + abs(2-c));
+	// printf("%d",abs(2-r)+abs(2-c));
 	return 0;
 }

@@ -153,7 +153,7 @@ public class Mem2Reg extends Pass {
                     allocInstSet.add((AllocaInst) inst);
             }
         });
-
+/*
         if (allocInstSet.isEmpty()) return;
 
         dominatorTree = new DominatorTree(function);
@@ -170,7 +170,7 @@ public class Mem2Reg extends Pass {
         });
 
         rename(function, allocInstSet);
-
+*/
 
     }
 

@@ -6,6 +6,7 @@ import Frontend.SemanticChecker;
 import IR.Module;
 import Optimism.AggressiveDeadCodeElimination;
 import Optimism.Mem2Reg;
+import Optimism.Peephole;
 import Optimism.PhiResolve;
 import Parser.MxStarLexer;
 import Parser.MxStarParser;
@@ -66,11 +67,15 @@ public class Main {
             Module irModule = irBuilder.getModule();
             if (emitLLVM)
                 new IRPrinter("lab/output-O0.ll").visit(irModule);
+            new Peephole(irModule).run();
+
+            if (emitLLVM)
+                new IRPrinter("lab/output-O1.ll").visit(irModule);
 
             new Mem2Reg(irModule).run();
 
             if (emitLLVM)
-                new IRPrinter("lab/output-O1.ll").visit(irModule);
+                new IRPrinter("lab/output-O2.ll").visit(irModule);
 
             boolean changed = false;
             do {
@@ -81,7 +86,7 @@ public class Main {
             new PhiResolve(irModule).run();
 
             if (emitLLVM)
-                new IRPrinter("lab/output-O2.ll").visit(irModule);
+                new IRPrinter("lab/output-O3.ll").visit(irModule);
 
             InstructionSelector instructionSelector = new InstructionSelector();
             instructionSelector.visit(irModule);

@@ -23,6 +23,10 @@ public class Function extends IRObject {
     private ArrayList<Parameter> parameters;
     private Register returnValueAddress;
 
+    public void setExitBlock(BasicBlock exitBlock) {
+        this.exitBlock = exitBlock;
+    }
+
     private Register thisPointer;
     private boolean external;
 
@@ -74,6 +78,8 @@ public class Function extends IRObject {
 
     public ArrayList<BasicBlock> getDfsOrder() {
         ArrayList<BasicBlock> dfsOrder = new ArrayList<>();
+        for (BasicBlock block = getEntryBlock(); block != null; block = block.getNextBlock())
+            block.getPredecessors().clear();
         visTag = new HashSet<>();
         entryBlock.setDfsFather(null);
         dfsBlock(entryBlock, dfsOrder);
