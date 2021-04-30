@@ -31,6 +31,10 @@ public class DominatorTree extends Pass {
         this.function = function;
     }
 
+    public Set<BasicBlock> getDomFrontier(BasicBlock block) {
+        return domFrontier.get(block);
+    }
+
     @Override
     protected void modulePass(Module module) {
         for (Function function : module.getFunctionMap().values()) {

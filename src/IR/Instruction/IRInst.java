@@ -118,4 +118,12 @@ abstract public class IRInst {
         */
 
     }
+
+    public Map<Operand, Integer> getDef() {
+        return def;
+    }
+
+    public Map<Operand, Integer> getUse() {
+        return use;
+    }
 }
