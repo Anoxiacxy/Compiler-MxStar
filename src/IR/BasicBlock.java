@@ -29,10 +29,17 @@ public class BasicBlock extends IRObject {
         assert block.getSuccessors().get(0) == this;
 
         block.getSuccessors().clear();
-        block.getSuccessors().addAll(successors);
+        for (BasicBlock basicBlock : successors) {
+            block.getSuccessors().add(basicBlock);
+            basicBlock.getPredecessors().remove(this);
+            basicBlock.getPredecessors().add(block);
+        }
+        //block.getSuccessors().addAll(successors);
 
         IRInst instEnd = block.getInstEnd();
         block.getInstEnd().setNextInst(getInstBegin());
+        for (IRInst inst = getInstBegin(); inst != null; inst = inst.getNextInst())
+            inst.setBasicBlock(block);
         instEnd.removeFromBlock();
 
         block.setInstEnd(getInstEnd());
