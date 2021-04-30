@@ -58,6 +58,9 @@ public class IRBuilder extends IRObject implements ASTVisitor {
     @Override
     public void visit(BreakStmtNode node) {
         curBasicBlock.appendInstBack(new BrInst(curBasicBlock, null, breakStack.peek(), null));
+        BasicBlock block = new BasicBlock(curFunction, "afterBreak");
+        curFunction.appendBlock(block);
+        curBasicBlock = block;
     }
 
     @Override
@@ -178,6 +181,9 @@ public class IRBuilder extends IRObject implements ASTVisitor {
     @Override
     public void visit(ContinueStmtNode node) {
         curBasicBlock.appendInstBack(new BrInst(curBasicBlock, null, continueStack.peek(), null));
+        BasicBlock block = new BasicBlock(curFunction, "afterContinue");
+        curFunction.appendBlock(block);
+        curBasicBlock = block;
     }
 
     @Override
