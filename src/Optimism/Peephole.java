@@ -19,13 +19,15 @@ public class Peephole extends Pass {
     @Override
     protected void functionPass(Function function) {
         function.getDfsOrder();
-
+/*
         for (BasicBlock block = function.getEntryBlock(); block != null; block = block.getNextBlock()) {
             if (block != function.getEntryBlock() && block.getPredecessors().isEmpty())
                 block.removeFromFunction();
             else if (block.getPredecessors().size() == 1 && block.getPredecessors().get(0).getSuccessors().size() == 1)
                 block.mergeTo(block.getPredecessors().get(0));
         }
+
+ */
     }
 
     @Override

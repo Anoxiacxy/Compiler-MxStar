@@ -3,10 +3,7 @@ package RISCV;
 import IR.Function;
 import RISCV.Operand.GlobalVariable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ASMModule {
     private Map<String, ASMFunction> functionMap;
@@ -14,9 +11,9 @@ public class ASMModule {
     private Map<String, GlobalVariable> globalVariableMap;
 
     public ASMModule() {
-        this.functionMap = new HashMap<>();
-        this.systemFunctionMap = new HashMap<>();
-        this.globalVariableMap = new HashMap<>();
+        this.functionMap = new LinkedHashMap<>();
+        this.systemFunctionMap = new LinkedHashMap<>();
+        this.globalVariableMap = new LinkedHashMap<>();
     }
 
     public Map<String, ASMFunction> getFunctionMap() {

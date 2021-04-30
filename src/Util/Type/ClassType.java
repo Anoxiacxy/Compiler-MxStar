@@ -4,18 +4,19 @@ import Util.Position;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ClassType extends Type {
     private String typeName;
 
-    private Map<String, VarSymbol> varSymbolHashMap = new HashMap<>();
-    private Map<String, FuncSymbol> funcSymbolHashMap = new HashMap<>();
-    private Map<String, ClassType> classTypeHashMap = new HashMap<>();
+    private Map<String, VarSymbol> varSymbolHashMap = new LinkedHashMap<>();
+    private Map<String, FuncSymbol> funcSymbolHashMap = new LinkedHashMap<>();
+    private Map<String, ClassType> classTypeHashMap = new LinkedHashMap<>();
 
-    private Map<String, Integer> varMember = new HashMap<>();
+    private Map<String, Integer> varMember = new LinkedHashMap<>();
     private ArrayList<VarSymbol> varSymbolArrayList = new ArrayList<>();
-    private Map<String, Integer> funcMember = new HashMap<>();
+    private Map<String, Integer> funcMember = new LinkedHashMap<>();
 
     public int getVarMemberIndex(String name) {
         return varMember.get(name);

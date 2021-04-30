@@ -7,6 +7,7 @@ import RISCV.Util.StackLocation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class StackFrame {
@@ -20,7 +21,7 @@ public class StackFrame {
         this.function = function;
         parameterLocation = new ArrayList<>();
         runtimeRegisterLocation = new ArrayList<>();
-        calleeParameterLocation = new HashMap<>();
+        calleeParameterLocation = new LinkedHashMap<>();
     }
 
     public int getFrameSize() {

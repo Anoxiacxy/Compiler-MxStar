@@ -6,6 +6,7 @@ import IR.IRVisitor;
 import IR.Operand.Operand;
 import IR.Operand.Register;
 import RISCV.Instruction.J;
+import RISCV.Instruction.Li;
 
 import java.util.*;
 
@@ -54,8 +55,8 @@ abstract public class IRInst {
 
     public IRInst(BasicBlock basicBlock) {
         this.basicBlock = basicBlock;
-        def = new HashMap<>();
-        use = new HashMap<>();
+        def = new LinkedHashMap<>();
+        use = new LinkedHashMap<>();
     }
 
     public BasicBlock getBasicBlock() {

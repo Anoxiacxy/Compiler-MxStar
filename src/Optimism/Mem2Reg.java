@@ -129,7 +129,7 @@ public class Mem2Reg extends Pass {
 
     @Override
     protected void functionPass(Function function) {
-        Set<AllocaInst> allocInstSet = new HashSet<>();
+        Set<AllocaInst> allocInstSet = new LinkedHashSet<>();
         ArrayList<BasicBlock> blocks = function.getDfsOrder();
         blocks.forEach(block -> {
             for (IRInst inst = block.getInstBegin(); inst != null; inst = inst.getNextInst()) {
@@ -176,7 +176,7 @@ public class Mem2Reg extends Pass {
 
     private void rename(Function function, Set<AllocaInst> allocaInstArrayList) {
         Stack<Pair<BasicBlock,BasicBlock>> blockStack = new Stack<>();
-        Set<BasicBlock> visited = new HashSet<>();
+        Set<BasicBlock> visited = new LinkedHashSet<>();
         blockStack.push(new Pair<>(function.getEntryBlock(), null));
 
         while (!blockStack.isEmpty()) {
@@ -236,7 +236,7 @@ public class Mem2Reg extends Pass {
 
     private void placingPhi(AllocaInst allocaInst) {
         Queue<BasicBlock> blockQueue = new ArrayDeque<>();
-        Set<BasicBlock> visited = new HashSet<>();
+        Set<BasicBlock> visited = new LinkedHashSet<>();
 
         Operand address = allocaInst.getResult();
         ArrayList<IRInst> useInstList = new ArrayList<>(address.getUse().keySet());

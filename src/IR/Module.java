@@ -8,6 +8,7 @@ import IR.TypeSystem.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Module extends IRObject {
@@ -26,10 +27,10 @@ public class Module extends IRObject {
     private Map<String, ClassIRT> classIRTMap;
 
     public Module() {
-        functionMap = new HashMap<>();
-        systemFunctionMap = new HashMap<>();
-        globalVariableMap = new HashMap<>();
-        constantStringMap = new HashMap<>();
+        functionMap = new LinkedHashMap<>();
+        systemFunctionMap = new LinkedHashMap<>();
+        globalVariableMap = new LinkedHashMap<>();
+        constantStringMap = new LinkedHashMap<>();
 
         initSystemFunctionMap();
 

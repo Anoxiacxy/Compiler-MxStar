@@ -4,13 +4,14 @@ import AST.TypeNode;
 import Util.Type.Type;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ASTTypeTable {
     private Map<TypeNode, Type> typeNodeTypeMap;
 
     public ASTTypeTable() {
-        this.typeNodeTypeMap = new HashMap<>();
+        this.typeNodeTypeMap = new LinkedHashMap<>();
     }
 
     public void put(TypeNode typeNode, Type type) {

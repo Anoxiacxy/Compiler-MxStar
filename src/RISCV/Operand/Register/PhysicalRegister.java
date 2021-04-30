@@ -34,9 +34,9 @@ public class PhysicalRegister extends Register {
     public static Map<String, VirtualRegister> virtualRegisters;
 
     static {
-        physicalRegisters = new HashMap<>();
-        virtualRegisters = new HashMap<>();
-        allocatableRegisters = new HashMap<>();
+        physicalRegisters = new LinkedHashMap<>();
+        virtualRegisters = new LinkedHashMap<>();
+        allocatableRegisters = new LinkedHashMap<>();
 
         for (int i = 0; i < phyRegName.size(); i++)
             physicalRegisters.put(phyRegName.get(i), new PhysicalRegister(phyRegName.get(i), saveStatus.get(i), i));
@@ -90,7 +90,7 @@ public class PhysicalRegister extends Register {
         this.id = id;
     }
 
-    private static final Map<String, VirtualRegister> phy2varRegisterMap = new HashMap<>();
+    private static final Map<String, VirtualRegister> phy2varRegisterMap = new LinkedHashMap<>();
     public static VirtualRegister getVirtualRegister(String name) {
         return phy2varRegisterMap.get(name);
     }

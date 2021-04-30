@@ -5,6 +5,7 @@ import RISCV.Instruction.Catagory.LoadInst;
 import RISCV.Instruction.Catagory.StoreInst;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class VirtualRegister extends Register {
@@ -15,8 +16,8 @@ public class VirtualRegister extends Register {
     public VirtualRegister(String name) {
         this.name = name;
 
-        use = new HashMap<>();
-        def = new HashMap<>();
+        use = new LinkedHashMap<>();
+        def = new LinkedHashMap<>();
 
     }
 
@@ -39,8 +40,8 @@ public class VirtualRegister extends Register {
     public VirtualRegister(String name, PhysicalRegister register) {
         this.name = name;
 
-        use = new HashMap<>();
-        def = new HashMap<>();
+        use = new LinkedHashMap<>();
+        def = new LinkedHashMap<>();
 
         this.physicalRegister = register;
     }

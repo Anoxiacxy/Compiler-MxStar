@@ -11,6 +11,7 @@ import IR.TypeSystem.VoidIRT;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static IR.Module.void_t;
@@ -80,7 +81,7 @@ public class Function extends IRObject {
         ArrayList<BasicBlock> dfsOrder = new ArrayList<>();
         for (BasicBlock block = getEntryBlock(); block != null; block = block.getNextBlock())
             block.getPredecessors().clear();
-        visTag = new HashSet<>();
+        visTag = new LinkedHashSet<>();
         entryBlock.setDfsFather(null);
         dfsBlock(entryBlock, dfsOrder);
         return dfsOrder;

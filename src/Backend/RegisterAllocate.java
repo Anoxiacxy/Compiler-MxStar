@@ -22,7 +22,7 @@ public class RegisterAllocate implements ASMPass {
 
     public void piss() {
         module.getFunctionMap().values().forEach(asmFunction -> {
-            HashMap<VirtualRegister, Address> addressHashMap = new HashMap<>();
+            HashMap<VirtualRegister, Address> addressHashMap = new LinkedHashMap<>();
             for (ASMBlock block = asmFunction.getEntryBlock(); block != null;  block = block.getNextBlock()) {
                 for (ASMInst inst = block.getInstBegin(); inst != null; inst = inst.getNextInst()) {
                     ArrayList<VirtualRegister> def = new ArrayList<>(inst.getDef().keySet());
@@ -107,17 +107,17 @@ public class RegisterAllocate implements ASMPass {
     private Map<VirtualRegister, VirtualRegister> alias;
 
     private void livenessAnalysis(ASMFunction function) {
-        liveIn = new HashMap<>();
-        liveOut = new HashMap<>();
-        Map<ASMBlock, Set<VirtualRegister>> def = new HashMap<>();
-        Map<ASMBlock, Set<VirtualRegister>> use = new HashMap<>();
-        Map<ASMBlock, Integer> liveInSize = new HashMap<>();
-        Map<ASMBlock, Integer> liveOutSize = new HashMap<>();
+        liveIn = new LinkedHashMap<>();
+        liveOut = new LinkedHashMap<>();
+        Map<ASMBlock, Set<VirtualRegister>> def = new LinkedHashMap<>();
+        Map<ASMBlock, Set<VirtualRegister>> use = new LinkedHashMap<>();
+        Map<ASMBlock, Integer> liveInSize = new LinkedHashMap<>();
+        Map<ASMBlock, Integer> liveOutSize = new LinkedHashMap<>();
 
         ArrayList<ASMBlock> blocks = function.getDfsOrder();
         for (ASMBlock block : blocks) {
-            Set<VirtualRegister> curDef = new HashSet<>();
-            Set<VirtualRegister> curUse = new HashSet<>();
+            Set<VirtualRegister> curDef = new LinkedHashSet<>();
+            Set<VirtualRegister> curUse = new LinkedHashSet<>();
 
             for (ASMInst inst = block.getInstBegin(); inst != null; inst = inst.getNextInst()) {
                 for (VirtualRegister register : inst.getUse().keySet())
@@ -131,8 +131,8 @@ public class RegisterAllocate implements ASMPass {
         }
 
         for (ASMBlock block : blocks) {
-            liveOut.put(block, new HashSet<>());
-            liveIn.put(block, new HashSet<>());
+            liveOut.put(block, new LinkedHashSet<>());
+            liveIn.put(block, new LinkedHashSet<>());
             liveOutSize.put(block, 0);
             liveInSize.put(block, 0);
         }
@@ -142,12 +142,12 @@ public class RegisterAllocate implements ASMPass {
         boolean changed;
         do {
             for (ASMBlock block : blocks) {
-                Set<VirtualRegister> curOut = new HashSet<>();
+                Set<VirtualRegister> curOut = new LinkedHashSet<>();
                 for (ASMBlock succ : block.getSuccessors())
                     curOut.addAll(liveIn.get(succ));
                 liveOut.replace(block, curOut);
 
-                Set<VirtualRegister> curIn = new HashSet<>(curOut);
+                Set<VirtualRegister> curIn = new LinkedHashSet<>(curOut);
                 curIn.removeAll(def.get(block));
                 curIn.addAll(use.get(block));
                 liveIn.replace(block, curIn);
@@ -189,7 +189,7 @@ public class RegisterAllocate implements ASMPass {
             for (ASMInst inst = block.getInstEnd(); inst != null; inst = inst.getPrevInst()) {
                 if (inst instanceof Mv) {
                     live.removeAll(inst.getUse().keySet());
-                    Set<VirtualRegister> defAndUse = new HashSet<>(inst.getUse().keySet());
+                    Set<VirtualRegister> defAndUse = new LinkedHashSet<>(inst.getUse().keySet());
                     defAndUse.addAll(inst.getDef().keySet());
                     for (VirtualRegister n : defAndUse) {
                         moveList.get(n).add((Mv) inst);
@@ -219,7 +219,7 @@ public class RegisterAllocate implements ASMPass {
     }
 
     private Set<Mv> nodeMoves(VirtualRegister n) {
-        Set<Mv> result = new HashSet<>(workListMoves);
+        Set<Mv> result = new LinkedHashSet<>(workListMoves);
         result.addAll(activeMoves);
         result.retainAll(moveList.get(n));
         return result;
@@ -241,7 +241,7 @@ public class RegisterAllocate implements ASMPass {
     }
 
     private Set<VirtualRegister> adjacent(VirtualRegister n) {
-        Set<VirtualRegister> result = new HashSet<>(adjList.get(n));
+        Set<VirtualRegister> result = new LinkedHashSet<>(adjList.get(n));
         result.removeAll(selectStack);
         result.removeAll(coalescedNodes);
         return result;
@@ -260,7 +260,7 @@ public class RegisterAllocate implements ASMPass {
         int d = degree.get(m);
         degree.replace(m, d - 1);
         if (d == K) {
-            Set<VirtualRegister> registers = new HashSet<>(adjacent(m));
+            Set<VirtualRegister> registers = new LinkedHashSet<>(adjacent(m));
             registers.add(m);
             enableMoves(registers);
             spillWorkList.remove(m);
@@ -323,7 +323,7 @@ public class RegisterAllocate implements ASMPass {
         alias.replace(v, u);
         moveList.get(u).addAll(moveList.get(v));
 
-        Set<VirtualRegister> vSet = new HashSet<>();
+        Set<VirtualRegister> vSet = new LinkedHashSet<>();
         vSet.add(v);
         enableMoves(vSet);
         for (VirtualRegister t : adjacent(v)) {
@@ -338,7 +338,7 @@ public class RegisterAllocate implements ASMPass {
     }
 
     private Set<VirtualRegister> unionAdj(VirtualRegister u, VirtualRegister v) {
-        Set<VirtualRegister> result = new HashSet<>(adjacent(u));
+        Set<VirtualRegister> result = new LinkedHashSet<>(adjacent(u));
         result.addAll(adjacent(v));
         return result;
     }
@@ -465,8 +465,8 @@ public class RegisterAllocate implements ASMPass {
             Address address = new Address(PhysicalRegister.getv("sp"), new IntImm(0));
             function.getStackFrame().getRuntimeRegisterLocation().add(address);
 
-            Set<ASMInst> defs = new HashSet<>(v.getDef().keySet());
-            Set<ASMInst> uses = new HashSet<>(v.getUse().keySet());
+            Set<ASMInst> defs = new LinkedHashSet<>(v.getDef().keySet());
+            Set<ASMInst> uses = new LinkedHashSet<>(v.getUse().keySet());
 
             for (ASMInst inst : defs) {
                 VirtualRegister spilledVR = new VirtualRegister(v.getName() + ".spill");
@@ -487,27 +487,27 @@ public class RegisterAllocate implements ASMPass {
     }
 
     private void init(ASMFunction function) {
-        preColored = new HashSet<>();
-        initial = new HashSet<>();
+        preColored = new LinkedHashSet<>();
+        initial = new LinkedHashSet<>();
         simplifyWorkList = new LinkedHashSet<>();
         freezeWorkList = new LinkedHashSet<>();
         spillWorkList = new LinkedHashSet<>();
-        spilledNodes = new HashSet<>();
-        coalescedNodes = new HashSet<>();
-        coloredNodes = new HashSet<>();
+        spilledNodes = new LinkedHashSet<>();
+        coalescedNodes = new LinkedHashSet<>();
+        coloredNodes = new LinkedHashSet<>();
         selectStack = new Stack<>();
-        degree = new HashMap<>();
+        degree = new LinkedHashMap<>();
 
-        coalescedMoves = new HashSet<>();
-        constrainedMoves = new HashSet<>();
-        frozenMoves = new HashSet<>();
+        coalescedMoves = new LinkedHashSet<>();
+        constrainedMoves = new LinkedHashSet<>();
+        frozenMoves = new LinkedHashSet<>();
         workListMoves = new LinkedHashSet<>();
-        activeMoves = new HashSet<>();
-        adjSet = new HashSet<>();
-        adjList = new HashMap<>();
-        moveList = new HashMap<>();
-        alias = new HashMap<>();
-        spillCost = new HashMap<>();
+        activeMoves = new LinkedHashSet<>();
+        adjSet = new LinkedHashSet<>();
+        adjList = new LinkedHashMap<>();
+        moveList = new LinkedHashMap<>();
+        alias = new LinkedHashMap<>();
+        spillCost = new LinkedHashMap<>();
 
 
         for (ASMBlock block : function.getDfsOrder())
@@ -520,8 +520,8 @@ public class RegisterAllocate implements ASMPass {
 
         for (VirtualRegister v : initial) {
 
-            adjList.put(v, new HashSet<>());
-            moveList.put(v, new HashSet<>());
+            adjList.put(v, new LinkedHashSet<>());
+            moveList.put(v, new LinkedHashSet<>());
             alias.put(v, null);
             spillCost.put(v, (double) 0);
 

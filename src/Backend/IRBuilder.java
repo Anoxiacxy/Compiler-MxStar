@@ -18,10 +18,7 @@ import IR.TypeSystem.PointerIRT;
 import Util.Error.ComplicationError;
 import Util.Type.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 import static IR.Module.*;
 
@@ -39,8 +36,8 @@ public class IRBuilder extends IRObject implements ASTVisitor {
 
     public IRBuilder() {
         this.module = new Module();
-        nodeOperandResult = new HashMap<>();
-        nodeOperandLValue = new HashMap<>();
+        nodeOperandResult = new LinkedHashMap<>();
+        nodeOperandLValue = new LinkedHashMap<>();
 
         breakStack = new Stack<>();
         continueStack = new Stack<>();
@@ -475,7 +472,7 @@ public class IRBuilder extends IRObject implements ASTVisitor {
 
                         curBasicBlock = mergeBlock;
                         curFunction.appendBlock(mergeBlock);
-                        Map<Operand, BasicBlock>branch = new HashMap<>();
+                        Map<Operand, BasicBlock>branch = new LinkedHashMap<>();
                         branch.put(new ConstBool(bool_t, false), phi1);
                         branch.put(rhs, phi2);
                         curBasicBlock.appendInstBack(new PhiInst(curBasicBlock, branch, (Register) result));
@@ -510,7 +507,7 @@ public class IRBuilder extends IRObject implements ASTVisitor {
 
                         curBasicBlock = mergeBlock;
                         curFunction.appendBlock(mergeBlock);
-                        Map<Operand, BasicBlock>branch = new HashMap<>();
+                        Map<Operand, BasicBlock>branch = new LinkedHashMap<>();
                         branch.put(new ConstBool(bool_t, true), phi1);
                         branch.put(rhs, phi2);
                         curBasicBlock.appendInstBack(new PhiInst(curBasicBlock, branch, (Register) result));

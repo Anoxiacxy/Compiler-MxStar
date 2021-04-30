@@ -1,13 +1,14 @@
 package IR;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class IRObject {
     Map<String, Object> symbolTable;
 
     public IRObject() {
-        this.symbolTable = new HashMap<>();
+        this.symbolTable = new LinkedHashMap<>();
     }
 
     public Object get(String str) {

@@ -113,20 +113,20 @@ public class DominatorTree extends Pass {
 
     @Override
     protected void functionPass(Function function) {
-        dfn = new HashMap<>();
+        dfn = new LinkedHashMap<>();
         order = new ArrayList<>();
-        alias = new HashMap<>();
-        mn = new HashMap<>();
-        father = new HashMap<>();
+        alias = new LinkedHashMap<>();
+        mn = new LinkedHashMap<>();
+        father = new LinkedHashMap<>();
 
         ArrayList<BasicBlock>blocks = function.getDfsOrder();
         for (BasicBlock block : blocks) {
             semi.put(block, block);
             idom.put(block, null);
-            tree.put(block, new HashSet<>());
+            tree.put(block, new LinkedHashSet<>());
             alias.put(block, block);
             mn.put(block, block);
-            domFrontier.put(block, new HashSet<>());
+            domFrontier.put(block, new LinkedHashSet<>());
         }
 
         lengauerTarjan(function.getEntryBlock());
@@ -139,10 +139,10 @@ public class DominatorTree extends Pass {
 
     @Override
     public boolean run() {
-        semi = new HashMap<>();
-        idom = new HashMap<>();
-        tree = new HashMap<>();
-        domFrontier = new HashMap<>();
+        semi = new LinkedHashMap<>();
+        idom = new LinkedHashMap<>();
+        tree = new LinkedHashMap<>();
+        domFrontier = new LinkedHashMap<>();
 
         if (this.function == null)
             modulePass(this.module);

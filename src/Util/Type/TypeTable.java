@@ -8,13 +8,14 @@ import Util.Error.SemanticError;
 import Util.Position;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static IR.Module.*;
 
 public class TypeTable {
     private Map<String, Type> stringTypeMap;
-    private Map<Type, IRType> typeIRTypeMap = new HashMap<>();
+    private Map<Type, IRType> typeIRTypeMap = new LinkedHashMap<>();
 
     public TypeTable(Map<String, Type> stringTypeMap) {
         this.stringTypeMap = stringTypeMap;
@@ -63,7 +64,7 @@ public class TypeTable {
     }
 
     public Map<String, ClassIRT> getClassIRTMap() {
-        Map<String, ClassIRT> classIRTMap = new HashMap<>();
+        Map<String, ClassIRT> classIRTMap = new LinkedHashMap<>();
         for (IRType irType : typeIRTypeMap.values()) {
             if (irType instanceof ClassIRT)
                 classIRTMap.put(((ClassIRT) irType).getName(), (ClassIRT) irType);

@@ -10,6 +10,7 @@ import Util.Type.Type;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Scope {
@@ -19,9 +20,9 @@ public class Scope {
     private final ScopeType scopeType;
     private final Scope parentScope;
     private final List<Scope> childrenScope;
-    private final HashMap<String, VarSymbol> varSymbolHashMap = new HashMap<>();
-    private final HashMap<String, FuncSymbol> funcSymbolHashMap = new HashMap<>();
-    private final HashMap<String, Type> typeMap = new HashMap<>();
+    private final HashMap<String, VarSymbol> varSymbolHashMap = new LinkedHashMap<>();
+    private final HashMap<String, FuncSymbol> funcSymbolHashMap = new LinkedHashMap<>();
+    private final HashMap<String, Type> typeMap = new LinkedHashMap<>();
 
     private FuncSymbol funcSymbol;
     private ClassType classDefType;

@@ -5,6 +5,7 @@ import IR.Instruction.IRInst;
 import IR.TypeSystem.IRType;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 abstract public class Operand extends IRObject {
@@ -14,8 +15,8 @@ abstract public class Operand extends IRObject {
 
     public Operand(IRType type) {
         this.type = type;
-        def = new HashMap<>();
-        use = new HashMap<>();
+        def = new LinkedHashMap<>();
+        use = new LinkedHashMap<>();
     }
 
     public void addUse(IRInst inst) {

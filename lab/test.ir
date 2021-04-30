@@ -1,67 +1,11 @@
 	.text
 
-	.globl	main
-	.p2align	2
-	.type	main,@function
-main:
-.L0_0:
-	mv	[v]ra.copy, ra
-	mv	[v]s11.copy, s11
-	mv	[v]s10.copy, s10
-	mv	[v]s0.copy, s0
-	mv	[v]s1.copy, s1
-	mv	[v]s2.copy, s2
-	mv	[v]s3.copy, s3
-	mv	[v]s4.copy, s4
-	mv	[v]s5.copy, s5
-	mv	[v]s6.copy, s6
-	mv	[v]s7.copy, s7
-	mv	[v]s8.copy, s8
-	mv	[v]s9.copy, s9
-	call	mx__init
-	addi	[v]f0.phi0, zero, 0
-	addi	[v]f1.phi1, zero, 1
-	addi	[v]i.phi2, zero, 1
-	addi	[v]f2.phi3, zero, 0
-	j	.L0_1
-.L0_1:
-	addi	[v]const.int(10)1, zero, 10
-	slt	[v]result4, [v]i.phi2, [v]const.int(10)1
-	beqz	[v]result4, .L0_3
-	j	.L0_2
-.L0_2:
-	add	[v]result5, [v]f0.phi0, [v]f1.phi1
-	addi	[v]result6, [v]i.phi2, 1
-	mv	[v]f0.phi0, [v]f1.phi1
-	mv	[v]f1.phi1, [v]result5
-	mv	[v]i.phi2, [v]result6
-	mv	[v]f2.phi3, [v]result5
-	j	.L0_1
-.L0_3:
-	mv	a0, [v]f2.phi3
-	mv	s11, [v]s11.copy
-	mv	s10, [v]s10.copy
-	mv	s0, [v]s0.copy
-	mv	s1, [v]s1.copy
-	mv	s2, [v]s2.copy
-	mv	s3, [v]s3.copy
-	mv	s4, [v]s4.copy
-	mv	s5, [v]s5.copy
-	mv	s6, [v]s6.copy
-	mv	s7, [v]s7.copy
-	mv	s8, [v]s8.copy
-	mv	s9, [v]s9.copy
-	mv	ra, [v]ra.copy
-	ret
-	.size	main, .-main
 	.globl	mx__init
 	.p2align	2
 	.type	mx__init,@function
 mx__init:
-.L1_0:
+.L0_0:
 	mv	[v]ra.copy, ra
-	mv	[v]s11.copy, s11
-	mv	[v]s10.copy, s10
 	mv	[v]s0.copy, s0
 	mv	[v]s1.copy, s1
 	mv	[v]s2.copy, s2
@@ -72,8 +16,10 @@ mx__init:
 	mv	[v]s7.copy, s7
 	mv	[v]s8.copy, s8
 	mv	[v]s9.copy, s9
-	mv	s11, [v]s11.copy
-	mv	s10, [v]s10.copy
+	mv	[v]s10.copy, s10
+	mv	[v]s11.copy, s11
+	j	.L0_1
+.L0_1:
 	mv	s0, [v]s0.copy
 	mv	s1, [v]s1.copy
 	mv	s2, [v]s2.copy
@@ -84,8 +30,70 @@ mx__init:
 	mv	s7, [v]s7.copy
 	mv	s8, [v]s8.copy
 	mv	s9, [v]s9.copy
+	mv	s10, [v]s10.copy
+	mv	s11, [v]s11.copy
 	mv	ra, [v]ra.copy
 	ret
 	.size	mx__init, .-mx__init
+	.globl	main
+	.p2align	2
+	.type	main,@function
+main:
+.L1_0:
+	mv	[v]ra.copy, ra
+	mv	[v]s0.copy, s0
+	mv	[v]s1.copy, s1
+	mv	[v]s2.copy, s2
+	mv	[v]s3.copy, s3
+	mv	[v]s4.copy, s4
+	mv	[v]s5.copy, s5
+	mv	[v]s6.copy, s6
+	mv	[v]s7.copy, s7
+	mv	[v]s8.copy, s8
+	mv	[v]s9.copy, s9
+	mv	[v]s10.copy, s10
+	mv	[v]s11.copy, s11
+	call	mx__init
+	addi	[v]f0.phi0, zero, 0
+	addi	[v]f1.phi1, zero, 1
+	addi	[v]f2.phi2, zero, 0
+	addi	[v]i.phi3, zero, 1
+	j	.L1_1
+.L1_1:
+	addi	[v]const.int(10)1, zero, 10
+	slt	[v]result4, [v]i.phi3, [v]const.int(10)1
+	beqz	[v]result4, .L1_4
+	j	.L1_2
+.L1_2:
+	add	[v]result5, [v]f0.phi0, [v]f1.phi1
+	j	.L1_3
+.L1_3:
+	addi	[v]result6, [v]i.phi3, 1
+	mv	[v]f0.phi0, [v]f1.phi1
+	mv	[v]f1.phi1, [v]result5
+	mv	[v]f2.phi2, [v]result5
+	mv	[v]i.phi3, [v]result6
+	j	.L1_1
+.L1_4:
+	j	.L1_6
+.L1_5:
+	j	.L1_6
+.L1_6:
+	mv	a0, [v]f2.phi2
+	mv	s0, [v]s0.copy
+	mv	s1, [v]s1.copy
+	mv	s2, [v]s2.copy
+	mv	s3, [v]s3.copy
+	mv	s4, [v]s4.copy
+	mv	s5, [v]s5.copy
+	mv	s6, [v]s6.copy
+	mv	s7, [v]s7.copy
+	mv	s8, [v]s8.copy
+	mv	s9, [v]s9.copy
+	mv	s10, [v]s10.copy
+	mv	s11, [v]s11.copy
+	mv	ra, [v]ra.copy
+	ret
+	.size	main, .-main
 
 	.section	.sdata,"aw",@progbits

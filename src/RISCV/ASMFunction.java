@@ -65,7 +65,7 @@ public class ASMFunction extends ASMObject {
         this.module = module;
         this.irFunction = function;
 
-        asmBlockMap = new HashMap<>();
+        asmBlockMap = new LinkedHashMap<>();
         ArrayList<BasicBlock> basicBlocks = new ArrayList<>();
 
         int blockID = 0;
@@ -136,7 +136,7 @@ public class ASMFunction extends ASMObject {
     }
 
     public ArrayList<ASMBlock> getDfsOrder() {
-        visited = new HashSet<>();
+        visited = new LinkedHashSet<>();
         ArrayList<ASMBlock> blocks = new ArrayList<>();
         dfs(getEntryBlock(), blocks);
         return blocks;

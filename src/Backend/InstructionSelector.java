@@ -24,6 +24,7 @@ import Util.Position;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static IR.Module.int_t;
@@ -41,8 +42,8 @@ public class InstructionSelector implements IRVisitor {
         this.asmModule = new ASMModule();
         curAsmBlock = null;
         curAsmFunction = null;
-        virtualRegisterTable = new HashMap<>();
-        operandVirtualRegisterMap = new HashMap<>();
+        virtualRegisterTable = new LinkedHashMap<>();
+        operandVirtualRegisterMap = new LinkedHashMap<>();
     }
 
     public ASMModule getAsmModule() {
