@@ -29,6 +29,12 @@ public class PhiInst extends IRInst {
         addDef(result);
     }
 
+    public void appendBranch(Operand operand, BasicBlock basicBlock) {
+        branch.add(new Pair<>(operand, basicBlock));
+        operand.addUse(this);
+        addUse(operand);
+    }
+
     @Override
     public void replaceUse(Operand oldOperand, Operand newOperand) {
         super.replaceUse(oldOperand, newOperand);

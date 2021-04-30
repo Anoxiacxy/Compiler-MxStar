@@ -8,13 +8,14 @@ import IR.Operand.LocalRegister;
 import IR.Operand.Operand;
 import IR.Operand.Register;
 import Util.Pass;
+import org.antlr.v4.runtime.misc.Pair;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Mem2Reg extends Pass {
     private DominatorTree dominatorTree;
     private Map<BasicBlock, Map<AllocaInst, PhiInst>> phiMap;
+    private Map<BasicBlock, Map<AllocaInst, Operand>> renameTable;
     private Map<LoadInst, AllocaInst> loadInstAllocaInstMap;
     private Map<StoreInst, AllocaInst> storeInstAllocaInstMap;
 
@@ -25,6 +26,7 @@ public class Mem2Reg extends Pass {
     @Override
     public boolean run() {
         phiMap = new LinkedHashMap<>();
+        renameTable = new LinkedHashMap<>();
         loadInstAllocaInstMap = new LinkedHashMap<>();
         storeInstAllocaInstMap = new LinkedHashMap<>();
         modulePass(module);
@@ -72,8 +74,13 @@ public class Mem2Reg extends Pass {
 
             for (LoadInst loadInst : allocLoad) {
                 if (loadInst.getResult().getUse().size() > 0) {
-                    loadInst.getBasicBlock().insertInstAfter(loadInst,
-                            new MoveInst(loadInst.getBasicBlock(), value, loadInst.getResult()));
+                    Operand oldOperand = ((LoadInst) loadInst).getResult();
+                    ArrayList<IRInst> irInsts = new ArrayList<>(oldOperand.getUse().keySet());
+                    for (IRInst irInst : irInsts)
+                        irInst.replaceUse(oldOperand, value);
+
+                    //loadInst.getBasicBlock().insertInstAfter(loadInst,
+                    //        new MoveInst(loadInst.getBasicBlock(), value, loadInst.getResult()));
                 }
                 loadInst.removeFromBlock();
             }
@@ -103,8 +110,7 @@ public class Mem2Reg extends Pass {
             for (IRInst inst : instFromBlock) {
                 if (inst instanceof LoadInst && ((LoadInst) inst).getAddress() == address) {
                     assert curValue != null;
-                    //block.insertInstAfter(inst, new MoveInst(block, curValue, ((LoadInst) inst).getResult()));
-                    Operand finalCurValue = curValue;
+
                     Operand oldOperand = ((LoadInst) inst).getResult();
                     ArrayList<IRInst> irInsts = new ArrayList<>(((LoadInst) inst).getResult().getUse().keySet());
                     for (IRInst irInst : irInsts)
@@ -118,7 +124,6 @@ public class Mem2Reg extends Pass {
                 }
             }
             allocaInst.removeFromBlock();
-            return;
         }
     }
 
@@ -133,7 +138,10 @@ public class Mem2Reg extends Pass {
             }
         });
 
-        //blocks.forEach();
+        blocks.forEach(basicBlock -> {
+            phiMap.put(basicBlock, new LinkedHashMap<>());
+            renameTable.put(basicBlock, new LinkedHashMap<>());
+        });
 
         for (AllocaInst allocaInst : allocInstSet)
             basicOptimizations(allocaInst);
@@ -146,11 +154,9 @@ public class Mem2Reg extends Pass {
             }
         });
 
-        return;
-/*
         if (allocInstSet.isEmpty()) return;
 
-        dominatorTree = new DominatorTree(module);
+        dominatorTree = new DominatorTree(function);
         dominatorTree.run();
 
         for (AllocaInst allocaInst : allocInstSet)
@@ -163,19 +169,65 @@ public class Mem2Reg extends Pass {
             }
         });
 
-        rename(function);
+        rename(function, allocInstSet);
 
- */
+
     }
 
-    private void rename(Function function) {
-        Queue<BasicBlock> blockQueue = new ArrayDeque<>();
+    private void rename(Function function, Set<AllocaInst> allocaInstArrayList) {
+        Stack<Pair<BasicBlock,BasicBlock>> blockStack = new Stack<>();
         Set<BasicBlock> visited = new HashSet<>();
-        blockQueue.offer(function.getEntryBlock());
+        blockStack.push(new Pair<>(function.getEntryBlock(), null));
 
-        while (!blockQueue.isEmpty()) {
-            BasicBlock block = blockQueue.poll();
+        while (!blockStack.isEmpty()) {
+            Pair<BasicBlock, BasicBlock> data = blockStack.pop();
+            BasicBlock block = data.a;
             Map<AllocaInst, PhiInst> curPhiMap = phiMap.get(block);
+            for (AllocaInst allocaInst : curPhiMap.keySet()) {
+                PhiInst phiInst = curPhiMap.get(allocaInst);
+                Operand operand = renameTable.get(data.b)
+                        .getOrDefault(allocaInst, allocaInst.getType().getDefaultValue());
+                phiInst.appendBranch(operand, data.b);
+            }
+
+            if (data.b != null) {
+                for (AllocaInst inst : allocaInstArrayList)
+                    if (!curPhiMap.containsKey(inst))
+                        renameTable.get(block).put(inst, renameTable.get(data.b).get(inst));
+            }
+            if (visited.contains(block))
+                continue;
+            visited.add(block);
+
+            for (AllocaInst allocaInst : curPhiMap.keySet())
+                renameTable.get(block).put(allocaInst, curPhiMap.get(allocaInst).getResult());
+
+            for (IRInst irInst = block.getInstBegin(); irInst != null; irInst = irInst.getNextInst()) {
+                if (irInst instanceof LoadInst && loadInstAllocaInstMap.containsKey(irInst)) {
+                    AllocaInst allocaInst = loadInstAllocaInstMap.get(irInst);
+                    Operand newOperand = renameTable.get(block).get(allocaInst);
+                    Operand oldOperand = ((LoadInst) irInst).getResult();
+                    ArrayList<IRInst> irInsts = new ArrayList<>(oldOperand.getUse().keySet());
+                    for (IRInst inst : irInsts)
+                        inst.replaceUse(oldOperand, newOperand);
+                    irInst.removeFromBlock();
+                } else if (irInst instanceof StoreInst && storeInstAllocaInstMap.containsKey(irInst)) {
+                    AllocaInst allocaInst = storeInstAllocaInstMap.get(irInst);
+                    Operand newOperand = ((StoreInst) irInst).getValue();
+                    if (renameTable.get(block).containsKey(allocaInst))
+                        renameTable.get(block).replace(allocaInst, newOperand);
+                    else
+                        renameTable.get(block).put(allocaInst,newOperand);
+                    irInst.removeFromBlock();
+                }
+            }
+
+            //blockStack.addAll(block.getSuccessors());
+            for (BasicBlock basicBlock : block.getSuccessors())
+                blockStack.push(new Pair<>(basicBlock, block));
+
+            for (PhiInst phiInst : curPhiMap.values())
+                block.appendInstFront(phiInst);
 
         }
     }

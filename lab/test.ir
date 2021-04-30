@@ -19,34 +19,27 @@ main:
 	mv	[v]s8.copy, s8
 	mv	[v]s9.copy, s9
 	call	mx__init
-	addi	[v]const.int(4)1, zero, 4
-	mv	a0, [v]const.int(4)1
-	call	malloc
-	mv	[v]returnValue$address0, a0
-	sw	zero, 0([v]returnValue$address0)
+	call	mx__getInt
+	mv	[v]result0, a0
 	call	mx__getInt
 	mv	[v]result1, a0
 	call	mx__getInt
 	mv	[v]result2, a0
-	call	mx__getInt
-	mv	[v]result3, a0
-	mv	a0, [v]result1
-	mv	a1, [v]result2
-	mv	a2, [v]result3
+	mv	a0, [v]result0
+	mv	a1, [v]result1
+	mv	a2, [v]result2
 	call	tak
+	mv	[v]result3, a0
+	mv	a0, [v]result3
+	call	mx__toString
 	mv	[v]result4, a0
 	mv	a0, [v]result4
-	call	mx__toString
-	mv	[v]result5, a0
-	mv	a0, [v]result5
 	call	mx__println
-	sw	zero, 0([v]returnValue$address0)
 	j	.L0_2
 .L0_1:
 	j	.L0_2
 .L0_2:
-	lw	[v]returnValue6, 0([v]returnValue$address0)
-	mv	a0, [v]returnValue6
+	mv	a0, zero
 	mv	s11, [v]s11.copy
 	mv	s10, [v]s10.copy
 	mv	s0, [v]s0.copy
@@ -115,68 +108,56 @@ tak:
 	mv	[v]s7.copy, s7
 	mv	[v]s8.copy, s8
 	mv	[v]s9.copy, s9
-	mv	[v]x7, a0
-	mv	[v]y8, a1
-	mv	[v]z9, a2
-	addi	[v]const.int(4)2, zero, 4
-	mv	a0, [v]const.int(4)2
-	call	malloc
-	mv	[v]returnValue$address10, a0
-	sw	zero, 0([v]returnValue$address10)
-	mv	[v]variable11, [v]y8
-	mv	[v]variable12, [v]x7
-	slt	[v]result13, [v]variable11, [v]variable12
-	beqz	[v]result13, .L2_3
+	mv	[v]x5, a0
+	mv	[v]y6, a1
+	mv	[v]z7, a2
+	slt	[v]result8, [v]y6, [v]x5
+	beqz	[v]result8, .L2_3
 	j	.L2_1
 .L2_1:
-	mv	[v]variable14, [v]x7
-	addi	[v]result15, [v]variable14, -1
-	mv	[v]variable16, [v]y8
-	mv	[v]variable17, [v]z9
-	mv	a0, [v]result15
-	mv	a1, [v]variable16
-	mv	a2, [v]variable17
+	addi	[v]result9, [v]x5, -1
+	mv	a0, [v]result9
+	mv	a1, [v]y6
+	mv	a2, [v]z7
 	call	tak
-	mv	[v]result18, a0
-	mv	[v]variable19, [v]y8
-	addi	[v]result20, [v]variable19, -1
-	mv	[v]variable21, [v]z9
-	mv	[v]variable22, [v]x7
-	mv	a0, [v]result20
-	mv	a1, [v]variable21
-	mv	a2, [v]variable22
+	mv	[v]result10, a0
+	addi	[v]result11, [v]y6, -1
+	mv	a0, [v]result11
+	mv	a1, [v]z7
+	mv	a2, [v]x5
 	call	tak
-	mv	[v]result23, a0
-	mv	[v]variable24, [v]z9
-	addi	[v]result25, [v]variable24, -1
-	mv	[v]variable26, [v]x7
-	mv	[v]variable27, [v]y8
-	mv	a0, [v]result25
-	mv	a1, [v]variable26
-	mv	a2, [v]variable27
+	mv	[v]result12, a0
+	addi	[v]result13, [v]z7, -1
+	mv	a0, [v]result13
+	mv	a1, [v]x5
+	mv	a2, [v]y6
 	call	tak
-	mv	[v]result28, a0
-	mv	a0, [v]result18
-	mv	a1, [v]result23
-	mv	a2, [v]result28
+	mv	[v]result14, a0
+	mv	a0, [v]result10
+	mv	a1, [v]result12
+	mv	a2, [v]result14
 	call	tak
-	mv	[v]result29, a0
-	addi	[v]result30, [v]result29, 1
-	sw	[v]result30, 0([v]returnValue$address10)
+	mv	[v]result15, a0
+	addi	[v]result16, [v]result15, 1
+	mv	[v]returnValue$address.phi17, [v]result16
+	mv	[v]returnValue$address.phi17, [v]result16
+	mv	[v]returnValue$address.phi17, [v]result16
+	mv	[v]returnValue$address.phi17, [v]result16
 	j	.L2_6
 .L2_2:
 	j	.L2_5
 .L2_3:
-	mv	[v]variable31, [v]z9
-	sw	[v]variable31, 0([v]returnValue$address10)
+	mv	[v]returnValue$address.phi17, [v]z7
+	mv	[v]returnValue$address.phi17, [v]z7
+	mv	[v]returnValue$address.phi17, [v]z7
+	mv	[v]returnValue$address.phi17, [v]z7
 	j	.L2_6
 .L2_4:
 	j	.L2_5
 .L2_5:
 	j	.L2_6
 .L2_6:
-	lw	[v]returnValue32, 0([v]returnValue$address10)
-	mv	a0, [v]returnValue32
+	mv	a0, [v]returnValue$address.phi17
 	mv	s11, [v]s11.copy
 	mv	s10, [v]s10.copy
 	mv	s0, [v]s0.copy
