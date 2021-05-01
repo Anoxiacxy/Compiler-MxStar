@@ -29,26 +29,42 @@ public class BasicBlock extends IRObject {
         assert block.getSuccessors().size() == 1;
         assert block.getSuccessors().get(0) == this;
 
-        block.getSuccessors().clear();
+
+        for (IRInst inst = getInstBegin(); inst != null; inst = inst.getNextInst()) {
+            if (inst instanceof PhiInst) {
+                assert ((PhiInst) inst).getBranch().size() == 1;
+                ((PhiInst) inst).getResult().replaceAllUse(((PhiInst) inst).getBranch().get(0).a);
+                inst.removeFromBlock();
+            }
+        }
+
+        for (IRInst inst = getInstBegin(); inst != null; inst = inst.getNextInst())
+            inst.setBasicBlock(block);
+
+        block.getSuccessors().remove(this);
         calcSuccessors();
         for (BasicBlock basicBlock : successors) {
             block.getSuccessors().add(basicBlock);
             basicBlock.getPredecessors().remove(this);
             basicBlock.getPredecessors().add(block);
             for (IRInst inst = basicBlock.getInstBegin(); inst != null; inst = inst.getNextInst()) {
-                if (inst instanceof PhiInst)
+                if (inst instanceof PhiInst) {
                     ((PhiInst) inst).replaceBranch(this, block);
+                } else if (inst instanceof BrInst) {
+                    assert ((BrInst) inst).getThemBlock() != this;
+                    assert ((BrInst) inst).getElseBlock() != this;
+                }
             }
         }
+
         //block.getSuccessors().addAll(successors);
 
         IRInst instEnd = block.getInstEnd();
-        block.getInstEnd().setNextInst(getInstBegin());
-        for (IRInst inst = getInstBegin(); inst != null; inst = inst.getNextInst())
-            inst.setBasicBlock(block);
-        instEnd.removeFromBlock();
-
+        instEnd.setNextInst(getInstBegin());
+        getInstBegin().setPrevInst(instEnd);
         block.setInstEnd(getInstEnd());
+
+        instEnd.removeFromBlock();
 
         setInstBegin(null);
         setInstEnd(null);

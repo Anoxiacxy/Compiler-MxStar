@@ -33,6 +33,16 @@ public class ControlFlowGraphSimplifier extends Pass {
                 block.removeFromRelatedPhi();
                 block.removeFromFunction();
                 changed = true;
+            } else if (block.getPredecessors().size() == 1) {
+                BasicBlock predecessor = block.getPredecessors().iterator().next();
+                if (predecessor.getSuccessors().size() == 1) {
+                    if (predecessor == block)
+                        block.removeFromFunction();
+                    else {
+                        block.mergeTo(predecessor);
+                    }
+                    changed = true;
+                }
             }
     }
 
@@ -65,7 +75,8 @@ public class ControlFlowGraphSimplifier extends Pass {
 
     @Override
     public boolean run() {
+        changed = false;
         modulePass(module);
-        return false;
+        return changed;
     }
 }

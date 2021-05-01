@@ -72,13 +72,17 @@ public class Main {
 
             boolean changed = false;
             do {
+                boolean tmp;
+                changed = false;
                 //changed |= new AggressiveDeadCodeElimination(irModule).run();
                 //if (emitLLVM) new IRPrinter("lab/output-" + ++id + ".ll").visit(irModule);
-                changed |= new SparseConditionalConstantPropagation(irModule).run();
-                if (emitLLVM) new IRPrinter("lab/output-sccp" + ++id + ".ll").visit(irModule);
-                changed |= new ControlFlowGraphSimplifier(irModule).run();
-                if (emitLLVM) new IRPrinter("lab/output-cfgs" + ++id + ".ll").visit(irModule);
-            } while (changed);
+                tmp = new SparseConditionalConstantPropagation(irModule).run();
+                changed |= tmp;
+                if (emitLLVM && tmp) new IRPrinter("lab/output-sccp" + ++id + ".ll").visit(irModule);
+                tmp = new ControlFlowGraphSimplifier(irModule).run();
+                changed |= tmp;
+                if (emitLLVM && tmp) new IRPrinter("lab/output-cfgs" + ++id + ".ll").visit(irModule);
+            } while (changed && id < 10);
 
             if (emitLLVM)
                 new IRPrinter("lab/output-O1.ll").visit(irModule);

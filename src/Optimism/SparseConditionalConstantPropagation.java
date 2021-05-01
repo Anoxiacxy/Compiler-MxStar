@@ -35,7 +35,6 @@ public class SparseConditionalConstantPropagation extends Pass {
             changed = false;
             blockPass(function.getEntryBlock());
             totalChanged |= changed;
-
         } while (changed);
         changed = totalChanged;
     }
