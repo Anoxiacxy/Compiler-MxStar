@@ -20,6 +20,13 @@ public class BrInst extends IRInst {
         }
     }
 
+    public void removeBranch() {
+        assert cond != null;
+        removeUse(cond);
+        cond.removeUse(this);
+        cond = null;
+    }
+
     @Override
     public void replaceUse(Operand oldOperand, Operand newOperand) {
         super.replaceUse(oldOperand, newOperand);

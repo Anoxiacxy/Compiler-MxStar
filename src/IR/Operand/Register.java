@@ -5,7 +5,6 @@ import IR.TypeSystem.IRType;
 
 abstract public class Register extends Operand {
     private String name;
-    private IRInst definition;
     private static int count = 0;
     private int thisCount;
     private boolean temporary;
@@ -41,7 +40,6 @@ abstract public class Register extends Operand {
     public Register(IRType type, String name) {
         super(type);
         this.name = name;
-        this.definition = null;
         this.temporary = true;
         this.thisCount = ++count;
     }
@@ -49,7 +47,6 @@ abstract public class Register extends Operand {
     public Register(IRType type, String name, boolean temporary) {
         super(type);
         this.name = name;
-        this.definition = null;
         this.temporary = true;
         this.thisCount = ++count;
         this.temporary = temporary;
@@ -62,18 +59,6 @@ abstract public class Register extends Operand {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public IRInst getDefinition() {
-        return definition;
-    }
-
-    public void setDefinition(IRInst definition) {
-        this.definition = definition;
-    }
-
-    public String getFullName() {
-        return getDefinition().getBasicBlock().getFunction() + "." + getName();
     }
 
     @Override

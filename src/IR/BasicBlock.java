@@ -3,6 +3,7 @@ package IR;
 import AST.Stmt.ForStmtNode;
 import IR.Instruction.BrInst;
 import IR.Instruction.IRInst;
+import IR.Instruction.PhiInst;
 import IR.Instruction.RetInst;
 import RISCV.Instruction.Catagory.BranchInst;
 
@@ -29,10 +30,15 @@ public class BasicBlock extends IRObject {
         assert block.getSuccessors().get(0) == this;
 
         block.getSuccessors().clear();
+        calcSuccessors();
         for (BasicBlock basicBlock : successors) {
             block.getSuccessors().add(basicBlock);
             basicBlock.getPredecessors().remove(this);
             basicBlock.getPredecessors().add(block);
+            for (IRInst inst = basicBlock.getInstBegin(); inst != null; inst = inst.getNextInst()) {
+                if (inst instanceof PhiInst)
+                    ((PhiInst) inst).replaceBranch(this, block);
+            }
         }
         //block.getSuccessors().addAll(successors);
 
@@ -50,7 +56,18 @@ public class BasicBlock extends IRObject {
         removeFromFunction();
     }
 
+    public void removeFromRelatedPhi() {
+        calcSuccessors();
+        for (BasicBlock succ : getSuccessors()) {
+            for (IRInst inst = succ.getInstBegin(); inst != null; inst = inst.getNextInst()) {
+                if (inst instanceof PhiInst)
+                    ((PhiInst) inst).removeBranch(this);
+            }
+        }
+    }
+
     public void removeFromFunction() {
+
         for (IRInst inst = getInstBegin(); inst != null; inst = inst.getNextInst())
             inst.removeFromBlock();
 
@@ -65,6 +82,12 @@ public class BasicBlock extends IRObject {
             function.setExitBlock(getPrevBlock());
         else
             getNextBlock().setPrevBlock(getPrevBlock());
+
+        for (BasicBlock predecessor : predecessors)
+            predecessor.getSuccessors().remove(this);
+
+        for (BasicBlock successor : successors)
+            successor.getPredecessors().remove(this);
     }
 
     public void insertInstAfter(IRInst index, IRInst newInst) {
@@ -231,4 +254,6 @@ public class BasicBlock extends IRObject {
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
     }
+
+
 }

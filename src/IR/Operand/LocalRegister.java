@@ -1,11 +1,16 @@
 package IR.Operand;
 
+import IR.Instruction.IRInst;
 import IR.TypeSystem.IRType;
 
 public class LocalRegister extends Register {
     public LocalRegister(IRType type, String name) {
         super(type, name, true);
+    }
 
+    public IRInst getDefInst() {
+        assert getDef().size() == 1;
+        return getDef().keySet().iterator().next();
     }
 
     public LocalRegister(IRType type, String name, boolean temporary) {

@@ -4,10 +4,7 @@ import Frontend.ASTPrinter;
 import Frontend.ASTBuilder;
 import Frontend.SemanticChecker;
 import IR.Module;
-import Optimism.AggressiveDeadCodeElimination;
-import Optimism.Mem2Reg;
-import Optimism.Peephole;
-import Optimism.PhiResolve;
+import Optimism.*;
 import Parser.MxStarLexer;
 import Parser.MxStarParser;
 import RISCV.ASMModule;
@@ -67,26 +64,29 @@ public class Main {
             Module irModule = irBuilder.getModule();
             if (emitLLVM)
                 new IRPrinter("lab/output-O0.ll").visit(irModule);
-            new Peephole(irModule).run();
+            new ControlFlowGraphSimplifier(irModule).run();
+            new Mem2Reg(irModule).run();
+            if (emitLLVM) new IRPrinter("lab/output-mem2reg.ll").visit(irModule);
+
+            int id = 0;
+
+            boolean changed = false;
+            do {
+                //changed |= new AggressiveDeadCodeElimination(irModule).run();
+                //if (emitLLVM) new IRPrinter("lab/output-" + ++id + ".ll").visit(irModule);
+                changed |= new SparseConditionalConstantPropagation(irModule).run();
+                if (emitLLVM) new IRPrinter("lab/output-sccp" + ++id + ".ll").visit(irModule);
+                changed |= new ControlFlowGraphSimplifier(irModule).run();
+                if (emitLLVM) new IRPrinter("lab/output-cfgs" + ++id + ".ll").visit(irModule);
+            } while (changed);
 
             if (emitLLVM)
                 new IRPrinter("lab/output-O1.ll").visit(irModule);
 
-            new Mem2Reg(irModule).run();
-
-            if (emitLLVM)
-                new IRPrinter("lab/output-O2.ll").visit(irModule);
-
-            boolean changed = false;
-            do {
-                changed |= new AggressiveDeadCodeElimination(irModule).run();
-
-            } while (changed);
-
             new PhiResolve(irModule).run();
 
             if (emitLLVM)
-                new IRPrinter("lab/output-O3.ll").visit(irModule);
+                new IRPrinter("lab/output-O2.ll").visit(irModule);
 
             InstructionSelector instructionSelector = new InstructionSelector();
             instructionSelector.visit(irModule);

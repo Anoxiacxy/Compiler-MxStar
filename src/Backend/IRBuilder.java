@@ -903,7 +903,6 @@ public class IRBuilder extends IRObject implements ASTVisitor {
             LocalRegister address = new LocalRegister(new PointerIRT(irType), node.getName(), false);
             IRInst inst = new AllocaInst(curFunction.getEntryBlock(), address, irType);
             curFunction.getEntryBlock().appendInstFront(inst);
-            address.setDefinition(inst);
             Operand value;
             if (node.getExpression() != null) {
                 node.getExpression().accept(this);

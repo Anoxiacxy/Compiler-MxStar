@@ -29,6 +29,25 @@ public class PhiInst extends IRInst {
         addDef(result);
     }
 
+    public void replaceBranch(BasicBlock oldBlock, BasicBlock newBlock) {
+        for (int i = 0; i < branch.size(); i++) {
+            if (branch.get(i).b == oldBlock) {
+                branch.set(i, new Pair<>(branch.get(i).a, newBlock));
+            }
+        }
+    }
+
+    public void removeBranch(BasicBlock basicBlock) {
+        ArrayList<Pair<Operand, BasicBlock>> operandBasicBlockArrayList = new ArrayList<>(branch);
+        for (Pair<Operand, BasicBlock> pair : operandBasicBlockArrayList) {
+            if (pair.b == basicBlock) {
+                removeUse(pair.a);
+                pair.a.removeUse(this);
+                branch.remove(pair);
+            }
+        }
+    }
+
     public void appendBranch(Operand operand, BasicBlock basicBlock) {
         branch.add(new Pair<>(operand, basicBlock));
         operand.addUse(this);

@@ -29,6 +29,22 @@ abstract public class IRInst {
             def.put(operand, 1);
     }
 
+    public void removeUse(Operand operand) {
+        assert use.containsKey(operand);
+        if (use.get(operand) == 1)
+            use.remove(operand);
+        else
+            use.replace(operand, use.get(operand) - 1);
+    }
+
+    public void removeDef(Operand operand) {
+        assert def.containsKey(operand);
+        if (def.get(operand) == 1)
+            def.remove(operand);
+        else
+            def.replace(operand, def.get(operand) - 1);
+    }
+
     public void replaceDef(Operand oldOperand, Operand newOperand) {
         int oldCnt = def.getOrDefault(oldOperand, 0);
         int newCnt = def.getOrDefault(newOperand, 0);

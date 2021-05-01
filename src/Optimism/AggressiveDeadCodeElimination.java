@@ -2,6 +2,7 @@ package Optimism;
 
 import IR.BasicBlock;
 import IR.Function;
+import IR.Instruction.BrInst;
 import IR.Instruction.IRInst;
 import IR.Module;
 import IR.Operand.Operand;
@@ -12,6 +13,8 @@ import java.util.*;
 
 public class AggressiveDeadCodeElimination extends Pass {
     Map<BasicBlock, Set<Operand>> liveIn, liveOut;
+    Set<IRInst> liveInstSet;
+
     public AggressiveDeadCodeElimination(Module module) {
         super(module);
     }
@@ -84,7 +87,9 @@ public class AggressiveDeadCodeElimination extends Pass {
 
     @Override
     protected void functionPass(Function function) {
-        livenessAnalysis(function);
+        liveInstSet = new LinkedHashSet<>();
+
+        //livenessAnalysis(function);
 
     }
 
@@ -95,7 +100,19 @@ public class AggressiveDeadCodeElimination extends Pass {
 
     @Override
     public boolean run() {
+        changed = false;
         modulePass(module);
-        return false;
+        return changed;
+    }
+
+    private void elimination(Function function) {
+        for (BasicBlock block = function.getEntryBlock(); block != null; block = block.getNextBlock()) {
+            for (IRInst inst = block.getInstBegin(); inst != null; inst = inst.getNextInst()) {
+                if (!liveInstSet.contains(inst)) {
+                    changed = true;
+
+                }
+            }
+        }
     }
 }
