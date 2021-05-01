@@ -16,7 +16,7 @@ public class LocalRegister extends Register {
     public String toString() {
         // return "%" + getName();
         if (isTemporary())
-            return "%" + getThisCount();
+            return "%" + getThisCount() + "_" + getName();
         else
             return "%" + getName();
     }

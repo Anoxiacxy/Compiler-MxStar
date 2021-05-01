@@ -102,12 +102,12 @@ hex2int:
 .L1_1:
 	mv	a0, s7
 	call	mx__string_length
-	slt	ra, s8, a0
+	slt	ra, s9, a0
 	beqz	ra, .L1_20
 	j	.L1_2
 .L1_2:
 	mv	a0, s7
-	mv	a1, s8
+	mv	a1, s9
 	call	mx__string_ord
 	addi	ra, zero, 48
 	slt	ra, a0, ra
@@ -127,7 +127,7 @@ hex2int:
 	j	.L1_6
 .L1_6:
 	addi	ra, zero, 16
-	mul	ra, s9, ra
+	mul	ra, s8, ra
 	add	ra, ra, a0
 	addi	t0, ra, -48
 	j	.L1_19
@@ -150,7 +150,7 @@ hex2int:
 	j	.L1_11
 .L1_11:
 	addi	ra, zero, 16
-	mul	ra, s9, ra
+	mul	ra, s8, ra
 	add	ra, ra, a0
 	addi	ra, ra, -65
 	addi	t0, ra, 10
@@ -174,7 +174,7 @@ hex2int:
 	j	.L1_16
 .L1_16:
 	addi	ra, zero, 16
-	mul	ra, s9, ra
+	mul	ra, s8, ra
 	add	ra, ra, a0
 	addi	ra, ra, -97
 	addi	t0, ra, 10
@@ -185,14 +185,12 @@ hex2int:
 .L1_18:
 	j	.L1_19
 .L1_19:
-	addi	ra, s8, 1
-	mv	s8, ra
-	mv	s9, t0
-	mv	s8, ra
-	mv	s9, t0
+	addi	ra, s9, 1
+	mv	s8, t0
+	mv	s9, ra
 	j	.L1_1
 .L1_20:
-	mv	a0, s9
+	mv	a0, s8
 	j	.L1_21
 .L1_21:
 	lw	s7, 16(sp)
@@ -287,8 +285,6 @@ toStringHex:
 	j	.L3_5
 .L3_5:
 	addi	ra, s9, -4
-	mv	s8, a0
-	mv	s9, ra
 	mv	s8, a0
 	mv	s9, ra
 	j	.L3_1
@@ -393,20 +389,20 @@ lohi:
 	.type	sha1,@function
 sha1:
 .L7_0:
-	addi	sp, sp, -80
-	sw	ra, 76(sp)
-	sw	s0, 28(sp)
-	sw	s1, 32(sp)
-	sw	s2, 36(sp)
-	sw	s3, 40(sp)
-	sw	s4, 44(sp)
-	sw	s5, 48(sp)
-	sw	s6, 52(sp)
-	sw	s7, 56(sp)
-	sw	s8, 60(sp)
-	sw	s9, 64(sp)
-	sw	s10, 68(sp)
-	sw	s11, 72(sp)
+	addi	sp, sp, -104
+	sw	ra, 100(sp)
+	sw	s0, 52(sp)
+	sw	s1, 56(sp)
+	sw	s2, 60(sp)
+	sw	s3, 64(sp)
+	sw	s4, 68(sp)
+	sw	s5, 72(sp)
+	sw	s6, 76(sp)
+	sw	s7, 80(sp)
+	sw	s8, 84(sp)
+	sw	s9, 88(sp)
+	sw	s10, 92(sp)
+	sw	s11, 96(sp)
 	addi	ra, a1, 64
 	addi	t0, ra, -56
 	addi	ra, zero, 64
@@ -420,36 +416,36 @@ sha1:
 .L7_1:
 	la	a0, .str.2
 	call	mx__println
-	mv	a0, zero
-	addi	a1, zero, 0
-	addi	s11, zero, 0
 	addi	a1, zero, 0
 	addi	a1, zero, 0
-	addi	a1, zero, 0
-	addi	a1, zero, 0
-	addi	a1, zero, 0
+	addi	a2, zero, 0
 	addi	t2, zero, 0
 	addi	t1, zero, 0
 	addi	t0, zero, 0
 	addi	ra, zero, 0
-	addi	a2, zero, 0
 	addi	ra, zero, 0
 	addi	ra, zero, 0
+	addi	ra, zero, 0
+	addi	ra, zero, 0
+	addi	ra, zero, 0
+	addi	s0, zero, 0
+	addi	ra, zero, 0
+	mv	a0, zero
 	j	.L7_30
 .L7_2:
 	addi	ra, zero, 0
-	addi	s1, zero, 0
+	addi	s0, zero, 0
 	j	.L7_3
 .L7_3:
 	slt	t0, ra, s4
 	beqz	t0, .L7_8
 	j	.L7_4
 .L7_4:
-	addi	s1, zero, 0
+	addi	s0, zero, 0
 	j	.L7_5
 .L7_5:
 	addi	t0, zero, 80
-	slt	t0, s1, t0
+	slt	t0, s0, t0
 	beqz	t0, .L7_7
 	j	.L7_6
 .L7_6:
@@ -458,10 +454,10 @@ sha1:
 	slli	t0, ra, 2
 	add	t0, t1, t0
 	lw	t1, 0(t0)
-	slli	t0, s1, 2
+	slli	t0, s0, 2
 	add	t0, t1, t0
 	sw	zero, 0(t0)
-	addi	s1, s1, 1
+	addi	s0, s0, 1
 	j	.L7_5
 .L7_7:
 	addi	ra, ra, 1
@@ -575,7 +571,7 @@ sha1:
 	li	a0, 43913
 	li	a1, 61389
 	call	lohi
-	mv	s0, a0
+	mv	s1, a0
 	li	a0, 56574
 	li	a1, 39098
 	call	lohi
@@ -583,27 +579,26 @@ sha1:
 	li	a0, 57840
 	li	a1, 50130
 	call	lohi
-	addi	s8, zero, 0
-	mv	s11, s1
-	li	ra, 1732584193
-	mv	s7, ra
-	mv	s6, s0
-	mv	s5, s2
+	addi	ra, zero, 0
+	sw	ra, 4(sp)
+	addi	ra, zero, 0
+	sw	ra, 12(sp)
+	addi	s9, zero, 0
+	mv	s5, a0
 	li	ra, 271733878
-	mv	s9, ra
-	mv	s10, a0
+	mv	s6, ra
+	mv	s7, s2
+	mv	s8, s1
+	li	ra, 1732584193
+	mv	s10, ra
+	addi	a2, zero, 0
 	addi	t2, zero, 0
 	addi	t1, zero, 0
 	addi	t0, zero, 0
 	addi	ra, zero, 0
-	addi	a2, zero, 0
-	addi	a0, zero, 0
-	sw	a0, 12(sp)
-	addi	a0, zero, 0
-	sw	a0, 16(sp)
 	j	.L7_12
 .L7_12:
-	slt	a0, s8, s4
+	slt	a0, s9, s4
 	beqz	a0, .L7_29
 	j	.L7_13
 .L7_13:
@@ -617,14 +612,14 @@ sha1:
 .L7_15:
 	lui	ra, %hi(chunks)
 	lw	t0, %lo(chunks)(ra)
-	slli	ra, s8, 2
+	slli	ra, s9, 2
 	add	ra, t0, ra
 	lw	t0, 0(ra)
 	slli	ra, s1, 2
 	add	s0, t0, ra
 	lui	ra, %hi(chunks)
 	lw	t0, %lo(chunks)(ra)
-	slli	ra, s8, 2
+	slli	ra, s9, 2
 	add	ra, t0, ra
 	lw	t0, 0(ra)
 	addi	ra, s1, -3
@@ -633,7 +628,7 @@ sha1:
 	lw	t1, 0(ra)
 	lui	ra, %hi(chunks)
 	lw	t0, %lo(chunks)(ra)
-	slli	ra, s8, 2
+	slli	ra, s9, 2
 	add	ra, t0, ra
 	lw	t0, 0(ra)
 	addi	ra, s1, -8
@@ -643,7 +638,7 @@ sha1:
 	xor	t1, t1, ra
 	lui	ra, %hi(chunks)
 	lw	t0, %lo(chunks)(ra)
-	slli	ra, s8, 2
+	slli	ra, s9, 2
 	add	ra, t0, ra
 	lw	t0, 0(ra)
 	addi	ra, s1, -14
@@ -653,7 +648,7 @@ sha1:
 	xor	t1, t1, ra
 	lui	ra, %hi(chunks)
 	lw	t0, %lo(chunks)(ra)
-	slli	ra, s8, 2
+	slli	ra, s9, 2
 	add	ra, t0, ra
 	lw	t0, 0(ra)
 	addi	ra, s1, -16
@@ -667,205 +662,203 @@ sha1:
 	addi	s1, s1, 1
 	j	.L7_14
 .L7_16:
-	addi	s11, zero, 0
-	mv	s1, s7
-	mv	s2, s6
-	mv	s3, s5
-	mv	s0, s9
-	mv	ra, s10
+	addi	s0, zero, 0
+	mv	s11, s10
+	mv	s1, s8
+	mv	s2, s7
+	mv	s3, s6
+	mv	ra, s5
 	sw	ra, 0(sp)
+	lw	ra, 4(sp)
+	sw	ra, 24(sp)
 	lw	ra, 12(sp)
 	sw	ra, 20(sp)
-	lw	ra, 16(sp)
-	sw	ra, 24(sp)
 	j	.L7_17
 .L7_17:
 	addi	ra, zero, 80
-	slt	ra, s11, ra
+	slt	ra, s0, ra
 	beqz	ra, .L7_28
 	j	.L7_18
 .L7_18:
 	addi	ra, zero, 20
-	slt	ra, s11, ra
+	slt	ra, s0, ra
 	beqz	ra, .L7_20
 	j	.L7_19
 .L7_19:
-	and	t0, s2, s3
-	xori	ra, s2, -1
-	and	ra, ra, s0
-	or	ra, t0, ra
-	sw	ra, 4(sp)
+	and	t0, s1, s2
+	xori	ra, s1, -1
+	and	ra, ra, s3
+	or	t0, t0, ra
 	li	ra, 1518500249
 	sw	ra, 8(sp)
+	sw	t0, 16(sp)
 	j	.L7_27
 .L7_20:
 	addi	ra, zero, 40
-	slt	ra, s11, ra
+	slt	ra, s0, ra
 	beqz	ra, .L7_22
 	j	.L7_21
 .L7_21:
-	xor	ra, s2, s3
-	xor	ra, ra, s0
+	xor	ra, s1, s2
+	xor	ra, ra, s3
 	li	a0, 1859775393
 	j	.L7_26
 .L7_22:
 	addi	ra, zero, 60
-	slt	ra, s11, ra
+	slt	ra, s0, ra
 	beqz	ra, .L7_24
 	j	.L7_23
 .L7_23:
-	and	t0, s2, s3
-	and	ra, s2, s0
+	and	t0, s1, s2
+	and	ra, s1, s3
 	or	t0, t0, ra
-	and	ra, s3, s0
-	or	s0, t0, ra
+	and	ra, s2, s3
+	or	ra, t0, ra
+	sw	ra, 28(sp)
 	li	a0, 48348
 	li	a1, 36635
 	call	lohi
-	mv	ra, s0
+	lw	ra, 28(sp)
 	j	.L7_25
 .L7_24:
-	xor	ra, s2, s3
-	xor	s0, ra, s0
+	xor	ra, s1, s2
+	xor	ra, ra, s3
+	sw	ra, 32(sp)
 	li	a0, 49622
 	li	a1, 51810
 	call	lohi
-	mv	ra, s0
+	lw	ra, 32(sp)
 	j	.L7_25
 .L7_25:
 	j	.L7_26
 .L7_26:
-	sw	ra, 4(sp)
 	sw	a0, 8(sp)
+	sw	ra, 16(sp)
 	j	.L7_27
 .L7_27:
-	mv	a0, s1
+	mv	a0, s11
 	addi	a1, zero, 5
 	call	rotate_left
 	lw	a1, 0(sp)
 	call	add
-	mv	s0, a0
-	lw	a0, 4(sp)
+	sw	a0, 36(sp)
+	lw	a0, 16(sp)
 	lw	a1, 8(sp)
 	call	add
 	mv	a1, a0
-	mv	a0, s0
+	lw	a0, 36(sp)
 	call	add
 	lui	ra, %hi(chunks)
 	lw	t0, %lo(chunks)(ra)
-	slli	ra, s8, 2
+	slli	ra, s9, 2
 	add	ra, t0, ra
 	lw	t0, 0(ra)
-	slli	ra, s11, 2
+	slli	ra, s0, 2
 	add	ra, t0, ra
 	lw	a1, 0(ra)
 	call	add
-	mv	s1, a0
-	mv	a0, s2
+	sw	a0, 40(sp)
+	mv	a0, s1
 	addi	a1, zero, 30
 	call	rotate_left
-	addi	t0, s11, 1
-	mv	s11, t0
-	mv	s2, s1
-	mv	s3, a0
-	mv	s0, s3
-	mv	ra, s0
+	addi	ra, s0, 1
+	mv	s0, ra
+	mv	s1, s11
+	lw	ra, 40(sp)
+	mv	s11, ra
+	mv	ra, s3
 	sw	ra, 0(sp)
-	lw	ra, 4(sp)
-	sw	ra, 20(sp)
+	mv	s3, s2
+	mv	s2, a0
 	lw	ra, 8(sp)
 	sw	ra, 24(sp)
-	mv	s11, t0
-	mv	s2, s1
-	mv	s3, a0
-	mv	s0, s3
-	mv	ra, s0
-	sw	ra, 0(sp)
-	lw	ra, 4(sp)
+	lw	ra, 16(sp)
 	sw	ra, 20(sp)
-	lw	ra, 8(sp)
-	sw	ra, 24(sp)
 	j	.L7_17
 .L7_28:
-	mv	a0, s7
+	mv	a0, s10
+	mv	a1, s11
+	call	add
+	sw	a0, 48(sp)
+	mv	a0, s8
 	mv	a1, s1
+	call	add
+	sw	a0, 44(sp)
+	mv	a0, s7
+	mv	a1, s2
 	call	add
 	mv	s7, a0
 	mv	a0, s6
-	mv	a1, s2
+	mv	a1, s3
 	call	add
 	mv	s6, a0
 	mv	a0, s5
-	mv	a1, s3
-	call	add
-	mv	s5, a0
-	mv	a0, s9
-	mv	a1, s0
-	call	add
-	mv	s9, a0
-	mv	a0, s10
 	lw	a1, 0(sp)
 	call	add
-	addi	ra, s8, 1
+	addi	ra, s9, 1
+	lw	t0, 24(sp)
+	sw	t0, 4(sp)
+	lw	t0, 20(sp)
+	sw	t0, 12(sp)
+	mv	s9, ra
+	mv	s5, a0
+	lw	ra, 44(sp)
 	mv	s8, ra
-	mv	s10, a0
-	mv	t2, s1
-	mv	t1, s2
-	mv	t0, s3
-	mv	ra, s0
+	lw	ra, 48(sp)
+	mv	s10, ra
 	lw	a2, 0(sp)
-	lw	a0, 20(sp)
-	sw	a0, 12(sp)
-	lw	a0, 24(sp)
-	sw	a0, 16(sp)
+	mv	t2, s3
+	mv	t1, s2
+	mv	t0, s1
+	mv	ra, s11
 	j	.L7_12
 .L7_29:
 	lui	a0, %hi(outputBuffer)
 	lw	a0, %lo(outputBuffer)(a0)
 	addi	a0, a0, 0
-	sw	s7, 0(a0)
-	lui	a0, %hi(outputBuffer)
-	lw	a0, %lo(outputBuffer)(a0)
-	addi	a0, a0, 4
-	sw	s6, 0(a0)
-	lui	a0, %hi(outputBuffer)
-	lw	a0, %lo(outputBuffer)(a0)
-	addi	a0, a0, 8
-	sw	s5, 0(a0)
-	lui	a0, %hi(outputBuffer)
-	lw	a0, %lo(outputBuffer)(a0)
-	addi	a0, a0, 12
-	sw	s9, 0(a0)
-	lui	a0, %hi(outputBuffer)
-	lw	a0, %lo(outputBuffer)(a0)
-	addi	a0, a0, 16
 	sw	s10, 0(a0)
 	lui	a0, %hi(outputBuffer)
 	lw	a0, %lo(outputBuffer)(a0)
-	mv	a1, s8
-	mv	a1, s7
-	mv	a1, s6
-	mv	a1, s5
-	mv	a1, s9
-	mv	a1, s10
-	lw	ra, 12(sp)
-	lw	ra, 16(sp)
+	addi	a0, a0, 4
+	sw	s8, 0(a0)
+	lui	a0, %hi(outputBuffer)
+	lw	a0, %lo(outputBuffer)(a0)
+	addi	a0, a0, 8
+	sw	s7, 0(a0)
+	lui	a0, %hi(outputBuffer)
+	lw	a0, %lo(outputBuffer)(a0)
+	addi	a0, a0, 12
+	sw	s6, 0(a0)
+	lui	a0, %hi(outputBuffer)
+	lw	a0, %lo(outputBuffer)(a0)
+	addi	a0, a0, 16
+	sw	s5, 0(a0)
+	lui	a0, %hi(outputBuffer)
+	lw	a0, %lo(outputBuffer)(a0)
+	lw	a1, 4(sp)
+	lw	a1, 12(sp)
+	mv	ra, s5
+	mv	ra, s6
+	mv	ra, s7
+	mv	ra, s8
+	mv	ra, s10
+	mv	ra, s9
 	j	.L7_30
 .L7_30:
-	lw	s0, 28(sp)
-	lw	s1, 32(sp)
-	lw	s2, 36(sp)
-	lw	s3, 40(sp)
-	lw	s4, 44(sp)
-	lw	s5, 48(sp)
-	lw	s6, 52(sp)
-	lw	s7, 56(sp)
-	lw	s8, 60(sp)
-	lw	s9, 64(sp)
-	lw	s10, 68(sp)
-	lw	s11, 72(sp)
-	lw	ra, 76(sp)
-	addi	sp, sp, 80
+	lw	s0, 52(sp)
+	lw	s1, 56(sp)
+	lw	s2, 60(sp)
+	lw	s3, 64(sp)
+	lw	s4, 68(sp)
+	lw	s5, 72(sp)
+	lw	s6, 76(sp)
+	lw	s7, 80(sp)
+	lw	s8, 84(sp)
+	lw	s9, 88(sp)
+	lw	s10, 92(sp)
+	lw	s11, 96(sp)
+	lw	ra, 100(sp)
+	addi	sp, sp, 104
 	ret
 	.size	sha1, .-sha1
 	.globl	computeSHA1
@@ -1042,8 +1035,8 @@ array_equal:
 	beqz	t0, .L11_2
 	j	.L11_1
 .L11_1:
-	addi	a0, zero, 0
 	addi	t0, zero, 0
+	addi	a0, zero, 0
 	j	.L11_8
 .L11_2:
 	addi	t0, zero, 0
@@ -1109,8 +1102,8 @@ crackSHA1:
 .L12_1:
 	la	a0, .str.3
 	call	mx__println
-	addi	s5, zero, 0
 	addi	s6, zero, 0
+	addi	s5, zero, 0
 	j	.L12_25
 .L12_2:
 	addi	ra, zero, 0
@@ -1164,8 +1157,8 @@ crackSHA1:
 	mv	s7, ra
 	j	.L12_6
 .L12_8:
-	mv	s5, s7
 	addi	s6, zero, 1
+	mv	s5, s7
 	j	.L12_9
 .L12_9:
 	addi	ra, zero, 4
@@ -1266,12 +1259,12 @@ main:
 	sw	s9, 0(sp)
 	sw	s10, 4(sp)
 	call	mx__init
-	addi	t0, zero, 0
 	mv	s9, zero
+	addi	ra, zero, 0
 	j	.L13_1
 .L13_1:
-	addi	ra, zero, 1
-	beqz	ra, .L13_2
+	addi	t0, zero, 1
+	beqz	t0, .L13_2
 	j	.L13_3
 .L13_2:
 	j	.L13_12
@@ -1283,7 +1276,7 @@ main:
 	beqz	ra, .L13_5
 	j	.L13_4
 .L13_4:
-	mv	t0, s8
+	mv	ra, s8
 	j	.L13_12
 .L13_5:
 	addi	ra, s8, -1
@@ -1315,10 +1308,8 @@ main:
 .L13_10:
 	j	.L13_11
 .L13_11:
-	mv	t0, s8
 	mv	s9, ra
-	mv	t0, s8
-	mv	s9, ra
+	mv	ra, s8
 	j	.L13_1
 .L13_12:
 	mv	a0, zero

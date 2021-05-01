@@ -132,19 +132,19 @@ hex2int:
 	mv	[v]s10.copy, s10
 	mv	[v]s11.copy, s11
 	mv	[v]x35, a0
-	addi	[v]i.phi36, zero, 0
-	addi	[v]result.phi37, zero, 0
+	addi	[v]result.phi36, zero, 0
+	addi	[v]i.phi37, zero, 0
 	j	.L1_1
 .L1_1:
 	mv	a0, [v]x35
 	call	mx__string_length
 	mv	[v]result38, a0
-	slt	[v]result39, [v]i.phi36, [v]result38
+	slt	[v]result39, [v]i.phi37, [v]result38
 	beqz	[v]result39, .L1_20
 	j	.L1_2
 .L1_2:
 	mv	a0, [v]x35
-	mv	a1, [v]i.phi36
+	mv	a1, [v]i.phi37
 	call	mx__string_ord
 	mv	[v]result40, a0
 	addi	[v]const.int(48)10, zero, 48
@@ -166,7 +166,7 @@ hex2int:
 	j	.L1_6
 .L1_6:
 	addi	[v]const.int(16)12, zero, 16
-	mul	[v]result44, [v]result.phi37, [v]const.int(16)12
+	mul	[v]result44, [v]result.phi36, [v]const.int(16)12
 	add	[v]result45, [v]result44, [v]result40
 	addi	[v]result46, [v]result45, -48
 	mv	[v]result.phi47, [v]result46
@@ -191,7 +191,7 @@ hex2int:
 	j	.L1_11
 .L1_11:
 	addi	[v]const.int(16)15, zero, 16
-	mul	[v]result51, [v]result.phi37, [v]const.int(16)15
+	mul	[v]result51, [v]result.phi36, [v]const.int(16)15
 	add	[v]result52, [v]result51, [v]result40
 	addi	[v]result53, [v]result52, -65
 	addi	[v]result54, [v]result53, 10
@@ -217,7 +217,7 @@ hex2int:
 	j	.L1_16
 .L1_16:
 	addi	[v]const.int(16)18, zero, 16
-	mul	[v]result59, [v]result.phi37, [v]const.int(16)18
+	mul	[v]result59, [v]result.phi36, [v]const.int(16)18
 	add	[v]result60, [v]result59, [v]result40
 	addi	[v]result61, [v]result60, -97
 	addi	[v]result62, [v]result61, 10
@@ -230,14 +230,12 @@ hex2int:
 	mv	[v]result.phi47, [v]result.phi55
 	j	.L1_19
 .L1_19:
-	addi	[v]result64, [v]i.phi36, 1
-	mv	[v]i.phi36, [v]result64
-	mv	[v]result.phi37, [v]result.phi47
-	mv	[v]i.phi36, [v]result64
-	mv	[v]result.phi37, [v]result.phi47
+	addi	[v]result64, [v]i.phi37, 1
+	mv	[v]result.phi36, [v]result.phi47
+	mv	[v]i.phi37, [v]result64
 	j	.L1_1
 .L1_20:
-	mv	[v]returnValue$address.phi63, [v]result.phi37
+	mv	[v]returnValue$address.phi63, [v]result.phi36
 	j	.L1_21
 .L1_21:
 	mv	a0, [v]returnValue$address.phi63
@@ -385,8 +383,6 @@ toStringHex:
 	j	.L3_5
 .L3_5:
 	addi	[v]result91, [v]i.phi78, -4
-	mv	[v]ret.phi77, [v]ret.phi86
-	mv	[v]i.phi78, [v]result91
 	mv	[v]ret.phi77, [v]ret.phi86
 	mv	[v]i.phi78, [v]result91
 	j	.L3_1
@@ -617,21 +613,21 @@ sha1:
 	la	[v]string146, .str.2
 	mv	a0, [v]string146
 	call	mx__println
-	mv	[v]returnValue$address.phi147, zero
-	addi	[v]i.phi148, zero, 0
-	addi	[v]j.phi149, zero, 0
-	addi	[v]h0.phi150, zero, 0
-	addi	[v]h1.phi151, zero, 0
-	addi	[v]h2.phi152, zero, 0
-	addi	[v]h3.phi153, zero, 0
+	addi	[v]k.phi147, zero, 0
+	addi	[v]f.phi148, zero, 0
+	addi	[v]e.phi149, zero, 0
+	addi	[v]d.phi150, zero, 0
+	addi	[v]c.phi151, zero, 0
+	addi	[v]b.phi152, zero, 0
+	addi	[v]a.phi153, zero, 0
 	addi	[v]h4.phi154, zero, 0
-	addi	[v]a.phi155, zero, 0
-	addi	[v]b.phi156, zero, 0
-	addi	[v]c.phi157, zero, 0
-	addi	[v]d.phi158, zero, 0
-	addi	[v]e.phi159, zero, 0
-	addi	[v]f.phi160, zero, 0
-	addi	[v]k.phi161, zero, 0
+	addi	[v]h3.phi155, zero, 0
+	addi	[v]h2.phi156, zero, 0
+	addi	[v]h1.phi157, zero, 0
+	addi	[v]h0.phi158, zero, 0
+	addi	[v]j.phi159, zero, 0
+	addi	[v]i.phi160, zero, 0
+	mv	[v]returnValue$address.phi161, zero
 	j	.L7_30
 .L7_2:
 	addi	[v]i.phi162, zero, 0
@@ -791,25 +787,25 @@ sha1:
 	mv	a1, [v]const.int(50130)60
 	call	lohi
 	mv	[v]result233, a0
-	addi	[v]i.phi234, zero, 0
-	mv	[v]j.phi235, [v]j.phi163
-	li	[v]const.int(1732584193)61, 1732584193
-	mv	[v]h0.phi236, [v]const.int(1732584193)61
-	mv	[v]h1.phi237, [v]result231
-	mv	[v]h2.phi238, [v]result232
-	li	[v]const.int(271733878)62, 271733878
-	mv	[v]h3.phi239, [v]const.int(271733878)62
-	mv	[v]h4.phi240, [v]result233
-	addi	[v]a.phi241, zero, 0
-	addi	[v]b.phi242, zero, 0
-	addi	[v]c.phi243, zero, 0
-	addi	[v]d.phi244, zero, 0
-	addi	[v]e.phi245, zero, 0
-	addi	[v]f.phi246, zero, 0
-	addi	[v]k.phi247, zero, 0
+	addi	[v]k.phi234, zero, 0
+	addi	[v]f.phi235, zero, 0
+	addi	[v]i.phi236, zero, 0
+	mv	[v]h4.phi237, [v]result233
+	li	[v]const.int(271733878)61, 271733878
+	mv	[v]h3.phi238, [v]const.int(271733878)61
+	mv	[v]h2.phi239, [v]result232
+	mv	[v]h1.phi240, [v]result231
+	li	[v]const.int(1732584193)62, 1732584193
+	mv	[v]h0.phi241, [v]const.int(1732584193)62
+	addi	[v]e.phi242, zero, 0
+	addi	[v]d.phi243, zero, 0
+	addi	[v]c.phi244, zero, 0
+	addi	[v]b.phi245, zero, 0
+	addi	[v]a.phi246, zero, 0
+	mv	[v]j.phi247, [v]j.phi163
 	j	.L7_12
 .L7_12:
-	slt	[v]result248, [v]i.phi234, [v]result143
+	slt	[v]result248, [v]i.phi236, [v]result143
 	beqz	[v]result248, .L7_29
 	j	.L7_13
 .L7_13:
@@ -823,14 +819,14 @@ sha1:
 .L7_15:
 	lui	[v]lui, %hi(chunks)
 	lw	[v]variable251, %lo(chunks)([v]lui)
-	slli	[v]array_offset, [v]i.phi234, 2
+	slli	[v]array_offset, [v]i.phi236, 2
 	add	[v]element$addr252, [v]variable251, [v]array_offset
 	lw	[v]element253, 0([v]element$addr252)
 	slli	[v]array_offset, [v]j.phi249, 2
 	add	[v]element$addr254, [v]element253, [v]array_offset
 	lui	[v]lui, %hi(chunks)
 	lw	[v]variable255, %lo(chunks)([v]lui)
-	slli	[v]array_offset, [v]i.phi234, 2
+	slli	[v]array_offset, [v]i.phi236, 2
 	add	[v]element$addr256, [v]variable255, [v]array_offset
 	lw	[v]element257, 0([v]element$addr256)
 	addi	[v]result258, [v]j.phi249, -3
@@ -839,7 +835,7 @@ sha1:
 	lw	[v]element260, 0([v]element$addr259)
 	lui	[v]lui, %hi(chunks)
 	lw	[v]variable261, %lo(chunks)([v]lui)
-	slli	[v]array_offset, [v]i.phi234, 2
+	slli	[v]array_offset, [v]i.phi236, 2
 	add	[v]element$addr262, [v]variable261, [v]array_offset
 	lw	[v]element263, 0([v]element$addr262)
 	addi	[v]result264, [v]j.phi249, -8
@@ -849,7 +845,7 @@ sha1:
 	xor	[v]result267, [v]element260, [v]element266
 	lui	[v]lui, %hi(chunks)
 	lw	[v]variable268, %lo(chunks)([v]lui)
-	slli	[v]array_offset, [v]i.phi234, 2
+	slli	[v]array_offset, [v]i.phi236, 2
 	add	[v]element$addr269, [v]variable268, [v]array_offset
 	lw	[v]element270, 0([v]element$addr269)
 	addi	[v]result271, [v]j.phi249, -14
@@ -859,7 +855,7 @@ sha1:
 	xor	[v]result274, [v]result267, [v]element273
 	lui	[v]lui, %hi(chunks)
 	lw	[v]variable275, %lo(chunks)([v]lui)
-	slli	[v]array_offset, [v]i.phi234, 2
+	slli	[v]array_offset, [v]i.phi236, 2
 	add	[v]element$addr276, [v]variable275, [v]array_offset
 	lw	[v]element277, 0([v]element$addr276)
 	addi	[v]result278, [v]j.phi249, -16
@@ -878,13 +874,13 @@ sha1:
 	j	.L7_14
 .L7_16:
 	addi	[v]j.phi284, zero, 0
-	mv	[v]a.phi285, [v]h0.phi236
-	mv	[v]b.phi286, [v]h1.phi237
-	mv	[v]c.phi287, [v]h2.phi238
-	mv	[v]d.phi288, [v]h3.phi239
-	mv	[v]e.phi289, [v]h4.phi240
-	mv	[v]f.phi290, [v]f.phi246
-	mv	[v]k.phi291, [v]k.phi247
+	mv	[v]a.phi285, [v]h0.phi241
+	mv	[v]b.phi286, [v]h1.phi240
+	mv	[v]c.phi287, [v]h2.phi239
+	mv	[v]d.phi288, [v]h3.phi238
+	mv	[v]e.phi289, [v]h4.phi237
+	mv	[v]k.phi290, [v]k.phi234
+	mv	[v]f.phi291, [v]f.phi235
 	j	.L7_17
 .L7_17:
 	addi	[v]const.int(80)65, zero, 80
@@ -901,9 +897,9 @@ sha1:
 	xori	[v]result295, [v]b.phi286, -1
 	and	[v]result296, [v]result295, [v]d.phi288
 	or	[v]result297, [v]result294, [v]result296
-	mv	[v]f.phi298, [v]result297
 	li	[v]const.int(1518500249)67, 1518500249
-	mv	[v]k.phi299, [v]const.int(1518500249)67
+	mv	[v]k.phi298, [v]const.int(1518500249)67
+	mv	[v]f.phi299, [v]result297
 	j	.L7_27
 .L7_20:
 	addi	[v]const.int(40)68, zero, 40
@@ -913,9 +909,9 @@ sha1:
 .L7_21:
 	xor	[v]result301, [v]b.phi286, [v]c.phi287
 	xor	[v]result302, [v]result301, [v]d.phi288
-	mv	[v]f.phi303, [v]result302
 	li	[v]const.int(1859775393)69, 1859775393
-	mv	[v]k.phi304, [v]const.int(1859775393)69
+	mv	[v]k.phi303, [v]const.int(1859775393)69
+	mv	[v]f.phi304, [v]result302
 	j	.L7_26
 .L7_22:
 	addi	[v]const.int(60)70, zero, 60
@@ -934,8 +930,8 @@ sha1:
 	mv	a1, [v]const.int(36635)72
 	call	lohi
 	mv	[v]result311, a0
-	mv	[v]f.phi312, [v]result310
-	mv	[v]k.phi313, [v]result311
+	mv	[v]k.phi312, [v]result311
+	mv	[v]f.phi313, [v]result310
 	j	.L7_25
 .L7_24:
 	xor	[v]result314, [v]b.phi286, [v]c.phi287
@@ -946,18 +942,16 @@ sha1:
 	mv	a1, [v]const.int(51810)74
 	call	lohi
 	mv	[v]result316, a0
-	mv	[v]f.phi312, [v]result315
-	mv	[v]k.phi313, [v]result316
+	mv	[v]k.phi312, [v]result316
+	mv	[v]f.phi313, [v]result315
 	j	.L7_25
 .L7_25:
-	mv	[v]f.phi303, [v]f.phi312
-	mv	[v]k.phi304, [v]k.phi313
-	mv	[v]f.phi303, [v]f.phi312
-	mv	[v]k.phi304, [v]k.phi313
+	mv	[v]k.phi303, [v]k.phi312
+	mv	[v]f.phi304, [v]f.phi313
 	j	.L7_26
 .L7_26:
-	mv	[v]f.phi298, [v]f.phi303
-	mv	[v]k.phi299, [v]k.phi304
+	mv	[v]k.phi298, [v]k.phi303
+	mv	[v]f.phi299, [v]f.phi304
 	j	.L7_27
 .L7_27:
 	mv	a0, [v]a.phi285
@@ -969,8 +963,8 @@ sha1:
 	mv	a1, [v]e.phi289
 	call	add
 	mv	[v]result318, a0
-	mv	a0, [v]f.phi298
-	mv	a1, [v]k.phi299
+	mv	a0, [v]f.phi299
+	mv	a1, [v]k.phi298
 	call	add
 	mv	[v]result319, a0
 	mv	a0, [v]result318
@@ -979,7 +973,7 @@ sha1:
 	mv	[v]result320, a0
 	lui	[v]lui, %hi(chunks)
 	lw	[v]variable321, %lo(chunks)([v]lui)
-	slli	[v]array_offset, [v]i.phi234, 2
+	slli	[v]array_offset, [v]i.phi236, 2
 	add	[v]element$addr322, [v]variable321, [v]array_offset
 	lw	[v]element323, 0([v]element$addr322)
 	slli	[v]array_offset, [v]j.phi284, 2
@@ -996,100 +990,92 @@ sha1:
 	mv	[v]result327, a0
 	addi	[v]result328, [v]j.phi284, 1
 	mv	[v]j.phi284, [v]result328
-	mv	[v]a.phi285, [v]result326
 	mv	[v]b.phi286, [v]a.phi285
-	mv	[v]c.phi287, [v]result327
-	mv	[v]d.phi288, [v]c.phi287
-	mv	[v]e.phi289, [v]d.phi288
-	mv	[v]f.phi290, [v]f.phi298
-	mv	[v]k.phi291, [v]k.phi299
-	mv	[v]j.phi284, [v]result328
 	mv	[v]a.phi285, [v]result326
-	mv	[v]b.phi286, [v]a.phi285
-	mv	[v]c.phi287, [v]result327
-	mv	[v]d.phi288, [v]c.phi287
 	mv	[v]e.phi289, [v]d.phi288
-	mv	[v]f.phi290, [v]f.phi298
-	mv	[v]k.phi291, [v]k.phi299
+	mv	[v]d.phi288, [v]c.phi287
+	mv	[v]c.phi287, [v]result327
+	mv	[v]k.phi290, [v]k.phi298
+	mv	[v]f.phi291, [v]f.phi299
 	j	.L7_17
 .L7_28:
-	mv	a0, [v]h0.phi236
+	mv	a0, [v]h0.phi241
 	mv	a1, [v]a.phi285
 	call	add
 	mv	[v]result329, a0
-	mv	a0, [v]h1.phi237
+	mv	a0, [v]h1.phi240
 	mv	a1, [v]b.phi286
 	call	add
 	mv	[v]result330, a0
-	mv	a0, [v]h2.phi238
+	mv	a0, [v]h2.phi239
 	mv	a1, [v]c.phi287
 	call	add
 	mv	[v]result331, a0
-	mv	a0, [v]h3.phi239
+	mv	a0, [v]h3.phi238
 	mv	a1, [v]d.phi288
 	call	add
 	mv	[v]result332, a0
-	mv	a0, [v]h4.phi240
+	mv	a0, [v]h4.phi237
 	mv	a1, [v]e.phi289
 	call	add
 	mv	[v]result333, a0
-	addi	[v]result334, [v]i.phi234, 1
-	mv	[v]i.phi234, [v]result334
-	mv	[v]j.phi235, [v]j.phi284
-	mv	[v]h0.phi236, [v]result329
-	mv	[v]h1.phi237, [v]result330
-	mv	[v]h2.phi238, [v]result331
-	mv	[v]h3.phi239, [v]result332
-	mv	[v]h4.phi240, [v]result333
-	mv	[v]a.phi241, [v]a.phi285
-	mv	[v]b.phi242, [v]b.phi286
-	mv	[v]c.phi243, [v]c.phi287
-	mv	[v]d.phi244, [v]d.phi288
-	mv	[v]e.phi245, [v]e.phi289
-	mv	[v]f.phi246, [v]f.phi290
-	mv	[v]k.phi247, [v]k.phi291
+	addi	[v]result334, [v]i.phi236, 1
+	mv	[v]k.phi234, [v]k.phi290
+	mv	[v]f.phi235, [v]f.phi291
+	mv	[v]i.phi236, [v]result334
+	mv	[v]h4.phi237, [v]result333
+	mv	[v]h3.phi238, [v]result332
+	mv	[v]h2.phi239, [v]result331
+	mv	[v]h1.phi240, [v]result330
+	mv	[v]h0.phi241, [v]result329
+	mv	[v]e.phi242, [v]e.phi289
+	mv	[v]d.phi243, [v]d.phi288
+	mv	[v]c.phi244, [v]c.phi287
+	mv	[v]b.phi245, [v]b.phi286
+	mv	[v]a.phi246, [v]a.phi285
+	mv	[v]j.phi247, [v]j.phi284
 	j	.L7_12
 .L7_29:
 	lui	[v]lui, %hi(outputBuffer)
 	lw	[v]variable335, %lo(outputBuffer)([v]lui)
 	addi	[v]element$addr336, [v]variable335, 0
-	sw	[v]h0.phi236, 0([v]element$addr336)
+	sw	[v]h0.phi241, 0([v]element$addr336)
 	lui	[v]lui, %hi(outputBuffer)
 	lw	[v]variable337, %lo(outputBuffer)([v]lui)
 	addi	[v]element$addr338, [v]variable337, 4
-	sw	[v]h1.phi237, 0([v]element$addr338)
+	sw	[v]h1.phi240, 0([v]element$addr338)
 	lui	[v]lui, %hi(outputBuffer)
 	lw	[v]variable339, %lo(outputBuffer)([v]lui)
 	addi	[v]element$addr340, [v]variable339, 8
-	sw	[v]h2.phi238, 0([v]element$addr340)
+	sw	[v]h2.phi239, 0([v]element$addr340)
 	lui	[v]lui, %hi(outputBuffer)
 	lw	[v]variable341, %lo(outputBuffer)([v]lui)
 	addi	[v]element$addr342, [v]variable341, 12
-	sw	[v]h3.phi239, 0([v]element$addr342)
+	sw	[v]h3.phi238, 0([v]element$addr342)
 	lui	[v]lui, %hi(outputBuffer)
 	lw	[v]variable343, %lo(outputBuffer)([v]lui)
 	addi	[v]element$addr344, [v]variable343, 16
-	sw	[v]h4.phi240, 0([v]element$addr344)
+	sw	[v]h4.phi237, 0([v]element$addr344)
 	lui	[v]lui, %hi(outputBuffer)
 	lw	[v]variable345, %lo(outputBuffer)([v]lui)
-	mv	[v]returnValue$address.phi147, [v]variable345
-	mv	[v]i.phi148, [v]i.phi234
-	mv	[v]j.phi149, [v]j.phi235
-	mv	[v]h0.phi150, [v]h0.phi236
-	mv	[v]h1.phi151, [v]h1.phi237
-	mv	[v]h2.phi152, [v]h2.phi238
-	mv	[v]h3.phi153, [v]h3.phi239
-	mv	[v]h4.phi154, [v]h4.phi240
-	mv	[v]a.phi155, [v]a.phi241
-	mv	[v]b.phi156, [v]b.phi242
-	mv	[v]c.phi157, [v]c.phi243
-	mv	[v]d.phi158, [v]d.phi244
-	mv	[v]e.phi159, [v]e.phi245
-	mv	[v]f.phi160, [v]f.phi246
-	mv	[v]k.phi161, [v]k.phi247
+	mv	[v]k.phi147, [v]k.phi234
+	mv	[v]f.phi148, [v]f.phi235
+	mv	[v]e.phi149, [v]e.phi242
+	mv	[v]d.phi150, [v]d.phi243
+	mv	[v]c.phi151, [v]c.phi244
+	mv	[v]b.phi152, [v]b.phi245
+	mv	[v]a.phi153, [v]a.phi246
+	mv	[v]h4.phi154, [v]h4.phi237
+	mv	[v]h3.phi155, [v]h3.phi238
+	mv	[v]h2.phi156, [v]h2.phi239
+	mv	[v]h1.phi157, [v]h1.phi240
+	mv	[v]h0.phi158, [v]h0.phi241
+	mv	[v]j.phi159, [v]j.phi247
+	mv	[v]i.phi160, [v]i.phi236
+	mv	[v]returnValue$address.phi161, [v]variable345
 	j	.L7_30
 .L7_30:
-	mv	a0, [v]returnValue$address.phi147
+	mv	a0, [v]returnValue$address.phi161
 	mv	s0, [v]s0.copy
 	mv	s1, [v]s1.copy
 	mv	s2, [v]s2.copy
@@ -1366,8 +1352,8 @@ array_equal:
 	beqz	[v]result396, .L11_2
 	j	.L11_1
 .L11_1:
-	addi	[v]returnValue$address.phi397, zero, 0
-	addi	[v]i.phi398, zero, 0
+	addi	[v]i.phi397, zero, 0
+	addi	[v]returnValue$address.phi398, zero, 0
 	j	.L11_8
 .L11_2:
 	addi	[v]i.phi399, zero, 0
@@ -1391,19 +1377,19 @@ array_equal:
 	beqz	[v]result408, .L11_6
 	j	.L11_5
 .L11_5:
-	addi	[v]returnValue$address.phi397, zero, 0
-	mv	[v]i.phi398, [v]i.phi399
+	mv	[v]i.phi397, [v]i.phi399
+	addi	[v]returnValue$address.phi398, zero, 0
 	j	.L11_8
 .L11_6:
 	addi	[v]result409, [v]i.phi399, 1
 	mv	[v]i.phi399, [v]result409
 	j	.L11_3
 .L11_7:
-	addi	[v]returnValue$address.phi397, zero, 1
-	mv	[v]i.phi398, [v]i.phi399
+	mv	[v]i.phi397, [v]i.phi399
+	addi	[v]returnValue$address.phi398, zero, 1
 	j	.L11_8
 .L11_8:
-	mv	a0, [v]returnValue$address.phi397
+	mv	a0, [v]returnValue$address.phi398
 	mv	s0, [v]s0.copy
 	mv	s1, [v]s1.copy
 	mv	s2, [v]s2.copy
@@ -1461,8 +1447,8 @@ crackSHA1:
 	la	[v]string419, .str.3
 	mv	a0, [v]string419
 	call	mx__println
-	addi	[v]i.phi420, zero, 0
-	addi	[v]digit.phi421, zero, 0
+	addi	[v]digit.phi420, zero, 0
+	addi	[v]i.phi421, zero, 0
 	j	.L12_25
 .L12_2:
 	addi	[v]i.phi422, zero, 0
@@ -1521,12 +1507,12 @@ crackSHA1:
 	mv	[v]i.phi426, [v]result442
 	j	.L12_6
 .L12_8:
-	mv	[v]i.phi443, [v]i.phi426
-	addi	[v]digit.phi444, zero, 1
+	addi	[v]digit.phi443, zero, 1
+	mv	[v]i.phi444, [v]i.phi426
 	j	.L12_9
 .L12_9:
 	addi	[v]const.int(4)89, zero, 4
-	slt	[v]icmp, [v]const.int(4)89, [v]digit.phi444
+	slt	[v]icmp, [v]const.int(4)89, [v]digit.phi443
 	xori	[v]result445, [v]icmp, 1
 	beqz	[v]result445, .L12_24
 	j	.L12_10
@@ -1534,7 +1520,7 @@ crackSHA1:
 	addi	[v]i.phi446, zero, 0
 	j	.L12_11
 .L12_11:
-	slt	[v]result447, [v]i.phi446, [v]digit.phi444
+	slt	[v]result447, [v]i.phi446, [v]digit.phi443
 	beqz	[v]result447, .L12_13
 	j	.L12_12
 .L12_12:
@@ -1557,7 +1543,7 @@ crackSHA1:
 	lui	[v]lui, %hi(inputBuffer)
 	lw	[v]variable451, %lo(inputBuffer)([v]lui)
 	mv	a0, [v]variable451
-	mv	a1, [v]digit.phi444
+	mv	a1, [v]digit.phi443
 	call	sha1
 	mv	[v]result452, a0
 	mv	a0, [v]result452
@@ -1570,7 +1556,7 @@ crackSHA1:
 	addi	[v]i.phi454, zero, 0
 	j	.L12_17
 .L12_17:
-	slt	[v]result455, [v]i.phi454, [v]digit.phi444
+	slt	[v]result455, [v]i.phi454, [v]digit.phi443
 	beqz	[v]result455, .L12_19
 	j	.L12_18
 .L12_18:
@@ -1591,14 +1577,14 @@ crackSHA1:
 	la	[v]string461, .str.1
 	mv	a0, [v]string461
 	call	mx__println
-	mv	[v]i.phi420, [v]i.phi454
-	mv	[v]digit.phi421, [v]digit.phi444
+	mv	[v]digit.phi420, [v]digit.phi443
+	mv	[v]i.phi421, [v]i.phi454
 	j	.L12_25
 .L12_20:
 	lui	[v]lui, %hi(inputBuffer)
 	lw	[v]variable462, %lo(inputBuffer)([v]lui)
 	mv	a0, [v]variable462
-	mv	a1, [v]digit.phi444
+	mv	a1, [v]digit.phi443
 	call	nextText
 	mv	[v]result463, a0
 	xori	[v]result464, [v]result463, 1
@@ -1609,18 +1595,16 @@ crackSHA1:
 .L12_22:
 	j	.L12_14
 .L12_23:
-	addi	[v]result465, [v]digit.phi444, 1
-	mv	[v]i.phi443, [v]i.phi446
-	mv	[v]digit.phi444, [v]result465
-	mv	[v]i.phi443, [v]i.phi446
-	mv	[v]digit.phi444, [v]result465
+	addi	[v]result465, [v]digit.phi443, 1
+	mv	[v]digit.phi443, [v]result465
+	mv	[v]i.phi444, [v]i.phi446
 	j	.L12_9
 .L12_24:
 	la	[v]string466, .str.4
 	mv	a0, [v]string466
 	call	mx__println
-	mv	[v]i.phi420, [v]i.phi443
-	mv	[v]digit.phi421, [v]digit.phi444
+	mv	[v]digit.phi420, [v]digit.phi443
+	mv	[v]i.phi421, [v]i.phi444
 	j	.L12_25
 .L12_25:
 	mv	s0, [v]s0.copy
@@ -1657,15 +1641,15 @@ main:
 	mv	[v]s10.copy, s10
 	mv	[v]s11.copy, s11
 	call	mx__init
-	addi	[v]op.phi467, zero, 0
-	mv	[v]input.phi468, zero
+	mv	[v]input.phi467, zero
+	addi	[v]op.phi468, zero, 0
 	j	.L13_1
 .L13_1:
 	addi	[v]const.bool(true)92, zero, 1
 	beqz	[v]const.bool(true)92, .L13_2
 	j	.L13_3
 .L13_2:
-	mv	[v]op.phi469, [v]op.phi467
+	mv	[v]op.phi469, [v]op.phi468
 	j	.L13_12
 .L13_3:
 	call	mx__getInt
@@ -1702,16 +1686,14 @@ main:
 	mv	[v]input.phi477, [v]result476
 	j	.L13_10
 .L13_9:
-	mv	[v]input.phi477, [v]input.phi468
+	mv	[v]input.phi477, [v]input.phi467
 	j	.L13_10
 .L13_10:
 	mv	[v]input.phi474, [v]input.phi477
 	j	.L13_11
 .L13_11:
-	mv	[v]op.phi467, [v]result470
-	mv	[v]input.phi468, [v]input.phi474
-	mv	[v]op.phi467, [v]result470
-	mv	[v]input.phi468, [v]input.phi474
+	mv	[v]input.phi467, [v]input.phi474
+	mv	[v]op.phi468, [v]result470
 	j	.L13_1
 .L13_12:
 	mv	a0, zero

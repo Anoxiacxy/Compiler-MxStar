@@ -4,6 +4,7 @@ import IR.IRObject;
 import IR.Instruction.IRInst;
 import IR.TypeSystem.IRType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -63,6 +64,12 @@ abstract public class Operand extends IRObject {
             removeUse(oldInst);
             addUse(newInst);
         }
+    }
+
+    public void replaceAllUse(Operand other) {
+        ArrayList<IRInst> useInst = new ArrayList<>(use.keySet());
+        for (IRInst inst : useInst)
+            inst.replaceUse(this, other);
     }
 
     public IRType getType() {

@@ -7,11 +7,13 @@ import IR.Instruction.IRInst;
 import IR.Instruction.MoveInst;
 import IR.Instruction.PhiInst;
 import IR.Module;
+import IR.Operand.LocalRegister;
 import IR.Operand.Operand;
+import IR.Operand.Register;
 import Util.Pass;
 import org.antlr.v4.runtime.misc.Pair;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class PhiResolve extends Pass {
     public PhiResolve(Module module) {
@@ -33,17 +35,69 @@ public class PhiResolve extends Pass {
 
     }
 
+    Map<BasicBlock, Set<MoveInst>> parallelMoves;
+
     @Override
     public boolean run() {
-        module.getFunctionMap().forEach((s, function) -> {
-            splitCriticalEdges(function);
-        });
+        parallelMoves = new LinkedHashMap<>();
+        module.getFunctionMap().forEach((s, function) -> splitCriticalEdges(function));
+        applyParallelMoves();
         return false;
     }
 
+    private void applyParallelMoves() {
+        for (BasicBlock block : parallelMoves.keySet()) {
+            Set<MoveInst> moveInstSet = parallelMoves.get(block);
+            Map<Operand, Integer> outDegree = new HashMap<>();
 
-    public void splitCriticalEdges(Function function) {
+            for (MoveInst moveInst : moveInstSet)
+                if (outDegree.containsKey(moveInst.getSource()))
+                    outDegree.replace(moveInst.getSource(), outDegree.get(moveInst.getSource()) + 1);
+                else
+                    outDegree.put(moveInst.getSource(), 1);
+
+            while (!moveInstSet.isEmpty()) {
+                MoveInst moveInst = null;
+                for (MoveInst inst : moveInstSet)
+                    if (!outDegree.containsKey(inst.getResult())) {
+                        moveInst = inst;
+                        break;
+                    }
+
+                if (moveInst != null) {
+                    moveInstSet.remove(moveInst);
+                    block.insertInstBefore(block.getInstEnd(), moveInst);
+                    if (outDegree.get(moveInst.getSource()) == 1)
+                        outDegree.remove(moveInst.getSource());
+                    else
+                        outDegree.replace(moveInst.getSource(), outDegree.get(moveInst.getSource()) - 1);
+                } else {
+                    moveInst = moveInstSet.iterator().next();
+                    assert moveInst.getSource() instanceof Register;
+
+                    Register temp = new LocalRegister(moveInst.getSource().getType(), moveInst.getSource().getName() + ".temp");
+                    block.insertInstBefore(block.getInstEnd(), new MoveInst(block, moveInst.getSource(), temp));
+
+                    if (outDegree.get(moveInst.getSource()) == 1)
+                        outDegree.remove(moveInst.getSource());
+                    else
+                        outDegree.replace(moveInst.getSource(), outDegree.get(moveInst.getSource()) - 1);
+
+                    outDegree.put(temp, 1);
+
+                    moveInst.replaceUse(moveInst.getSource(), temp);
+                }
+
+
+            }
+        }
+    }
+
+    private void splitCriticalEdges(Function function) {
         ArrayList<BasicBlock> dfsOrder = function.getDfsOrder();
+        for (BasicBlock block : dfsOrder)
+            parallelMoves.put(block, new LinkedHashSet<>());
+
         for (BasicBlock block : dfsOrder) {
             if (block.getPredecessors().size() == 0) continue;
 
@@ -56,12 +110,14 @@ public class PhiResolve extends Pass {
             if (phiInstArrayList.size() == 0) continue;
 
             if (block.getPredecessors().size() == 1) {
+                BasicBlock preBlock = block.getPredecessors().get(0);
                 for (PhiInst phiInst : phiInstArrayList) {
                     assert phiInst.getBranch().size() == 1;
                     // TODO: 2021/4/4  
                     // phiInst.setResult((Register) phiInst.getBranch().get(0).a);
-                    block.insertInstBefore(phiInst, new MoveInst(block,
+                    parallelMoves.get(preBlock).add(new MoveInst(preBlock,
                             phiInst.getBranch().get(0).a, phiInst.getResult()));
+                    //block.insertInstBefore(phiInst, ));
                     phiInst.removeFromBlock();
                 }
                 continue;
@@ -79,6 +135,7 @@ public class PhiResolve extends Pass {
                 //BasicBlock pre = block.getPredecessors().get(i);
                 if (pre.getSuccessors().size() > 1) {
                     BasicBlock preNext = new BasicBlock(pre.getFunction(), "extra");
+                    parallelMoves.put(preNext, new LinkedHashSet<>());
                     preNext.appendInstBack(new BrInst(preNext, null, block, null));
 
                     assert pre.getInstEnd() instanceof BrInst;
@@ -101,8 +158,7 @@ public class PhiResolve extends Pass {
                     for (PhiInst phiInst : phiInstArrayList) {
                         for (Pair<Operand, BasicBlock> pair : phiInst.getBranch()) {
                             if (pair.b == pre) {
-                                preNext.insertInstBefore(preNext.getInstEnd(), new MoveInst(preNext,
-                                        pair.a, phiInst.getResult()));
+                                parallelMoves.get(preNext).add(new MoveInst(preNext, pair.a, phiInst.getResult()));
                             }
                         }
                     }
@@ -110,8 +166,7 @@ public class PhiResolve extends Pass {
                     for (PhiInst phiInst : phiInstArrayList) {
                         for (Pair<Operand, BasicBlock> pair : phiInst.getBranch()) {
                             if (pair.b == pre) {
-                                pre.insertInstBefore(pre.getInstEnd(), new MoveInst(pre,
-                                        pair.a, phiInst.getResult()));
+                                parallelMoves.get(pre).add(new MoveInst(pre, pair.a, phiInst.getResult()));
                             }
                         }
                     }
@@ -120,5 +175,8 @@ public class PhiResolve extends Pass {
             for (PhiInst phiInst : phiInstArrayList)
                 phiInst.removeFromBlock();
         }
+
+
+
     }
 }

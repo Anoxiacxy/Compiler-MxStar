@@ -89,11 +89,12 @@ public class Function extends IRObject {
 
     public void dfsBlock(BasicBlock cur, ArrayList<BasicBlock> dfsOrder) {
         dfsOrder.add(cur);
+        visTag.add(cur);
         cur.calcSuccessors();
         for (BasicBlock next : cur.getSuccessors()) {
             next.getPredecessors().add(cur);
             if (!visTag.contains(next)) {
-                visTag.add(cur);
+
                 next.setDfsFather(cur);
                 dfsBlock(next, dfsOrder);
             }

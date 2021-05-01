@@ -74,8 +74,9 @@ public class PhiInst extends IRInst {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(result).append(" = phi ").append(result.getType());
+        if (branch.isEmpty())
+            return stringBuilder.toString();
         ListIterator<Pair<Operand, BasicBlock>> iterator = branch.listIterator();;
-
         Pair<Operand, BasicBlock> entry = iterator.next();
         stringBuilder.append(" [ ").append(entry.a)
                 .append(", ").append(entry.b).append(" ]");

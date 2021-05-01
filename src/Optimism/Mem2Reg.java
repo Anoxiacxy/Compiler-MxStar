@@ -1,5 +1,6 @@
 package Optimism;
 
+import Backend.IRPrinter;
 import IR.BasicBlock;
 import IR.Function;
 import IR.Instruction.*;
@@ -7,6 +8,7 @@ import IR.Module;
 import IR.Operand.LocalRegister;
 import IR.Operand.Operand;
 import IR.Operand.Register;
+import IR.TypeSystem.PointerIRT;
 import Util.Pass;
 import org.antlr.v4.runtime.misc.Pair;
 
@@ -14,10 +16,14 @@ import java.util.*;
 
 public class Mem2Reg extends Pass {
     private DominatorTree dominatorTree;
-    private Map<BasicBlock, Map<AllocaInst, PhiInst>> phiMap;
+    private Map<BasicBlock, Map<Register, PhiInst>> phiMap;
+    private Map<BasicBlock, Map<Register, Operand>> addressLiveOut;
+    private Map<BasicBlock, Set<LoadInst>> loadInstSet;
     private Map<BasicBlock, Map<AllocaInst, Operand>> renameTable;
     private Map<LoadInst, AllocaInst> loadInstAllocaInstMap;
     private Map<StoreInst, AllocaInst> storeInstAllocaInstMap;
+
+    private Map<Operand, Operand> replaceMap;
 
     public Mem2Reg(Module module) {
         super(module);
@@ -29,6 +35,9 @@ public class Mem2Reg extends Pass {
         renameTable = new LinkedHashMap<>();
         loadInstAllocaInstMap = new LinkedHashMap<>();
         storeInstAllocaInstMap = new LinkedHashMap<>();
+        addressLiveOut = new LinkedHashMap<>();
+        replaceMap = new LinkedHashMap<>();
+        loadInstSet = new LinkedHashMap<>();
         modulePass(module);
         return false;
     }
@@ -74,7 +83,7 @@ public class Mem2Reg extends Pass {
 
             for (LoadInst loadInst : allocLoad) {
                 if (loadInst.getResult().getUse().size() > 0) {
-                    Operand oldOperand = ((LoadInst) loadInst).getResult();
+                    Operand oldOperand = loadInst.getResult();
                     ArrayList<IRInst> irInsts = new ArrayList<>(oldOperand.getUse().keySet());
                     for (IRInst irInst : irInsts) {
                         oldOperand.removeUse(irInst);
@@ -146,7 +155,9 @@ public class Mem2Reg extends Pass {
 
         blocks.forEach(basicBlock -> {
             phiMap.put(basicBlock, new LinkedHashMap<>());
+            addressLiveOut.put(basicBlock, new LinkedHashMap<>());
             renameTable.put(basicBlock, new LinkedHashMap<>());
+            loadInstSet.put(basicBlock, new LinkedHashSet<>());
         });
 
         for (AllocaInst allocaInst : allocInstSet)
@@ -160,127 +171,127 @@ public class Mem2Reg extends Pass {
             }
         });
 
-
         if (allocInstSet.isEmpty()) return;
 
         dominatorTree = new DominatorTree(function);
         dominatorTree.run();
 
-        for (AllocaInst allocaInst : allocInstSet)
-            placingPhi(allocaInst);
+        Set<BasicBlock> defBlocks = new LinkedHashSet<>();
 
-        blocks.forEach(block -> {
-            for (IRInst inst = block.getInstBegin(); inst != null; inst = inst.getNextInst()) {
-                if (inst instanceof LoadInst && ((LoadInst) inst).getResult().getUse().isEmpty())
-                    inst.removeFromBlock();
-            }
-        });
+        collectInfo(function, allocInstSet, blocks, defBlocks);
 
-        rename(function, allocInstSet);
+        placingPhi(function, allocInstSet, defBlocks);
+
+        rename(function, allocInstSet, blocks);
 
     }
 
-    private void rename(Function function, Set<AllocaInst> allocaInstArrayList) {
-        Stack<Pair<BasicBlock,BasicBlock>> blockStack = new Stack<>();
-        Set<BasicBlock> visited = new LinkedHashSet<>();
-        blockStack.push(new Pair<>(function.getEntryBlock(), null));
+    private void collectInfo(Function function, Set<AllocaInst> allocaInstSet, ArrayList<BasicBlock> blocks, Set<BasicBlock> defBlocks) {
+        Set<Operand> allocaArrdessSet = new LinkedHashSet<>();
+        for (AllocaInst allocaInst : allocaInstSet)
+            allocaArrdessSet.add(allocaInst.getResult());
 
-        while (!blockStack.isEmpty()) {
-            Pair<BasicBlock, BasicBlock> data = blockStack.pop();
-            BasicBlock block = data.a;
-            Map<AllocaInst, PhiInst> curPhiMap = phiMap.get(block);
-            for (AllocaInst allocaInst : curPhiMap.keySet()) {
-                PhiInst phiInst = curPhiMap.get(allocaInst);
-                Operand operand = renameTable.get(data.b)
-                        .getOrDefault(allocaInst, allocaInst.getType().getDefaultValue());
-                if (operand == null)
-                    operand = allocaInst.getType().getDefaultValue();
-                phiInst.appendBranch(operand, data.b);
-            }
-
-            if (data.b != null) {
-                for (AllocaInst inst : allocaInstArrayList)
-                    if (!curPhiMap.containsKey(inst))
-                        renameTable.get(block).put(inst, renameTable.get(data.b).get(inst));
-            }
-            if (visited.contains(block))
-                continue;
-            visited.add(block);
-
-            for (AllocaInst allocaInst : curPhiMap.keySet())
-                renameTable.get(block).put(allocaInst, curPhiMap.get(allocaInst).getResult());
-
-            for (IRInst irInst = block.getInstBegin(); irInst != null; irInst = irInst.getNextInst()) {
-                if (irInst instanceof LoadInst && loadInstAllocaInstMap.containsKey(irInst)) {
-                    AllocaInst allocaInst = loadInstAllocaInstMap.get(irInst);
-                    Operand newOperand = renameTable.get(block).get(allocaInst);
-                    Operand oldOperand = ((LoadInst) irInst).getResult();
-                    ArrayList<IRInst> irInsts = new ArrayList<>(oldOperand.getUse().keySet());
-                    for (IRInst inst : irInsts) {
-                        oldOperand.removeUse(inst);
-                        inst.replaceUse(oldOperand, newOperand);
-                        newOperand.addUse(inst);
+        for (BasicBlock block : blocks) {
+            for (IRInst inst = block.getInstBegin(); inst != null; inst = inst.getNextInst()) {
+                if (inst instanceof LoadInst) {
+                    Operand address = ((LoadInst) inst).getAddress();
+                    if (((LoadInst) inst).getResult().getUse().isEmpty())
+                        inst.removeFromBlock();
+                    else if (allocaArrdessSet.contains(address)) {
+                        assert address instanceof Register;
+                        if (addressLiveOut.get(block).containsKey(address)) {
+                            replaceMap.put(((LoadInst) inst).getResult(),
+                                    addressLiveOut.get(block).get(address));
+                            inst.removeFromBlock();
+                        } else
+                            loadInstSet.get(block).add((LoadInst) inst);
                     }
-                    irInst.removeFromBlock();
-                } else if (irInst instanceof StoreInst && storeInstAllocaInstMap.containsKey(irInst)) {
-                    AllocaInst allocaInst = storeInstAllocaInstMap.get(irInst);
-                    Operand newOperand = ((StoreInst) irInst).getValue();
-                    if (renameTable.get(block).containsKey(allocaInst))
-                        renameTable.get(block).replace(allocaInst, newOperand);
-                    else
-                        renameTable.get(block).put(allocaInst,newOperand);
-                    irInst.removeFromBlock();
+                } else if (inst instanceof StoreInst && allocaArrdessSet.contains(((StoreInst) inst).getAddress())) {
+                    defBlocks.add(block);
+                    addressLiveOut.get(block).put((Register) ((StoreInst) inst).getAddress(), ((StoreInst) inst).getValue());
+                    inst.removeFromBlock();
                 }
             }
-
-            //blockStack.addAll(block.getSuccessors());
-            for (BasicBlock basicBlock : block.getSuccessors())
-                blockStack.push(new Pair<>(basicBlock, block));
-            for (PhiInst phiInst : curPhiMap.values())
-                block.appendInstFront(phiInst);
-
         }
     }
 
-    private void placingPhi(AllocaInst allocaInst) {
+    private void rename(Function function, Set<AllocaInst> allocaInstArrayList, ArrayList<BasicBlock> blocks) {
+        for (BasicBlock block : blocks) {
+            if (!phiMap.get(block).isEmpty()) {
+                for (Register register : phiMap.get(block).keySet()) {
+                    PhiInst phiInst = phiMap.get(block).get(register);
+                    for (BasicBlock preBlock : block.getPredecessors()) {
+                        BasicBlock runner = preBlock;
+                        while (runner != null && !addressLiveOut.get(runner).containsKey(register))
+                            runner = dominatorTree.getIDom(runner);
+                        if (runner != null)
+                            phiInst.appendBranch(addressLiveOut.get(runner).get(register), preBlock);
+                        else
+                            phiInst.appendBranch(phiInst.getResult().getType().getDefaultValue(), preBlock);
+                    }
+                }
+            }
+            if (!loadInstSet.get(block).isEmpty()) {
+                for (LoadInst loadInst : loadInstSet.get(block)) {
+                    assert loadInst.getAddress() instanceof Register;
+                    Register address = (Register) loadInst.getAddress();
+                    Operand replace;
+                    if (phiMap.get(block).containsKey(address)) {
+                        replace = phiMap.get(block).get(address).getResult();
+                    } else {
+                        BasicBlock runner = dominatorTree.getIDom(block);
+                        while (true) {
+                            if (addressLiveOut.get(runner).containsKey(address)) {
+                                replace = addressLiveOut.get(runner).get(address);
+                                break;
+                            } else runner = dominatorTree.getIDom(runner);
+                        }
+                    }
+                    replaceMap.put(loadInst.getResult(), replace);
+                    loadInst.removeFromBlock();
+                }
+            }
+        }
+        replaceMap.forEach((operand1, operand2) -> {
+            while (replaceMap.containsKey(operand2))
+                operand2 = replaceMap.get(operand2);
+            operand1.replaceAllUse(operand2);
+        });
+
+        for (AllocaInst allocaInst : allocaInstArrayList)
+            allocaInst.removeFromBlock();
+    }
+
+    private void placingPhi(Function function, Set<AllocaInst> allocaInstSet, Set<BasicBlock> defBlocks) {
         Queue<BasicBlock> blockQueue = new ArrayDeque<>();
         Set<BasicBlock> visited = new LinkedHashSet<>();
         Set<BasicBlock> phiSet = new LinkedHashSet<>();
 
-        Operand address = allocaInst.getResult();
-        ArrayList<IRInst> useInstList = new ArrayList<>(address.getUse().keySet());
-
-        for (IRInst irInst : useInstList) {
-            if (irInst instanceof LoadInst) {
-                loadInstAllocaInstMap.put((LoadInst) irInst, allocaInst);
-            } else {
-                assert irInst instanceof StoreInst;
-                if (!visited.contains(irInst.getBasicBlock())) {
-                    blockQueue.offer(irInst.getBasicBlock());
-                    visited.add(irInst.getBasicBlock());
-                }
-                storeInstAllocaInstMap.put((StoreInst) irInst, allocaInst);
-            }
-        }
+        blockQueue.addAll(defBlocks);
 
         while (!blockQueue.isEmpty()) {
             BasicBlock block = blockQueue.poll();
-
-            for (BasicBlock dom : dominatorTree.getDomFrontier(block)) {
-                if (!phiSet.contains(dom)) {
-                    PhiInst phiInst = new PhiInst(dom, new LinkedHashMap<>(),
-                            new LocalRegister(allocaInst.getType(), allocaInst.getResult().getName() + ".phi"));
-                    phiMap.get(dom).put(allocaInst, phiInst);
-                    phiSet.add(dom);
-                    if (!visited.contains(dom)) {
-                        visited.add(dom);
-                        blockQueue.offer(dom);
+            if (!addressLiveOut.get(block).isEmpty()) {
+                for (BasicBlock dom : dominatorTree.getDomFrontier(block)) {
+                    for (Register register : addressLiveOut.get(block).keySet()) {
+                        Operand operand = addressLiveOut.get(block).get(register);
+                        IRInst inst = register.getDef().keySet().iterator().next();
+                        assert inst instanceof AllocaInst;
+                        if (!phiMap.get(dom).containsKey(register)) {
+                            PhiInst phiInst = new PhiInst(dom, new LinkedHashMap<>(),
+                                    new LocalRegister(((AllocaInst) inst).getType(), register.getName() + ".phi"));
+                            // TODO: 2021/5/1
+                            dom.appendInstFront(phiInst);
+                            if (!addressLiveOut.get(dom).containsKey(register)) {
+                                addressLiveOut.get(dom).put(register, phiInst.getResult());
+                                blockQueue.offer(dom);
+                            }
+                            phiMap.get(dom).put(register, phiInst);
+                        }
                     }
                 }
             }
         }
-
-        allocaInst.removeFromBlock();
     }
     @Override
     protected void blockPass(BasicBlock block) {
