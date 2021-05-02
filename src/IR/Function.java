@@ -77,6 +77,10 @@ public class Function extends IRObject {
 
     private Set<BasicBlock> visTag;
 
+    public BasicBlock getExitBlock() {
+        return exitBlock;
+    }
+
     public ArrayList<BasicBlock> getDfsOrder() {
         ArrayList<BasicBlock> dfsOrder = new ArrayList<>();
         for (BasicBlock block = getEntryBlock(); block != null; block = block.getNextBlock())

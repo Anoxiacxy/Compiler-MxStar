@@ -70,19 +70,26 @@ public class Main {
 
             int id = 0;
 
-            boolean changed = false;
+            boolean changed;
             do {
                 boolean tmp;
                 changed = false;
                 //changed |= new AggressiveDeadCodeElimination(irModule).run();
                 //if (emitLLVM) new IRPrinter("lab/output-" + ++id + ".ll").visit(irModule);
+
+
                 tmp = new SparseConditionalConstantPropagation(irModule).run();
                 changed |= tmp;
-                if (emitLLVM && tmp) new IRPrinter("lab/output-sccp" + ++id + ".ll").visit(irModule);
+                if (emitLLVM && tmp)
+                    new IRPrinter("lab/output-sccp" + ++id + ".ll").visit(irModule);
+
+
                 tmp = new ControlFlowGraphSimplifier(irModule).run();
                 changed |= tmp;
                 if (emitLLVM && tmp) new IRPrinter("lab/output-cfgs" + ++id + ".ll").visit(irModule);
-            } while (changed && id < 10);
+
+                //changed = false;
+            } while (changed && id < 100);
 
             if (emitLLVM)
                 new IRPrinter("lab/output-O1.ll").visit(irModule);

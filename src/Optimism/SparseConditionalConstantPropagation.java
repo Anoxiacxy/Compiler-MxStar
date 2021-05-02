@@ -21,8 +21,13 @@ public class SparseConditionalConstantPropagation extends Pass {
 
     @Override
     protected void modulePass(Module module) {
-        for (Function function : module.getFunctionMap().values())
+        boolean totalChanged = false;
+        for (Function function : module.getFunctionMap().values()) {
+            changed = false;
             functionPass(function);
+            totalChanged |= changed;
+        }
+        changed = totalChanged;
     }
 
     Set<BasicBlock> visitedBlocks;
@@ -44,6 +49,7 @@ public class SparseConditionalConstantPropagation extends Pass {
         visitedBlocks.add(block);
         for (IRInst inst = block.getInstBegin(); inst != null; inst = inst.getNextInst()) {
             if (inst instanceof PhiInst) {
+
                 boolean same = true;
                 boolean allConstInt = true;
                 boolean allConstBool = true;
@@ -63,19 +69,37 @@ public class SparseConditionalConstantPropagation extends Pass {
                             same &= ((ConstInt) firstOperand).getValue() == ((ConstInt) blockPair.a).getValue();
                     }
                 }
-
                 if ((allConstInt || allConstBool) && same) {
                     ((PhiInst) inst).getResult().replaceAllUse(firstOperand);
                     inst.removeFromBlock();
+                    changed = true;
                 }
             }
             else if (inst instanceof BrInst) {
+
                 if (((BrInst) inst).getCond() != null && ((BrInst) inst).getCond() instanceof ConstBool) {
+                    assert ((BrInst) inst).getThemBlock() != null;
+                    assert ((BrInst) inst).getElseBlock() != null;
+                    BasicBlock target = ((BrInst) inst).getThemBlock();
                     if (!((ConstBool) ((BrInst) inst).getCond()).getValue())
-                        ((BrInst) inst).setThemBlock(((BrInst) inst).getElseBlock());
-                    ((BrInst) inst).setElseBlock(null);
-                    ((BrInst) inst).removeBranch();
+                        target = ((BrInst) inst).getElseBlock();
+                    block.appendInstBack(new BrInst(block, null, target, null));
+
+                    BasicBlock succ = ((BrInst) inst).getThemBlock();
+                    if (target == ((BrInst) inst).getThemBlock())
+                        succ = ((BrInst) inst).getElseBlock();
+
+                    for (IRInst irInst = succ.getInstBegin(); irInst != null; irInst = irInst.getNextInst()) {
+                        if (irInst instanceof PhiInst)
+                            ((PhiInst) irInst).removeBranch(block);
+                    }
+
+                    inst.removeFromBlock();
+
+                    changed = true;
+
                 }
+
             }
             else if (inst instanceof BinaryInst) {
                 Operand cLhs = ((BinaryInst) inst).getLhs();
