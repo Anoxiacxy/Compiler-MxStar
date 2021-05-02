@@ -74,8 +74,9 @@ public class Main {
             do {
                 boolean tmp;
                 changed = false;
-                //changed |= new AggressiveDeadCodeElimination(irModule).run();
-                //if (emitLLVM) new IRPrinter("lab/output-" + ++id + ".ll").visit(irModule);
+                tmp = new AggressiveDeadCodeElimination(irModule).run();
+                changed |= tmp;
+                if (emitLLVM) new IRPrinter("lab/output-adce" + ++id + ".ll").visit(irModule);
 
 
                 tmp = new SparseConditionalConstantPropagation(irModule).run();
