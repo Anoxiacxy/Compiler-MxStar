@@ -8,6 +8,7 @@ import IR.Operand.*;
 import IR.TypeSystem.ArrayIRT;
 import IR.TypeSystem.PointerIRT;
 import Util.Pass;
+import org.antlr.v4.runtime.misc.Pair;
 
 import java.util.*;
 
@@ -18,6 +19,7 @@ public class AggressiveDeadCodeElimination extends Pass {
     Set<IRInst> liveInstSet;
     Set<Operand> outerOperandSet;
     Set<Function> sideEffect;
+    DominatorTree dominatorTree;
 
     public AggressiveDeadCodeElimination(Module module) {
         super(module);
@@ -109,19 +111,61 @@ public class AggressiveDeadCodeElimination extends Pass {
         initOuterOperand(module);
         initLiveInstSet(module);
 
-        for (Function function : module.getFunctionMap().values())
-            functionPass(function);
+        dominatorTree = new DominatorTree(module);
+        dominatorTree.run();
+
+        //for (Function function : module.getFunctionMap().values())
+        //    functionPass(function);
+        markLiveInst();
 
         for (Function function : module.getFunctionMap().values())
             elimination(function);
     }
 
+    private void markLiveInst() {
+        Queue<IRInst> instQueue = new ArrayDeque<>(liveInstSet);
+
+        while (!instQueue.isEmpty()) {
+            IRInst inst = instQueue.poll();
+            for (Operand operand : inst.getUse().keySet()) {
+                if (operand instanceof LocalRegister) {
+                    if (operand.getDef().isEmpty()) {
+                        assert operand instanceof Parameter;
+                        //System.out.println(operand.toString() + "GG");
+                        continue;
+                    }
+                    IRInst def = ((LocalRegister) operand).getDefInst();
+                    if (!liveInstSet.contains(def)) {
+                        liveInstSet.add(def);
+                        instQueue.offer(def);
+                        if (!liveInstSet.contains(def.getBasicBlock().getInstEnd())) {
+                            liveInstSet.add(def.getBasicBlock().getInstEnd());
+                            instQueue.offer(def.getBasicBlock().getInstEnd());
+                        }
+                    }
+                }
+            }
+            if (inst instanceof PhiInst) {
+                for (Pair<Operand, BasicBlock> pair : ((PhiInst) inst).getBranch()) {
+                    if (!liveInstSet.contains(pair.b.getInstEnd())) {
+                        liveInstSet.add(pair.b.getInstEnd());
+                        instQueue.offer(pair.b.getInstEnd());
+                    }
+                }
+            }
+
+            for (BasicBlock block : dominatorTree.getPostDomFrontier(inst.getBasicBlock())) {
+                if (!liveInstSet.contains(block.getInstEnd())) {
+                    liveInstSet.add(block.getInstEnd());
+                    instQueue.offer(block.getInstEnd());
+                }
+            }
+        }
+    }
+
     @Override
     protected void functionPass(Function function) {
-        for (BasicBlock block : function.getDfsOrder())
-            for (IRInst inst = block.getInstBegin(); inst != null; inst = inst.getNextInst())
-                if (liveInstSet.contains(inst))
-                    makeLive(inst);
+
         //livenessAnalysis(function);
 
     }
@@ -158,20 +202,29 @@ public class AggressiveDeadCodeElimination extends Pass {
             for (BasicBlock block : function.getDfsOrder()) {
                 for (IRInst inst = block.getInstBegin(); inst != null; inst = inst.getNextInst()) {
                     if (inst instanceof StoreInst) {
-                        if (outerOperandSet.contains(((StoreInst) inst).getAddress())) {
+                        //if (outerOperandSet.contains(((StoreInst) inst).getAddress())) {
                             liveInstSet.add(inst);
+                            if (!liveInstSet.contains(inst.getBasicBlock().getInstEnd()))
+                                liveInstSet.add(inst.getBasicBlock().getInstEnd());
                             addSideEffect(function);
-                        }
+                        //}
                     }
                     else if (inst instanceof CallInst) {
                         if (sideEffect.contains(((CallInst) inst).getFunction())) {
                             liveInstSet.add(inst);
+                            liveInstSet.add(inst.getBasicBlock().getInstEnd());
                             addSideEffect(function);
                         }
                     }
                     else if (inst instanceof RetInst) {
                         liveInstSet.add(inst);
+                        if (!liveInstSet.contains(inst.getBasicBlock().getInstEnd()))
+                            liveInstSet.add(inst.getBasicBlock().getInstEnd());
                     }
+                    // TODO: 2021/5/2 to remove
+                    //else if (inst instanceof BrInst) {
+                    //    liveInstSet.add(inst);
+                    //}
                 }
             }
         }
@@ -179,8 +232,13 @@ public class AggressiveDeadCodeElimination extends Pass {
         for (Function function : module.getFunctionMap().values())
             for (BasicBlock block : function.getDfsOrder())
                 for (IRInst inst = block.getInstBegin(); inst != null; inst = inst.getNextInst())
-                    if (inst instanceof CallInst && sideEffect.contains(((CallInst) inst).getFunction()))
+                    if (inst instanceof CallInst && sideEffect.contains(((CallInst) inst).getFunction())) {
                         liveInstSet.add(inst);
+                        if (!liveInstSet.contains(inst.getBasicBlock().getInstEnd()))
+                            liveInstSet.add(inst.getBasicBlock().getInstEnd());
+                    }
+
+
     }
 
     private void initOuterOperand(Module module) {
@@ -280,25 +338,71 @@ public class AggressiveDeadCodeElimination extends Pass {
         for (BasicBlock block = function.getEntryBlock(); block != null; block = block.getNextBlock()) {
             for (IRInst inst = block.getInstBegin(); inst != null; inst = inst.getNextInst()) {
                 if (!liveInstSet.contains(inst)) {
-                    changed = true;
+
                     if (inst instanceof RetInst) {
                         assert false;
                     } else if (inst instanceof BrInst) {
-                        BasicBlock target = ((BrInst) inst).getThemBlock();
+                        /*
+                        assert block.getInstEnd() == block.getInstBegin();
 
-                        block.appendInstBack(new BrInst(block, null, block, null));
+                        if (block.getSuccessors().size() != 1) continue;
+
+
+                        BasicBlock target = ((BrInst) inst).getThemBlock();
 
                         for (IRInst irInst = target.getInstBegin(); irInst != null; irInst = irInst.getNextInst()) {
                             if (irInst instanceof PhiInst)
                                 ((PhiInst) irInst).removeBranch(block);
                         }
 
+                        if (((BrInst) inst).getCond() != null) {
+                            target = ((BrInst) inst).getElseBlock();
+                            for (IRInst irInst = target.getInstBegin(); irInst != null; irInst = irInst.getNextInst()) {
+                                if (irInst instanceof PhiInst)
+                                    ((PhiInst) irInst).removeBranch(block);
+                            }
+                        }
                         inst.removeFromBlock();
+                        block.removeFromFunction();
+                        */
+                        if (((BrInst) inst).getCond() != null) {
+                            BasicBlock target = ((BrInst) inst).getElseBlock();
+                            block.appendInstBack(new BrInst(block, null, target, null));
 
+                            BasicBlock succ = ((BrInst) inst).getThemBlock();
+
+                            for (IRInst irInst = succ.getInstBegin(); irInst != null; irInst = irInst.getNextInst()) {
+                                if (irInst instanceof PhiInst)
+                                    ((PhiInst) irInst).removeBranch(block);
+                            }
+
+                            inst.removeFromBlock();
+                            changed = true;
+                        }
+                    } else {
                         changed = true;
-                    } else
                         inst.removeFromBlock();
+                    }
+
                 }
+            }
+        }
+
+        for (BasicBlock block = function.getEntryBlock(); block != null; block = block.getNextBlock()) {
+            block.getPredecessors().clear();
+            block.calcSuccessors();
+        }
+
+        for (BasicBlock block = function.getEntryBlock(); block != null; block = block.getNextBlock()) {
+            for (BasicBlock succ : block.getSuccessors()) {
+                succ.getPredecessors().add(block);
+            }
+        }
+
+        for (BasicBlock block = function.getEntryBlock(); block != null; block = block.getNextBlock()) {
+            if (block.getPredecessors().isEmpty()) {
+                block.moveToEntryBlock();
+                return;
             }
         }
     }

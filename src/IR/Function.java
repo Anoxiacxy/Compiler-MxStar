@@ -69,10 +69,27 @@ public class Function extends IRObject {
     }
 
     public void appendBlock(BasicBlock block) {
+        block.setNextBlock(null);
         block.setPrevBlock(exitBlock);
-        exitBlock.setNextBlock(block);
+        if (entryBlock == null) {
+            entryBlock = block;
+        }
+        else
+            exitBlock.setNextBlock(block);
         exitBlock = block;
     }
+
+    public void appendBlockFront(BasicBlock block) {
+        block.setPrevBlock(null);
+        block.setNextBlock(entryBlock);
+        if (exitBlock == null) {
+            exitBlock = block;
+        }
+        else
+            entryBlock.setPrevBlock(block);
+        entryBlock = block;
+    }
+
 
 
     private Set<BasicBlock> visTag;

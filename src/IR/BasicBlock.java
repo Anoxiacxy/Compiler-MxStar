@@ -70,12 +70,12 @@ public class BasicBlock extends IRObject {
         setInstEnd(null);
 
         if (this == function.getExitBlock())
-            block.moveToExitblock();
+            block.moveToExitBlock();
 
         removeFromFunction();
     }
 
-    public void moveToExitblock() {
+    public void moveToExitBlock() {
         assert getInstEnd() instanceof RetInst;
 
         if (getPrevBlock() == null)
@@ -92,6 +92,25 @@ public class BasicBlock extends IRObject {
         setPrevBlock(null);
 
         function.appendBlock(this);
+    }
+    
+    public void moveToEntryBlock() {
+        //assert getInstEnd() instanceof RetInst;
+
+        if (getPrevBlock() == null)
+            function.setEntryBlock(getNextBlock());
+        else
+            getPrevBlock().setNextBlock(getNextBlock());
+
+        if (getNextBlock() == null)
+            function.setExitBlock(getPrevBlock());
+        else
+            getNextBlock().setPrevBlock(getPrevBlock());
+
+        setNextBlock(null);
+        setPrevBlock(null);
+
+        function.appendBlockFront(this);
     }
 
     public void removeFromRelatedPhi() {

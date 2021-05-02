@@ -14,6 +14,9 @@ public class DominatorTree extends Pass {
     private Map<BasicBlock, Set<BasicBlock>> tree;
     private Map<BasicBlock, Set<BasicBlock>> domFrontier;
 
+    private Map<BasicBlock, Set<BasicBlock>> postDomFrontier;
+    private Map<BasicBlock, BasicBlock> postIdom;
+
     private Map<BasicBlock, Integer> dfn;
     private Map<BasicBlock, BasicBlock> father;
     private ArrayList<BasicBlock> order;
@@ -34,9 +37,12 @@ public class DominatorTree extends Pass {
     public Set<BasicBlock> getDomFrontier(BasicBlock block) {
         return domFrontier.get(block);
     }
-    public BasicBlock getIDom(BasicBlock block) {
-        return idom.get(block);
+    public BasicBlock getIDom(BasicBlock block) { return idom.get(block); }
+
+    public Set<BasicBlock> getPostDomFrontier(BasicBlock block) {
+        return postDomFrontier.get(block);
     }
+    public BasicBlock getPostIDom(BasicBlock block) { return postIdom.get(block); }
 
     @Override
     protected void modulePass(Module module) {
@@ -58,6 +64,17 @@ public class DominatorTree extends Pass {
             if (!dfn.containsKey(v)) {
                 father.put(v, u);
                 tarjan(v);
+            }
+    }
+
+    private void postTarjan(BasicBlock u) {
+        dfn.put(u, order.size());
+        order.add(u);
+
+        for (BasicBlock v : u.getPredecessors())
+            if (!dfn.containsKey(v)) {
+                father.put(v, u);
+                postTarjan(v);
             }
     }
 
@@ -114,6 +131,49 @@ public class DominatorTree extends Pass {
         }
     }
 
+    private void postLengauerTarjan(BasicBlock root) {
+        postTarjan(root);
+
+        for (int i = order.size() - 1; i >= 1; i--) {
+            BasicBlock u = order.get(i);
+            for (BasicBlock v : u.getSuccessors()) {
+                assert dfn.containsKey(v);
+                aliasQuery(v);
+                if (dfn.get(semi.get(u)) > dfn.get(semi.get(mn.get(v))))
+                    semi.replace(u, semi.get(mn.get(v)));
+            }
+            alias.replace(u, father.get(u));
+            tree.get(semi.get(u)).add(u);
+            u = father.get(u);
+            for (BasicBlock v : tree.get(u)) {
+                aliasQuery(v);
+                if (u == semi.get(mn.get(v)))
+                    postIdom.replace(v, u);
+                else
+                    postIdom.replace(v, mn.get(v));
+            }
+            tree.get(u).clear();
+        }
+
+        for (int i = 1; i < order.size(); i++) {
+            BasicBlock u = order.get(i);
+            if (postIdom.get(u) != semi.get(u))
+                postIdom.replace(u, postIdom.get(postIdom.get(u)));
+        }
+
+        for (BasicBlock b : order) {
+            if (b.getSuccessors().size() >= 2) {
+                for (BasicBlock p : b.getSuccessors()) {
+                    BasicBlock runner = p;
+                    while (runner != postIdom.get(b)) {
+                        postDomFrontier.get(runner).add(b);
+                        runner = postIdom.get(runner);
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     protected void functionPass(Function function) {
         dfn = new LinkedHashMap<>();
@@ -133,6 +193,24 @@ public class DominatorTree extends Pass {
         }
 
         lengauerTarjan(function.getEntryBlock());
+
+
+        dfn = new LinkedHashMap<>();
+        order = new ArrayList<>();
+        alias = new LinkedHashMap<>();
+        mn = new LinkedHashMap<>();
+        father = new LinkedHashMap<>();
+
+        for (BasicBlock block : blocks) {
+            semi.put(block, block);
+            tree.put(block, new LinkedHashSet<>());
+            alias.put(block, block);
+            mn.put(block, block);
+            postIdom.put(block, null);
+            postDomFrontier.put(block, new LinkedHashSet<>());
+        }
+
+        postLengauerTarjan(function.getExitBlock());
     }
 
     @Override
@@ -144,8 +222,10 @@ public class DominatorTree extends Pass {
     public boolean run() {
         semi = new LinkedHashMap<>();
         idom = new LinkedHashMap<>();
+        postIdom = new LinkedHashMap<>();
         tree = new LinkedHashMap<>();
         domFrontier = new LinkedHashMap<>();
+        postDomFrontier = new LinkedHashMap<>();
 
         if (this.function == null)
             modulePass(this.module);
