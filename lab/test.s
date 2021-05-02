@@ -5,2495 +5,859 @@
 	.type	mx__init,@function
 mx__init:
 .L0_0:
+	addi	sp, sp, -4
+	sw	ra, 0(sp)
+	addi	a0, zero, 44
+	call	malloc
+	addi	ra, zero, 10
+	sw	ra, 0(a0)
+	addi	ra, a0, 4
+	lui	t0, %hi(color)
+	sw	ra, %lo(color)(t0)
+	addi	a0, zero, 8
+	call	malloc
+	addi	ra, zero, 1
+	sw	ra, 0(a0)
+	addi	ra, a0, 4
+	lui	t0, %hi(count)
+	sw	ra, %lo(count)(t0)
+	lw	ra, 0(sp)
+	addi	sp, sp, 4
 	ret
 	.size	mx__init, .-mx__init
-	.globl	wpp
+	.globl	origin
 	.p2align	2
-	.type	wpp,@function
-wpp:
+	.type	origin,@function
+origin:
 .L1_0:
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	a0, t0, 1
-	lui	t0, %hi(w)
-	sw	a0, %lo(w)(t0)
+	addi	sp, sp, -16
+	sw	ra, 8(sp)
+	sw	s8, 12(sp)
+	sw	s9, 0(sp)
+	sw	s10, 4(sp)
+	mv	s9, a0
+	addi	ra, zero, 4
+	mul	ra, s9, ra
+	addi	a0, ra, 4
+	call	malloc
+	sw	s9, 0(a0)
+	addi	ra, a0, 4
+	lui	t0, %hi(make)
+	sw	ra, %lo(make)(t0)
+	lui	ra, %hi(i)
+	sw	zero, %lo(i)(ra)
+	j	.L1_1
+.L1_1:
+	lui	ra, %hi(i)
+	lw	ra, %lo(i)(ra)
+	slt	ra, ra, s9
+	beqz	ra, .L1_6
+	j	.L1_2
+.L1_2:
+	lui	ra, %hi(make)
+	lw	t0, %lo(make)(ra)
+	lui	ra, %hi(i)
+	lw	ra, %lo(i)(ra)
+	slli	ra, ra, 2
+	add	s8, t0, ra
+	addi	ra, zero, 4
+	mul	ra, s9, ra
+	addi	a0, ra, 4
+	call	malloc
+	sw	s9, 0(a0)
+	addi	ra, a0, 4
+	sw	ra, 0(s8)
+	lui	ra, %hi(j)
+	sw	zero, %lo(j)(ra)
+	j	.L1_3
+.L1_3:
+	lui	ra, %hi(j)
+	lw	ra, %lo(j)(ra)
+	slt	ra, ra, s9
+	beqz	ra, .L1_5
+	j	.L1_4
+.L1_4:
+	lui	ra, %hi(make)
+	lw	t0, %lo(make)(ra)
+	lui	ra, %hi(i)
+	lw	ra, %lo(i)(ra)
+	slli	ra, ra, 2
+	add	ra, t0, ra
+	lw	t0, 0(ra)
+	lui	ra, %hi(j)
+	lw	ra, %lo(j)(ra)
+	slli	ra, ra, 2
+	add	ra, t0, ra
+	sw	zero, 0(ra)
+	lui	ra, %hi(j)
+	lw	ra, %lo(j)(ra)
+	addi	t0, ra, 1
+	lui	ra, %hi(j)
+	sw	t0, %lo(j)(ra)
+	j	.L1_3
+.L1_5:
+	lui	ra, %hi(i)
+	lw	ra, %lo(i)(ra)
+	addi	t0, ra, 1
+	lui	ra, %hi(i)
+	sw	t0, %lo(i)(ra)
+	j	.L1_1
+.L1_6:
+	lw	s8, 12(sp)
+	lw	s9, 0(sp)
+	lw	s10, 4(sp)
+	lw	ra, 8(sp)
+	addi	sp, sp, 16
 	ret
-	.size	wpp, .-wpp
-	.globl	wppp
+	.size	origin, .-origin
+	.globl	search
 	.p2align	2
-	.type	wppp,@function
-wppp:
+	.type	search,@function
+search:
 .L2_0:
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	a0, t0, 1
-	lui	t0, %hi(w)
-	sw	a0, %lo(w)(t0)
+	addi	sp, sp, -24
+	sw	ra, 16(sp)
+	sw	s6, 20(sp)
+	sw	s7, 0(sp)
+	sw	s8, 4(sp)
+	sw	s9, 8(sp)
+	sw	s10, 12(sp)
+	mv	s7, a0
+	mv	s8, a1
+	mv	s9, a2
+	slt	ra, zero, s8
+	beqz	ra, .L2_2
+	j	.L2_1
+.L2_1:
+	addi	ra, zero, 1
+	j	.L2_3
+.L2_2:
+	slt	ra, s8, zero
+	j	.L2_3
+.L2_3:
+	beqz	ra, .L2_5
+	j	.L2_4
+.L2_4:
+	addi	ra, zero, 1
+	j	.L2_6
+.L2_5:
+	addi	ra, s7, 0
+	seqz	ra, ra
+	j	.L2_6
+.L2_6:
+	beqz	ra, .L2_8
+	j	.L2_7
+.L2_7:
+	addi	ra, zero, 1
+	j	.L2_9
+.L2_8:
+	lui	ra, %hi(make)
+	lw	t0, %lo(make)(ra)
+	addi	ra, s7, -1
+	slli	ra, ra, 2
+	add	ra, t0, ra
+	lw	ra, 0(ra)
+	addi	ra, ra, 0
+	lw	t1, 0(ra)
+	lui	ra, %hi(make)
+	lw	t0, %lo(make)(ra)
+	addi	ra, s7, -1
+	slli	ra, ra, 2
+	add	ra, t0, ra
+	lw	ra, 0(ra)
+	addi	ra, ra, 4
+	lw	ra, 0(ra)
+	add	t1, t1, ra
+	lui	ra, %hi(make)
+	lw	t0, %lo(make)(ra)
+	addi	ra, s7, -1
+	slli	ra, ra, 2
+	add	ra, t0, ra
+	lw	ra, 0(ra)
+	addi	ra, ra, 8
+	lw	ra, 0(ra)
+	add	ra, t1, ra
+	addi	ra, ra, -15
+	seqz	ra, ra
+	j	.L2_9
+.L2_9:
+	beqz	ra, .L2_68
+	j	.L2_10
+.L2_10:
+	addi	ra, s7, -2
+	seqz	ra, ra
+	beqz	ra, .L2_11
+	j	.L2_12
+.L2_11:
+	addi	ra, zero, 0
+	j	.L2_13
+.L2_12:
+	addi	ra, s8, -2
+	seqz	ra, ra
+	j	.L2_13
+.L2_13:
+	beqz	ra, .L2_42
+	j	.L2_14
+.L2_14:
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 8
+	lw	ra, 0(ra)
+	addi	t0, ra, 8
+	addi	ra, zero, 45
+	sub	ra, ra, s9
+	sw	ra, 0(t0)
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 0
+	lw	ra, 0(ra)
+	addi	ra, ra, 0
+	lw	t0, 0(ra)
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 0
+	lw	ra, 0(ra)
+	addi	ra, ra, 4
+	lw	ra, 0(ra)
+	add	t0, t0, ra
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 0
+	lw	ra, 0(ra)
+	addi	ra, ra, 8
+	lw	ra, 0(ra)
+	add	t0, t0, ra
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 4
+	lw	ra, 0(ra)
+	addi	ra, ra, 0
+	lw	t1, 0(ra)
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 4
+	lw	ra, 0(ra)
+	addi	ra, ra, 4
+	lw	ra, 0(ra)
+	add	t1, t1, ra
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 4
+	lw	ra, 0(ra)
+	addi	ra, ra, 8
+	lw	ra, 0(ra)
+	add	ra, t1, ra
+	sub	ra, ra, t0
+	seqz	ra, ra
+	beqz	ra, .L2_15
+	j	.L2_16
+.L2_15:
+	addi	ra, zero, 0
+	j	.L2_17
+.L2_16:
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 8
+	lw	ra, 0(ra)
+	addi	ra, ra, 0
+	lw	t1, 0(ra)
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 8
+	lw	ra, 0(ra)
+	addi	ra, ra, 4
+	lw	ra, 0(ra)
+	add	t1, t1, ra
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 8
+	lw	ra, 0(ra)
+	addi	ra, ra, 8
+	lw	ra, 0(ra)
+	add	ra, t1, ra
+	sub	ra, ra, t0
+	seqz	ra, ra
+	j	.L2_17
+.L2_17:
+	beqz	ra, .L2_18
+	j	.L2_19
+.L2_18:
+	addi	ra, zero, 0
+	j	.L2_20
+.L2_19:
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 0
+	lw	ra, 0(ra)
+	addi	ra, ra, 0
+	lw	t1, 0(ra)
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 4
+	lw	ra, 0(ra)
+	addi	ra, ra, 0
+	lw	ra, 0(ra)
+	add	t1, t1, ra
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 8
+	lw	ra, 0(ra)
+	addi	ra, ra, 0
+	lw	ra, 0(ra)
+	add	ra, t1, ra
+	sub	ra, ra, t0
+	seqz	ra, ra
+	j	.L2_20
+.L2_20:
+	beqz	ra, .L2_21
+	j	.L2_22
+.L2_21:
+	addi	ra, zero, 0
+	j	.L2_23
+.L2_22:
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 0
+	lw	ra, 0(ra)
+	addi	ra, ra, 4
+	lw	t1, 0(ra)
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 4
+	lw	ra, 0(ra)
+	addi	ra, ra, 4
+	lw	ra, 0(ra)
+	add	t1, t1, ra
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 8
+	lw	ra, 0(ra)
+	addi	ra, ra, 4
+	lw	ra, 0(ra)
+	add	ra, t1, ra
+	sub	ra, ra, t0
+	seqz	ra, ra
+	j	.L2_23
+.L2_23:
+	beqz	ra, .L2_24
+	j	.L2_25
+.L2_24:
+	addi	ra, zero, 0
+	j	.L2_26
+.L2_25:
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 0
+	lw	ra, 0(ra)
+	addi	ra, ra, 8
+	lw	t1, 0(ra)
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 4
+	lw	ra, 0(ra)
+	addi	ra, ra, 8
+	lw	ra, 0(ra)
+	add	t1, t1, ra
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 8
+	lw	ra, 0(ra)
+	addi	ra, ra, 8
+	lw	ra, 0(ra)
+	add	ra, t1, ra
+	sub	ra, ra, t0
+	seqz	ra, ra
+	j	.L2_26
+.L2_26:
+	beqz	ra, .L2_27
+	j	.L2_28
+.L2_27:
+	addi	ra, zero, 0
+	j	.L2_29
+.L2_28:
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 0
+	lw	ra, 0(ra)
+	addi	ra, ra, 0
+	lw	t1, 0(ra)
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 4
+	lw	ra, 0(ra)
+	addi	ra, ra, 4
+	lw	ra, 0(ra)
+	add	t1, t1, ra
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 8
+	lw	ra, 0(ra)
+	addi	ra, ra, 8
+	lw	ra, 0(ra)
+	add	ra, t1, ra
+	sub	ra, ra, t0
+	seqz	ra, ra
+	j	.L2_29
+.L2_29:
+	beqz	ra, .L2_30
+	j	.L2_31
+.L2_30:
+	addi	ra, zero, 0
+	j	.L2_32
+.L2_31:
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 8
+	lw	ra, 0(ra)
+	addi	ra, ra, 0
+	lw	t1, 0(ra)
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 4
+	lw	ra, 0(ra)
+	addi	ra, ra, 4
+	lw	ra, 0(ra)
+	add	t1, t1, ra
+	lui	ra, %hi(make)
+	lw	ra, %lo(make)(ra)
+	addi	ra, ra, 0
+	lw	ra, 0(ra)
+	addi	ra, ra, 8
+	lw	ra, 0(ra)
+	add	ra, t1, ra
+	sub	ra, ra, t0
+	seqz	ra, ra
+	j	.L2_32
+.L2_32:
+	beqz	ra, .L2_40
+	j	.L2_33
+.L2_33:
+	lui	ra, %hi(count)
+	lw	ra, %lo(count)(ra)
+	addi	t0, ra, 0
+	lui	ra, %hi(count)
+	lw	ra, %lo(count)(ra)
+	addi	ra, ra, 0
+	lw	ra, 0(ra)
+	addi	ra, ra, 1
+	sw	ra, 0(t0)
+	addi	s7, zero, 0
+	j	.L2_34
+.L2_34:
+	addi	ra, zero, 2
+	slt	ra, ra, s7
+	xori	ra, ra, 1
+	beqz	ra, .L2_39
+	j	.L2_35
+.L2_35:
+	addi	s6, zero, 0
+	j	.L2_36
+.L2_36:
+	addi	ra, zero, 2
+	slt	ra, ra, s6
+	xori	ra, ra, 1
+	beqz	ra, .L2_38
+	j	.L2_37
+.L2_37:
+	lui	ra, %hi(make)
+	lw	t0, %lo(make)(ra)
+	slli	ra, s7, 2
+	add	ra, t0, ra
+	lw	t0, 0(ra)
+	slli	ra, s6, 2
+	add	ra, t0, ra
+	lw	a0, 0(ra)
+	call	mx__toString
+	call	mx__print
+	la	a0, .str.0
+	call	mx__print
+	addi	s6, s6, 1
+	j	.L2_36
+.L2_38:
+	la	a0, .str.1
+	call	mx__print
+	addi	s7, s7, 1
+	j	.L2_34
+.L2_39:
+	la	a0, .str.1
+	call	mx__print
+	j	.L2_41
+.L2_40:
+	j	.L2_41
+.L2_41:
+	j	.L2_67
+.L2_42:
+	addi	ra, s8, -2
+	seqz	ra, ra
+	beqz	ra, .L2_56
+	j	.L2_43
+.L2_43:
+	lui	ra, %hi(make)
+	lw	t0, %lo(make)(ra)
+	slli	ra, s7, 2
+	add	ra, t0, ra
+	lw	t0, 0(ra)
+	slli	ra, s8, 2
+	add	ra, t0, ra
+	lui	t0, %hi(make)
+	lw	t1, %lo(make)(t0)
+	slli	t0, s7, 2
+	add	t0, t1, t0
+	lw	t0, 0(t0)
+	addi	t0, t0, 0
+	lw	t1, 0(t0)
+	addi	t0, zero, 15
+	sub	t2, t0, t1
+	lui	t0, %hi(make)
+	lw	t1, %lo(make)(t0)
+	slli	t0, s7, 2
+	add	t0, t1, t0
+	lw	t0, 0(t0)
+	addi	t0, t0, 4
+	lw	t0, 0(t0)
+	sub	t0, t2, t0
+	sw	t0, 0(ra)
+	lui	ra, %hi(make)
+	lw	t0, %lo(make)(ra)
+	slli	ra, s7, 2
+	add	ra, t0, ra
+	lw	t0, 0(ra)
+	slli	ra, s8, 2
+	add	ra, t0, ra
+	lw	ra, 0(ra)
+	slt	ra, zero, ra
+	beqz	ra, .L2_44
+	j	.L2_45
+.L2_44:
+	addi	ra, zero, 0
+	j	.L2_46
+.L2_45:
+	lui	ra, %hi(make)
+	lw	t0, %lo(make)(ra)
+	slli	ra, s7, 2
+	add	ra, t0, ra
+	lw	t0, 0(ra)
+	slli	ra, s8, 2
+	add	ra, t0, ra
+	lw	t0, 0(ra)
+	addi	ra, zero, 10
+	slt	ra, t0, ra
+	j	.L2_46
+.L2_46:
+	beqz	ra, .L2_47
+	j	.L2_48
+.L2_47:
+	addi	ra, zero, 0
+	j	.L2_49
+.L2_48:
+	lui	ra, %hi(color)
+	lw	t1, %lo(color)(ra)
+	lui	ra, %hi(make)
+	lw	t0, %lo(make)(ra)
+	slli	ra, s7, 2
+	add	ra, t0, ra
+	lw	t0, 0(ra)
+	slli	ra, s8, 2
+	add	ra, t0, ra
+	lw	ra, 0(ra)
+	slli	ra, ra, 2
+	add	ra, t1, ra
+	lw	ra, 0(ra)
+	addi	ra, ra, 0
+	seqz	ra, ra
+	j	.L2_49
+.L2_49:
+	beqz	ra, .L2_54
+	j	.L2_50
+.L2_50:
+	lui	ra, %hi(color)
+	lw	t1, %lo(color)(ra)
+	lui	ra, %hi(make)
+	lw	t0, %lo(make)(ra)
+	slli	ra, s7, 2
+	add	ra, t0, ra
+	lw	t0, 0(ra)
+	slli	ra, s8, 2
+	add	ra, t0, ra
+	lw	ra, 0(ra)
+	slli	ra, ra, 2
+	add	t0, t1, ra
+	addi	ra, zero, 1
+	sw	ra, 0(t0)
+	addi	ra, s8, -2
+	seqz	ra, ra
+	beqz	ra, .L2_52
+	j	.L2_51
+.L2_51:
+	addi	a0, s7, 1
+	lui	ra, %hi(make)
+	lw	t0, %lo(make)(ra)
+	slli	ra, s7, 2
+	add	ra, t0, ra
+	lw	t0, 0(ra)
+	slli	ra, s8, 2
+	add	ra, t0, ra
+	lw	ra, 0(ra)
+	add	a2, s9, ra
+	mv	a1, zero
+	call	search
+	j	.L2_53
+.L2_52:
+	addi	a1, s8, 1
+	lui	ra, %hi(make)
+	lw	t0, %lo(make)(ra)
+	slli	ra, s7, 2
+	add	ra, t0, ra
+	lw	t0, 0(ra)
+	slli	ra, s8, 2
+	add	ra, t0, ra
+	lw	ra, 0(ra)
+	add	a2, s9, ra
+	mv	a0, s7
+	call	search
+	j	.L2_53
+.L2_53:
+	lui	ra, %hi(color)
+	lw	t1, %lo(color)(ra)
+	lui	ra, %hi(make)
+	lw	t0, %lo(make)(ra)
+	slli	ra, s7, 2
+	add	ra, t0, ra
+	lw	t0, 0(ra)
+	slli	ra, s8, 2
+	add	ra, t0, ra
+	lw	ra, 0(ra)
+	slli	ra, ra, 2
+	add	ra, t1, ra
+	sw	zero, 0(ra)
+	j	.L2_55
+.L2_54:
+	j	.L2_55
+.L2_55:
+	j	.L2_66
+.L2_56:
+	addi	s6, zero, 1
+	j	.L2_57
+.L2_57:
+	addi	ra, zero, 9
+	slt	ra, ra, s6
+	xori	ra, ra, 1
+	beqz	ra, .L2_65
+	j	.L2_58
+.L2_58:
+	lui	ra, %hi(color)
+	lw	t0, %lo(color)(ra)
+	slli	ra, s6, 2
+	add	ra, t0, ra
+	lw	ra, 0(ra)
+	addi	ra, ra, 0
+	seqz	ra, ra
+	beqz	ra, .L2_63
+	j	.L2_59
+.L2_59:
+	lui	ra, %hi(color)
+	lw	t0, %lo(color)(ra)
+	slli	ra, s6, 2
+	add	t0, t0, ra
+	addi	ra, zero, 1
+	sw	ra, 0(t0)
+	lui	ra, %hi(make)
+	lw	t0, %lo(make)(ra)
+	slli	ra, s7, 2
+	add	ra, t0, ra
+	lw	t0, 0(ra)
+	slli	ra, s8, 2
+	add	ra, t0, ra
+	sw	s6, 0(ra)
+	addi	ra, s8, -2
+	seqz	ra, ra
+	beqz	ra, .L2_61
+	j	.L2_60
+.L2_60:
+	addi	a0, s7, 1
+	add	a2, s9, s6
+	mv	a1, zero
+	call	search
+	j	.L2_62
+.L2_61:
+	addi	a1, s8, 1
+	add	a2, s9, s6
+	mv	a0, s7
+	call	search
+	j	.L2_62
+.L2_62:
+	lui	ra, %hi(make)
+	lw	t0, %lo(make)(ra)
+	slli	ra, s7, 2
+	add	ra, t0, ra
+	lw	t0, 0(ra)
+	slli	ra, s8, 2
+	add	ra, t0, ra
+	sw	zero, 0(ra)
+	lui	ra, %hi(color)
+	lw	t0, %lo(color)(ra)
+	slli	ra, s6, 2
+	add	ra, t0, ra
+	sw	zero, 0(ra)
+	j	.L2_64
+.L2_63:
+	j	.L2_64
+.L2_64:
+	addi	ra, s6, 1
+	mv	s6, ra
+	j	.L2_57
+.L2_65:
+	j	.L2_66
+.L2_66:
+	j	.L2_67
+.L2_67:
+	j	.L2_69
+.L2_68:
+	j	.L2_69
+.L2_69:
+	lw	s6, 20(sp)
+	lw	s7, 0(sp)
+	lw	s8, 4(sp)
+	lw	s9, 8(sp)
+	lw	s10, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 24
 	ret
-	.size	wppp, .-wppp
-	.globl	wpppp
+	.size	search, .-search
+	.globl	main
 	.p2align	2
-	.type	wpppp,@function
-wpppp:
+	.type	main,@function
+main:
 .L3_0:
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	t1, t0, 1
-	lui	t0, %hi(w)
-	sw	t1, %lo(w)(t0)
-	lui	t0, %hi(w)
-	lw	t0, %lo(w)(t0)
-	addi	a0, t0, 1
-	lui	t0, %hi(w)
-	sw	a0, %lo(w)(t0)
-	ret
-	.size	wpppp, .-wpppp
-	.globl	block
-	.p2align	2
-	.type	block,@function
-block:
-.L4_0:
-	addi	sp, sp, -4
-	sw	ra, 0(sp)
-	j	.L4_1
-.L4_1:
-	j	.L4_2
-.L4_2:
-	j	.L4_3
-.L4_3:
-	j	.L4_4
-.L4_4:
-	j	.L4_5
-.L4_5:
-	j	.L4_6
-.L4_6:
-	j	.L4_7
-.L4_7:
-	j	.L4_8
-.L4_8:
-	j	.L4_9
-.L4_9:
-	j	.L4_10
-.L4_10:
-	j	.L4_11
-.L4_11:
-	j	.L4_12
-.L4_12:
-	j	.L4_13
-.L4_13:
-	j	.L4_14
-.L4_14:
-	j	.L4_15
-.L4_15:
-	call	block
-	j	.L4_16
-.L4_16:
-	j	.L4_17
-.L4_17:
-	j	.L4_18
-.L4_18:
-	j	.L4_19
-.L4_19:
-	j	.L4_20
-.L4_20:
-	j	.L4_21
-.L4_21:
-	j	.L4_22
-.L4_22:
-	j	.L4_23
-.L4_23:
-	j	.L4_24
-.L4_24:
-	j	.L4_25
-.L4_25:
-	j	.L4_26
-.L4_26:
-	j	.L4_27
-.L4_27:
-	j	.L4_28
-.L4_28:
-	j	.L4_29
-.L4_29:
-	j	.L4_30
-.L4_30:
-	lw	ra, 0(sp)
-	addi	sp, sp, 4
-	ret
-	.size	block, .-block
-	.globl	bblock
-	.p2align	2
-	.type	bblock,@function
-bblock:
-.L5_0:
-	addi	sp, sp, -4
-	sw	ra, 0(sp)
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	wpppp
-	call	bblock
-	call	bblock
-	call	bblock
-	call	bblock
-	call	bblock
-	call	bblock
-	lw	ra, 0(sp)
-	addi	sp, sp, 4
-	ret
-	.size	bblock, .-bblock
-	.globl	add1
-	.p2align	2
-	.type	add1,@function
-add1:
-.L6_0:
-	addi	a0, a0, 1
-	ret
-	.size	add1, .-add1
-	.globl	add2
-	.p2align	2
-	.type	add2,@function
-add2:
-.L7_0:
-	addi	t0, a0, 1
-	addi	a0, t0, 1
-	ret
-	.size	add2, .-add2
-	.globl	add4
-	.p2align	2
-	.type	add4,@function
-add4:
-.L8_0:
-	addi	t0, a0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	a0, t0, 1
-	ret
-	.size	add4, .-add4
-	.globl	add8
-	.p2align	2
-	.type	add8,@function
-add8:
-.L9_0:
-	addi	t0, a0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	a0, t0, 1
-	ret
-	.size	add8, .-add8
-	.globl	add16
-	.p2align	2
-	.type	add16,@function
-add16:
-.L10_0:
-	addi	t0, a0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	a0, t0, 1
-	ret
-	.size	add16, .-add16
-	.globl	add32
-	.p2align	2
-	.type	add32,@function
-add32:
-.L11_0:
-	addi	t0, a0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	a0, t0, 1
-	ret
-	.size	add32, .-add32
-	.globl	add64
-	.p2align	2
-	.type	add64,@function
-add64:
-.L12_0:
-	addi	t0, a0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	a0, t0, 1
-	ret
-	.size	add64, .-add64
-	.globl	add128
-	.p2align	2
-	.type	add128,@function
-add128:
-.L13_0:
-	addi	t0, a0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	a0, t0, 1
-	ret
-	.size	add128, .-add128
-	.globl	add256
-	.p2align	2
-	.type	add256,@function
-add256:
-.L14_0:
-	addi	t0, a0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	t0, t0, 1
-	addi	a0, t0, 1
-	ret
-	.size	add256, .-add256
-	.globl	add512
-	.p2align	2
-	.type	add512,@function
-add512:
-.L15_0:
-	addi	sp, sp, -4
-	sw	ra, 0(sp)
-	call	add256
-	call	add256
-	lw	ra, 0(sp)
-	addi	sp, sp, 4
-	ret
-	.size	add512, .-add512
-	.globl	add1024
-	.p2align	2
-	.type	add1024,@function
-add1024:
-.L16_0:
-	addi	sp, sp, -4
-	sw	ra, 0(sp)
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	lw	ra, 0(sp)
-	addi	sp, sp, 4
-	ret
-	.size	add1024, .-add1024
-	.globl	add2048
-	.p2align	2
-	.type	add2048,@function
-add2048:
-.L17_0:
-	addi	sp, sp, -4
-	sw	ra, 0(sp)
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	lw	ra, 0(sp)
-	addi	sp, sp, 4
-	ret
-	.size	add2048, .-add2048
-	.globl	add4096
-	.p2align	2
-	.type	add4096,@function
-add4096:
-.L18_0:
-	addi	sp, sp, -4
-	sw	ra, 0(sp)
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	lw	ra, 0(sp)
-	addi	sp, sp, 4
-	ret
-	.size	add4096, .-add4096
-	.globl	add8192
-	.p2align	2
-	.type	add8192,@function
-add8192:
-.L19_0:
-	addi	sp, sp, -4
-	sw	ra, 0(sp)
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	lw	ra, 0(sp)
-	addi	sp, sp, 4
-	ret
-	.size	add8192, .-add8192
-	.globl	add16384
-	.p2align	2
-	.type	add16384,@function
-add16384:
-.L20_0:
-	addi	sp, sp, -4
-	sw	ra, 0(sp)
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	lw	ra, 0(sp)
-	addi	sp, sp, 4
-	ret
-	.size	add16384, .-add16384
-	.globl	add32768
-	.p2align	2
-	.type	add32768,@function
-add32768:
-.L21_0:
-	addi	sp, sp, -4
-	sw	ra, 0(sp)
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	lw	ra, 0(sp)
-	addi	sp, sp, 4
-	ret
-	.size	add32768, .-add32768
-	.globl	add65536
-	.p2align	2
-	.type	add65536,@function
-add65536:
-.L22_0:
-	addi	sp, sp, -4
-	sw	ra, 0(sp)
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	call	add256
-	lw	ra, 0(sp)
-	addi	sp, sp, 4
-	ret
-	.size	add65536, .-add65536
-	.globl	add131072
-	.p2align	2
-	.type	add131072,@function
-add131072:
-.L23_0:
-	addi	sp, sp, -4
-	sw	ra, 0(sp)
-	call	add65536
-	call	add65536
-	lw	ra, 0(sp)
-	addi	sp, sp, 4
-	ret
-	.size	add131072, .-add131072
-	.globl	add262144
-	.p2align	2
-	.type	add262144,@function
-add262144:
-.L24_0:
-	addi	sp, sp, -4
-	sw	ra, 0(sp)
-	call	add65536
-	call	add65536
-	call	add65536
-	call	add65536
-	lw	ra, 0(sp)
-	addi	sp, sp, 4
-	ret
-	.size	add262144, .-add262144
-	.globl	add524288
-	.p2align	2
-	.type	add524288,@function
-add524288:
-.L25_0:
-	addi	sp, sp, -4
-	sw	ra, 0(sp)
-	call	add65536
-	call	add65536
-	call	add65536
-	call	add65536
-	call	add65536
-	call	add65536
-	call	add65536
-	call	add65536
-	lw	ra, 0(sp)
-	addi	sp, sp, 4
-	ret
-	.size	add524288, .-add524288
-	.globl	wP
-	.p2align	2
-	.type	wP,@function
-wP:
-.L26_0:
 	addi	sp, sp, -12
 	sw	ra, 4(sp)
 	sw	s9, 8(sp)
 	sw	s10, 0(sp)
-	addi	ra, zero, 3
-	j	.L26_1
-.L26_1:
-	srai	t2, ra, 1
-	addi	t0, zero, 2
-	j	.L26_2
-.L26_2:
-	slt	t1, t0, t2
-	beqz	t1, .L26_3
-	j	.L26_4
-.L26_3:
-	addi	t2, zero, 1
-	j	.L26_7
-.L26_4:
-	rem	t1, ra, t0
-	addi	t1, t1, 0
-	seqz	t1, t1
-	beqz	t1, .L26_6
-	j	.L26_5
-.L26_5:
-	addi	ra, ra, 1
-	addi	t2, zero, 0
-	j	.L26_7
-.L26_6:
-	addi	t0, t0, 1
-	j	.L26_2
-.L26_7:
-	slt	t0, zero, ra
-	beqz	t0, .L26_8
-	j	.L26_9
-.L26_8:
-	addi	t0, zero, 0
-	j	.L26_10
-.L26_9:
-	add	t1, ra, t2
-	addi	t0, zero, 9
-	rem	t0, t1, t0
-	addi	t0, t0, 0
-	seqz	t0, t0
-	j	.L26_10
-.L26_10:
-	beqz	t0, .L26_12
-	j	.L26_11
-.L26_11:
-	lui	ra, %hi(N)
-	lw	s9, %lo(N)(ra)
-	call	wpppp
-	add	t0, s9, a0
-	addi	ra, zero, 2
-	rem	ra, t0, ra
+	addi	a0, zero, 44
+	call	malloc
+	addi	ra, zero, 10
+	sw	ra, 0(a0)
+	addi	ra, a0, 4
+	lui	t0, %hi(color)
+	sw	ra, %lo(color)(t0)
+	addi	a0, zero, 8
+	call	malloc
+	addi	ra, zero, 1
+	sw	ra, 0(a0)
+	addi	ra, a0, 4
+	lui	t0, %hi(count)
+	sw	ra, %lo(count)(t0)
+	lui	ra, %hi(count)
+	lw	ra, %lo(count)(ra)
 	addi	ra, ra, 0
-	seqz	ra, ra
-	beqz	ra, .L26_14
-	j	.L26_13
-.L26_12:
-	lui	t0, %hi(N)
-	lw	t0, %lo(N)(t0)
-	add	t1, t0, t2
-	lui	t0, %hi(N)
-	sw	t1, %lo(N)(t0)
-	add	ra, ra, t2
-	addi	ra, ra, 1
-	j	.L26_1
-.L26_13:
-	lui	ra, %hi(N)
-	lw	a0, %lo(N)(ra)
-	call	add524288
-	li	ra, 524288
-	sub	ra, a0, ra
-	addi	a0, ra, -4
-	j	.L26_15
-.L26_14:
-	call	block
-	call	block
-	call	block
-	call	block
-	call	bblock
-	j	.L26_15
-.L26_15:
+	sw	zero, 0(ra)
+	addi	a0, zero, 16
+	call	malloc
+	addi	ra, zero, 3
+	sw	ra, 0(a0)
+	addi	ra, a0, 4
+	lui	t0, %hi(make)
+	sw	ra, %lo(make)(t0)
+	lui	ra, %hi(i)
+	sw	zero, %lo(i)(ra)
+	j	.L3_1
+.L3_1:
+	lui	ra, %hi(i)
+	lw	t0, %lo(i)(ra)
+	addi	ra, zero, 3
+	slt	ra, t0, ra
+	beqz	ra, .L3_6
+	j	.L3_2
+.L3_2:
+	lui	ra, %hi(make)
+	lw	t0, %lo(make)(ra)
+	lui	ra, %hi(i)
+	lw	ra, %lo(i)(ra)
+	slli	ra, ra, 2
+	add	s9, t0, ra
+	addi	a0, zero, 16
+	call	malloc
+	addi	ra, zero, 3
+	sw	ra, 0(a0)
+	addi	ra, a0, 4
+	sw	ra, 0(s9)
+	lui	ra, %hi(j)
+	sw	zero, %lo(j)(ra)
+	j	.L3_3
+.L3_3:
+	lui	ra, %hi(j)
+	lw	t0, %lo(j)(ra)
+	addi	ra, zero, 3
+	slt	ra, t0, ra
+	beqz	ra, .L3_5
+	j	.L3_4
+.L3_4:
+	lui	ra, %hi(make)
+	lw	t0, %lo(make)(ra)
+	lui	ra, %hi(i)
+	lw	ra, %lo(i)(ra)
+	slli	ra, ra, 2
+	add	ra, t0, ra
+	lw	t0, 0(ra)
+	lui	ra, %hi(j)
+	lw	ra, %lo(j)(ra)
+	slli	ra, ra, 2
+	add	ra, t0, ra
+	sw	zero, 0(ra)
+	lui	ra, %hi(j)
+	lw	ra, %lo(j)(ra)
+	addi	t0, ra, 1
+	lui	ra, %hi(j)
+	sw	t0, %lo(j)(ra)
+	j	.L3_3
+.L3_5:
+	lui	ra, %hi(i)
+	lw	ra, %lo(i)(ra)
+	addi	t0, ra, 1
+	lui	ra, %hi(i)
+	sw	t0, %lo(i)(ra)
+	j	.L3_1
+.L3_6:
+	mv	a0, zero
+	mv	a1, zero
+	mv	a2, zero
+	call	search
+	lui	ra, %hi(count)
+	lw	ra, %lo(count)(ra)
+	addi	ra, ra, 0
+	lw	a0, 0(ra)
+	call	mx__toString
+	call	mx__println
+	mv	a0, zero
 	lw	s9, 8(sp)
 	lw	s10, 0(sp)
 	lw	ra, 4(sp)
 	addi	sp, sp, 12
 	ret
-	.size	wP, .-wP
-	.globl	sanity_check
-	.p2align	2
-	.type	sanity_check,@function
-sanity_check:
-.L27_0:
-	j	.L27_1
-.L27_1:
-	lui	ra, %hi(N)
-	lw	ra, %lo(N)(ra)
-	addi	t0, ra, 1
-	lui	ra, %hi(N)
-	sw	t0, %lo(N)(ra)
-	j	.L27_1
-	.size	sanity_check, .-sanity_check
-	.globl	main
-	.p2align	2
-	.type	main,@function
-main:
-.L28_0:
-	j	.L28_1
-.L28_1:
-	lui	ra, %hi(N)
-	lw	ra, %lo(N)(ra)
-	addi	t0, ra, 1
-	lui	ra, %hi(N)
-	sw	t0, %lo(N)(ra)
-	j	.L28_1
 	.size	main, .-main
 
 	.section	.sdata,"aw",@progbits
-	.global	w
+	.global	make
 	.p2align	2
-	w:
+	make:
 	.word	0                       # 0
-	.global	N
+	.global	color
 	.p2align	2
-	N:
-	.word	1                       # 1
+	color:
+	.word	0                       # 0
+	.global	count
+	.p2align	2
+	count:
+	.word	0                       # 0
+	.global	i
+	.p2align	2
+	i:
+	.word	0                       # 0
+	.global	j
+	.p2align	2
+	j:
+	.word	0                       # 0
+	.str.0:
+	.asciz	"  "
+	.str.1:
+	.asciz	"\n "

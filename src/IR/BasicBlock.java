@@ -124,6 +124,8 @@ public class BasicBlock extends IRObject {
         block.setPrevBlock(this);
         if (getNextBlock() != null)
             getNextBlock().setPrevBlock(block);
+        else
+            function.setExitBlock(block);
         setNextBlock(block);
 
         for (IRInst runner = inst; runner != null; runner = runner.getNextInst()) {

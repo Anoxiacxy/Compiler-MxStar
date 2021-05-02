@@ -74,6 +74,7 @@ public class Main {
             do {
                 boolean tmp;
                 changed = false;
+
                 tmp = new AggressiveDeadCodeElimination(irModule).run();
                 changed |= tmp;
                 if (emitLLVM) new
@@ -91,12 +92,12 @@ public class Main {
                 if (emitLLVM && tmp)
                     new IRPrinter("lab/output-cfgs" + ++id + ".ll").visit(irModule);
 
-                //tmp = new FunctionInline(irModule).run();
-                //changed |= tmp;
-                //if (emitLLVM && tmp)
-                //    new IRPrinter("lab/output-inline" + ++id + ".ll").visit(irModule);
+                tmp = new FunctionInline(irModule).run();
+                changed |= tmp;
+                if (emitLLVM && tmp)
+                    new IRPrinter("lab/output-inline" + ++id + ".ll").visit(irModule);
                 //changed = false;
-            } while (changed && id < 100);
+            } while (changed && id < 10);
 
             if (emitLLVM)
                 new IRPrinter("lab/output-O1.ll").visit(irModule);

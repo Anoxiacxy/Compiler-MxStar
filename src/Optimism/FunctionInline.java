@@ -25,15 +25,19 @@ public class FunctionInline extends Pass {
             changed = false;
             nonRecursiveInline();
             totalChanged |= changed;
+            break;
         } while (changed);
+
+        /*
 
         int inlineDepth = 3;
         do {
             changed = false;
             recursiveInline();
             totalChanged |= changed;
+            break;
         } while (inlineDepth -- > 0);
-
+        */
         changed = totalChanged;
     }
 
