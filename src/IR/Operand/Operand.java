@@ -92,6 +92,8 @@ abstract public class Operand extends IRObject {
 
     abstract public boolean isConstant();
 
+    abstract public Operand clone();
+
     @Override
     abstract public String toString();
 }

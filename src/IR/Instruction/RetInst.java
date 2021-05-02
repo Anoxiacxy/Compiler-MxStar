@@ -62,4 +62,9 @@ public class RetInst extends IRInst {
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
     }
+
+    @Override
+    public IRInst clone(BasicBlock newBlock) {
+        return new RetInst(newBlock, getType(), getValue());
+    }
 }

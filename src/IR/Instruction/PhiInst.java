@@ -29,6 +29,18 @@ public class PhiInst extends IRInst {
         addDef(result);
     }
 
+    public PhiInst(BasicBlock basicBlock, ArrayList<Pair<Operand, BasicBlock>> branch, Register result) {
+        super(basicBlock);
+        this.branch = new ArrayList<>(branch);
+        this.result = result;
+        result.addDef(this);
+        addDef(result);
+        branch.forEach(operandBasicBlockPair -> {
+            operandBasicBlockPair.a.addUse(this);
+            addUse(operandBasicBlockPair.a);
+        });
+    }
+
     public void replaceBranch(BasicBlock oldBlock, BasicBlock newBlock) {
         for (int i = 0; i < branch.size(); i++) {
             if (branch.get(i).b == oldBlock) {
@@ -109,5 +121,10 @@ public class PhiInst extends IRInst {
 
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public IRInst clone(BasicBlock newBlock) {
+        return new PhiInst(newBlock, getBranch(), getResult());
     }
 }

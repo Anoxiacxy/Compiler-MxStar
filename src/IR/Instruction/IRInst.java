@@ -137,6 +137,8 @@ abstract public class IRInst {
 
     }
 
+    abstract public IRInst clone(BasicBlock newBlock);
+
     public Map<Operand, Integer> getDef() {
         return def;
     }

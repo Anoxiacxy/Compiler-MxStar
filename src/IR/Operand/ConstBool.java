@@ -22,4 +22,9 @@ public class ConstBool extends Constant {
     public void setValue(boolean value) {
         this.value = value;
     }
+
+    @Override
+    public Operand clone() {
+        return new ConstBool(getType(), getValue());
+    }
 }

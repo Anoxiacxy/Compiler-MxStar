@@ -99,6 +99,11 @@ public class BinaryInst extends IRInst {
         visitor.visit(this);
     }
 
+    @Override
+    public IRInst clone(BasicBlock newBlock) {
+        return new BinaryInst(newBlock, getOpType(), getLhs(), getRhs(), getResult());
+    }
+
     // add, sub, mul, sdiv, srem, shl, ashr, and, or, xor
     public boolean canSwap() {
         switch (opType) {

@@ -76,7 +76,8 @@ public class Main {
                 changed = false;
                 tmp = new AggressiveDeadCodeElimination(irModule).run();
                 changed |= tmp;
-                if (emitLLVM) new IRPrinter("lab/output-adce" + ++id + ".ll").visit(irModule);
+                if (emitLLVM) new
+                        IRPrinter("lab/output-adce" + ++id + ".ll").visit(irModule);
 
 
                 tmp = new SparseConditionalConstantPropagation(irModule).run();
@@ -87,8 +88,13 @@ public class Main {
 
                 tmp = new ControlFlowGraphSimplifier(irModule).run();
                 changed |= tmp;
-                if (emitLLVM && tmp) new IRPrinter("lab/output-cfgs" + ++id + ".ll").visit(irModule);
+                if (emitLLVM && tmp)
+                    new IRPrinter("lab/output-cfgs" + ++id + ".ll").visit(irModule);
 
+                tmp = new FunctionInline(irModule).run();
+                changed |= tmp;
+                if (emitLLVM && tmp)
+                    new IRPrinter("lab/output-inline" + ++id + ".ll").visit(irModule);
                 //changed = false;
             } while (changed && id < 100);
 

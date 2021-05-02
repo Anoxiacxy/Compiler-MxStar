@@ -72,4 +72,9 @@ public class BrInst extends IRInst {
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
     }
+
+    @Override
+    public IRInst clone(BasicBlock newBlock) {
+        return new BrInst(newBlock, getCond(), getThemBlock(), getElseBlock());
+    }
 }

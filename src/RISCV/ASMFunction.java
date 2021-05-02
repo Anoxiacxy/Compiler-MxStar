@@ -138,7 +138,19 @@ public class ASMFunction extends ASMObject {
     public ArrayList<ASMBlock> getDfsOrder() {
         visited = new LinkedHashSet<>();
         dfsOrder = new ArrayList<>();
-        dfs(getEntryBlock());
+        Stack<ASMBlock> stack = new Stack<>();
+        stack.push(getEntryBlock());
+        while (!stack.isEmpty()) {
+            ASMBlock block = stack.pop();
+            dfsOrder.add(block);
+            for (ASMBlock next : block.getSuccessors())
+                if (!visited.contains(next)) {
+                    visited.add(next);
+                    stack.push(next);
+                }
+
+        }
+        //dfs(getEntryBlock());
         return dfsOrder;
     }
 

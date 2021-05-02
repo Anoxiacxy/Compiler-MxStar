@@ -64,4 +64,9 @@ public class AllocaInst extends IRInst {
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
     }
+
+    @Override
+    public IRInst clone(BasicBlock newBlock) {
+        return new AllocaInst(newBlock, getResult(), getType());
+    }
 }

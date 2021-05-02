@@ -20,6 +20,11 @@ public class ConstInt extends Constant {
     }
 
     @Override
+    public Operand clone() {
+        return new ConstInt(getType(), getValue());
+    }
+
+    @Override
     public String toString() {
         return Long.toString(value);
     }

@@ -24,7 +24,36 @@ public class GlobalInst extends IRInst {
         return result + " = global " + type + " " + init;
     }
 
+    public GlobalRegister getResult() {
+        return result;
+    }
+
+    public void setResult(GlobalRegister result) {
+        this.result = result;
+    }
+
+    public IRType getType() {
+        return type;
+    }
+
+    public void setType(IRType type) {
+        this.type = type;
+    }
+
+    public Operand getInit() {
+        return init;
+    }
+
+    public void setInit(Operand init) {
+        this.init = init;
+    }
+
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public IRInst clone(BasicBlock newBlock) {
+        return new GlobalInst(newBlock, getResult(), getType(), getInit());
     }
 }

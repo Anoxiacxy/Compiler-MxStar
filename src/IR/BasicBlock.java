@@ -1,10 +1,7 @@
 package IR;
 
 import AST.Stmt.ForStmtNode;
-import IR.Instruction.BrInst;
-import IR.Instruction.IRInst;
-import IR.Instruction.PhiInst;
-import IR.Instruction.RetInst;
+import IR.Instruction.*;
 import RISCV.Instruction.Catagory.BranchInst;
 
 import java.util.ArrayList;
@@ -111,6 +108,47 @@ public class BasicBlock extends IRObject {
         setPrevBlock(null);
 
         function.appendBlockFront(this);
+    }
+
+    public BasicBlock spilt(IRInst inst) {
+        assert inst instanceof CallInst;
+
+        BasicBlock block = new BasicBlock(getFunction(), getName() + ".split");
+
+        block.getSuccessors().addAll(successors);
+        block.getPredecessors().add(this);
+        block.setInstBegin(inst);
+        block.setInstEnd(getInstEnd());
+
+        block.setNextBlock(getNextBlock());
+        block.setPrevBlock(this);
+        if (getNextBlock() != null)
+            getNextBlock().setPrevBlock(block);
+        setNextBlock(block);
+
+        for (IRInst runner = inst; runner != null; runner = runner.getNextInst()) {
+            runner.setBasicBlock(block);
+        }
+
+        for (BasicBlock succ : getSuccessors())
+            for (IRInst irInst = succ.getInstBegin(); irInst != null; irInst = irInst.getNextInst()) {
+                if (irInst instanceof PhiInst) {
+                    ((PhiInst) irInst).replaceBranch(this, block);
+                }
+                succ.getPredecessors().add(block);
+                succ.getPredecessors().remove(this);
+            }
+
+        setInstEnd(inst.getPrevInst());
+        if (inst == getInstBegin())
+            setInstBegin(null);
+        else
+            inst.getPrevInst().setNextInst(null);
+        inst.setPrevInst(null);
+        appendInstBack(new BrInst(this, null, block, null));
+        calcSuccessors();
+
+        return block;
     }
 
     public void removeFromRelatedPhi() {

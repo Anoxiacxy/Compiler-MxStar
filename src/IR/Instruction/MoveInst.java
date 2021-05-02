@@ -65,4 +65,9 @@ public class MoveInst extends IRInst {
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
     }
+
+    @Override
+    public IRInst clone(BasicBlock newBlock) {
+        return new MoveInst(newBlock, getSource(), getResult());
+    }
 }

@@ -13,4 +13,9 @@ public class ConstNull extends Constant {
     public String toString() {
         return "null";
     }
+
+    @Override
+    public Operand clone() {
+        return new ConstNull();
+    }
 }

@@ -184,7 +184,8 @@ public class RegisterAllocate implements ASMPass {
     }
 
     private void build(ASMFunction function) {
-        for (ASMBlock block : function.getDfsOrder()) {
+        ArrayList<ASMBlock> blocks = function.getDfsOrder();
+        for (ASMBlock block : blocks) {
             Set<VirtualRegister> live = liveOut.get(block);
             for (ASMInst inst = block.getInstEnd(); inst != null; inst = inst.getPrevInst()) {
                 if (inst instanceof Mv) {

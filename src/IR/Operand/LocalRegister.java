@@ -8,6 +8,11 @@ public class LocalRegister extends Register {
         super(type, name, true);
     }
 
+    @Override
+    public Operand clone() {
+        return new LocalRegister(getType(), getName() + ".clone");
+    }
+
     public IRInst getDefInst() {
         assert getDef().size() == 1;
         return getDef().keySet().iterator().next();

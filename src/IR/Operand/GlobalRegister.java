@@ -23,6 +23,11 @@ public class GlobalRegister extends Register {
     }
 
     @Override
+    public Operand clone() {
+        return this;
+    }
+
+    @Override
     public String toString() {
         return "@" + getName();
     }

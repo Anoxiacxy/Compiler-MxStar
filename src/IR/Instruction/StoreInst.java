@@ -48,6 +48,11 @@ public class StoreInst extends IRInst {
         visitor.visit(this);
     }
 
+    @Override
+    public IRInst clone(BasicBlock newBlock) {
+        return new StoreInst(newBlock, getValue(), getAddress());
+    }
+
     public Operand getValue() {
         return value;
     }

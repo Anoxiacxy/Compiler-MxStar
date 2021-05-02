@@ -17,7 +17,7 @@ public class CallInst extends IRInst {
     public CallInst(BasicBlock basicBlock, Function function, ArrayList<Operand> parameters, Register result) {
         super(basicBlock);
         this.function = function;
-        this.parameters = parameters;
+        this.parameters = new ArrayList<>(parameters);
         this.result = result;
         if (result != null) {
             result.addDef(this);
@@ -120,5 +120,10 @@ public class CallInst extends IRInst {
 
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public IRInst clone(BasicBlock newBlock) {
+        return new CallInst(newBlock, getFunction(), getParameters(), getResult());
     }
 }

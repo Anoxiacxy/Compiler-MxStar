@@ -54,6 +54,11 @@ public class LoadInst extends IRInst {
         visitor.visit(this);
     }
 
+    @Override
+    public IRInst clone(BasicBlock newBlock) {
+        return new LoadInst(newBlock, getType(), getAddress(), getResult());
+    }
+
     public IRType getType() {
         return type;
     }

@@ -16,7 +16,7 @@ public class GetElementPtrInst extends IRInst {
     public GetElementPtrInst(BasicBlock basicBlock, Register result, ArrayList<Operand> index, Operand address) {
         super(basicBlock);
         this.result = result;
-        this.index = index;
+        this.index = new ArrayList<>(index);
         this.address = address;
 
         address.addUse(this);
@@ -101,6 +101,11 @@ public class GetElementPtrInst extends IRInst {
 
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public IRInst clone(BasicBlock newBlock) {
+        return new GetElementPtrInst(newBlock, getResult(), getIndex(), getAddress());
     }
 
     @Override

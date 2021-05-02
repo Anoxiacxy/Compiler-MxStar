@@ -39,7 +39,7 @@ public class IcmpInst extends IRInst {
             oldOperand.removeDef(this);
             assert newOperand instanceof Register;
             result = (Register) newOperand;
-            newOperand.addUse(this);
+            newOperand.addDef(this);
         }
     }
 
@@ -107,5 +107,10 @@ public class IcmpInst extends IRInst {
 
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public IRInst clone(BasicBlock newBlock) {
+        return new IcmpInst(newBlock, getOpType(), getLhs(), getRhs(), getResult(), getIrType());
     }
 }

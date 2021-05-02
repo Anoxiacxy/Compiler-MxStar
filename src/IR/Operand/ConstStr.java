@@ -16,6 +16,11 @@ public class ConstStr extends Constant {
     }
 
     @Override
+    public Operand clone() {
+        return this;
+    }
+
+    @Override
     public String toString() {
         return "c\"" + this.value
                 .replace("\\", "\\5C")
