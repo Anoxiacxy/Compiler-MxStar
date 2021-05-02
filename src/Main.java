@@ -91,10 +91,10 @@ public class Main {
                 if (emitLLVM && tmp)
                     new IRPrinter("lab/output-cfgs" + ++id + ".ll").visit(irModule);
 
-                tmp = new FunctionInline(irModule).run();
-                changed |= tmp;
-                if (emitLLVM && tmp)
-                    new IRPrinter("lab/output-inline" + ++id + ".ll").visit(irModule);
+                //tmp = new FunctionInline(irModule).run();
+                //changed |= tmp;
+                //if (emitLLVM && tmp)
+                //    new IRPrinter("lab/output-inline" + ++id + ".ll").visit(irModule);
                 //changed = false;
             } while (changed && id < 100);
 
